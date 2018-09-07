@@ -1,0 +1,22 @@
+{
+  "name": "dive-httpd",
+  "description": "Experimental HTTP server framework based on URI templates and Stream#pipe",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awwright/dive-httpd.git"
+  },
+  "author": "Austin Wright",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/awwright/dive-httpd/issues"
+  },
+  "homepage": "https://github.com/awwright/dive-httpd#readme",
+  "dependencies": {
+    "markdown": "^0.5.0",
+    "uri-template-router": "0.0.2"
+  }
+}
