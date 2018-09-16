@@ -21,3 +21,15 @@ Attempts to fully implement all the features of HTTP in an easy-to-understand AP
 * Pass & set metadata like media type, caching, authorization, etc.
 * Persist documents back to their data source
 * `verify` subroutine that asserts configuration options are OK, referenced files exist, ect.
+
+
+OutgoingMessageTransform Stream:
+- write(data)
+- end()
+- setHeader(name, value)
+- setContentType(value)
+- setContentTypeParam(name, value)
+- getHeader()
+- getHeaders(name)
+- hasHeader(name)
+- removeHeader(name)

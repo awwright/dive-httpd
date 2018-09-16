@@ -11,6 +11,7 @@ var RouteNotFound = require('./lib/RouteNotFound.js');
 // Application-specific types
 var RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
 var RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
+var ServerResponseTransform = require('./lib/ServerResponseTransform.js').ServerResponseTransform;
 
 var listenPort = process.env.PORT || 8080;
 
@@ -21,26 +22,32 @@ Features:
 * Execute a route and generate a response body
 * Map a route to a database resource, then format it with a pipe
 * Iterate over the database and generate responses
-
 */
 
 var routes = new TemplateRouter.Router();
 
 // Section 3. Transforms that transform streams
-lib.inherits(Markdown, stream.Transform);
+lib.inherits(Markdown, ServerResponseTransform);
 function Markdown(){
 	if(!(this instanceof Markdown)) return new Markdown();
-	stream.Transform.call(this);
+	ServerResponseTransform.call(this);
 	this.sourceContents = '';
+	debugger;
 	this.push('<!DOCTYPE html>');
 	this.push('<html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">');
 	this.push('	<head>');
-	this.push('		<meta charset="UTF-8" />');
-	this.push('		<title></title>');
-	this.push('		<meta name="description" content="" />');
+	//this.push('		<meta charset="UTF-8" />');
+	//this.push('		<title></title>');
+	//this.push('		<meta name="description" content="" />');
 	this.push('	</head>');
 	this.push('	<body>');
 	this.push('		<main id="main-content">');
+};
+Markdown.prototype._transformContentType = function _transformContentType(value, callback){
+	callback(null, 'application/xhtml+xml');
+};
+Markdown.prototype._transformHeader = function _transformHeader(name, value, callback){
+	callback(null, name, value);
 };
 Markdown.prototype._transform = function _transform(data, encoding, callback){
 	this.sourceContents += data;
@@ -54,20 +61,20 @@ Markdown.prototype._flush = function (callback){
 	callback();
 };
 
-
-
-lib.inherits(Edit, stream.Transform);
+lib.inherits(Edit, ServerResponseTransform);
 function Edit(){
 	if(!(this instanceof Edit)) return new Edit();
-	stream.Transform.call(this);
+	ServerResponseTransform.call(this);
 	this.push('Source:\n\n');
 }
 Edit.prototype._transform = function _transform(data, encoding, callback){ callback(null, data); };
 Edit.prototype._flush = function (callback){ callback(); };
 
 function Render(){
-	return new stream.Transform({
+	return new ServerResponseTransform({
 		transform: function(data, encoding, callback){ callback(null, data); },
+		transformContentType: function(value, callback){ callback(null, 'application/xhtml+xml; profile=1'); },
+		transformHeader: function(name, value, callback){ callback(null, name, value); },
 		flush: function(callback){ callback(); },
 	});
 };
@@ -97,7 +104,7 @@ routes.addTemplate('http://localhost{/path*}.html', {}, RouteLocalReference("htt
 routes.addTemplate('http://localhost{/path*}.edit', {}, RouteLocalReference("http://localhost{/path*}.html").pipe(Edit) );
 
 // Render a document from the source Markdown
-routes.addTemplate('http://localhost{/path*}.md', {}, RouteStaticFile(__dirname+'/web', "{/path*}.md") );
+routes.addTemplate('http://localhost{/path*}.md', {}, RouteStaticFile(__dirname+'/web', "{/path*}.md", "text/plain") );
 
 var options = {
 	fixedScheme: 'http',
