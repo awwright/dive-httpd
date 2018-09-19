@@ -1,17 +1,19 @@
 var http = require('http');
 var stream = require('stream');
+var inherits = require('util').inherits;
 
-var lib = require('./lib/http.js');
-var Processor = require('./lib/http.js').Processor;
+const {
+	Processor,
+	RouteNotFound,
+	RouteStaticFile,
+	RouteLocalReference,
+	ServerResponseTransform,
+	First,
+	handleRequest,
+} = require('./index.js');
 
 var TemplateRouter = require('uri-template-router');
 var markdown = require( "markdown" ).markdown;
-
-var RouteNotFound = require('./lib/RouteNotFound.js');
-// Application-specific types
-var RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
-var RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
-var ServerResponseTransform = require('./lib/ServerResponseTransform.js').ServerResponseTransform;
 
 var listenPort = process.env.PORT || 8080;
 
@@ -27,7 +29,7 @@ Features:
 var routes = new TemplateRouter.Router();
 
 // Section 3. Transforms that transform streams
-lib.inherits(Markdown, ServerResponseTransform);
+inherits(Markdown, ServerResponseTransform);
 function Markdown(){
 	if(!(this instanceof Markdown)) return new Markdown();
 	ServerResponseTransform.call(this);
@@ -61,7 +63,7 @@ Markdown.prototype._flush = function (callback){
 	callback();
 };
 
-lib.inherits(Edit, ServerResponseTransform);
+inherits(Edit, ServerResponseTransform);
 function Edit(){
 	if(!(this instanceof Edit)) return new Edit();
 	ServerResponseTransform.call(this);
@@ -83,7 +85,7 @@ function Render(){
 routes.addTemplate('http://localhost/', {}, RouteLocalReference("http://localhost/index.html"));
 
 // Determine which version to return based on Content-Type negotiation
-//routes.addTemplate('http://localhost{/path*}', {}, new lib.Conneg([
+//routes.addTemplate('http://localhost{/path*}', {}, new Conneg([
 //	dereference("http://localhost{/path*}.html"),
 //	dereference("http://localhost{/path*}.xhtml"),
 //	dereference("http://localhost{/path*}.md"),
@@ -92,7 +94,7 @@ routes.addTemplate('http://localhost/', {}, RouteLocalReference("http://localhos
 
 // First see if there's a file on the filesystem
 // Else, see if there's a Markdown file that we could generate this from
-routes.addTemplate('http://localhost{/path*}.src', {}, new lib.First([
+routes.addTemplate('http://localhost{/path*}.src', {}, new First([
 	//RouteStaticFile(__dirname+'/web', "{/path*}.html"),
 	RouteLocalReference("http://localhost{/path*}.md").pipe(Markdown),
 ]));
@@ -123,7 +125,7 @@ routes.routes.forEach(function(route){
 });
 
 
-var server = http.createServer(lib.handleRequest.bind(null, options));
+var server = http.createServer(handleRequest.bind(null, options));
 server.listen(listenPort);
 console.log('Server running at http://127.0.0.1:' + listenPort + '/');
 
