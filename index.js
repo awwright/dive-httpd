@@ -11,5 +11,6 @@ module.exports.RouteNotFound = require('./lib/RouteNotFound.js');
 module.exports.RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
 module.exports.RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
 module.exports.ServerResponseTransform = require('./lib/ServerResponseTransform.js').ServerResponseTransform;
+module.exports.PassThrough = require('./lib/PassThrough.js').PassThrough;
 
 

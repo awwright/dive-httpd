@@ -27,6 +27,7 @@ Investigate various ways to transform content:
 ## To-do
 
 * PUT, POST, OPTIONS support
+* Responses must encode information on all of the resources used to compute the local content (including database queries, local files, templates, and ideally application revision)
 * Compute caching headers
 * Pass & set metadata like media type, caching, authorization, etc.
 * Persist documents back to their data source
@@ -34,6 +35,12 @@ Investigate various ways to transform content:
 
 
 OutgoingMessageTransform Stream:
+Requirements:
+- Incoming metadata gets passed to _transform{Foo} methods
+- _transform methods may be asynchronous via callback or Promise
+- _transform methods are functional - pass a new or immutable instance to downstream
+- Can they be called multiple times? Might be useful to guarentee single call
+API:
 - write(data)
 - end()
 - setHeader(name, value)
