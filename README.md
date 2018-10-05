@@ -14,6 +14,7 @@ Attempts to fully implement all the features of HTTP in an easy-to-understand AP
 * Map a URI template to a handler that can process a resource
 * Enumerate all the resources that can be rendered by the server, e.g. for generating a static website
 
+
 ### Transforms
 
 Investigate various ways to transform content:
@@ -26,13 +27,27 @@ Investigate various ways to transform content:
 
 ## To-do
 
-* PUT, POST, OPTIONS support
+* Implement Route and Resource (below)
 * Responses must encode information on all of the resources used to compute the local content (including database queries, local files, templates, and ideally application revision)
+* accept a block of return data
 * Compute caching headers
 * Pass & set metadata like media type, caching, authorization, etc.
 * Persist documents back to their data source
 * `verify` subroutine that asserts configuration options are OK, referenced files exist, ect.
 
+Route: Represents a set of URIs
+Route#index - List the URIs defined by this route
+Route#prepare - lookup a URI to see if it exists, return Resource if so
+Route#store - save a document at the given URI
+Route#notFound - return a resource with information about the non-existance of the resource. May itself return None, which causes the next matching route to be looked up and notFound to be called.
+
+Resource: Represents a resource found by Route#prepare
+Resource#get: collect all the information necessary to render an information resource
+Resource#post: execute the resource in some fashion
+Resource#del: make the resource not exist anymore - subsequent calls should return 404
+Resource#render: Generate an output stream
+Resource#patch: Modify the resource in-place
+Resource#end: Called after the response has been written, use this oppertunity to close database connections, etc
 
 OutgoingMessageTransform Stream:
 Requirements:
