@@ -7,24 +7,23 @@ const {
 	RouteNotFound,
 	RouteStaticFile,
 	RouteLocalReference,
-	ServerResponseTransform,
 	First,
 	handleRequest,
 } = require('./index.js');
 
+const {
+	ServerResponseTransform,
+} = require('http-transform');
+
 var TemplateRouter = require('uri-template-router');
-var markdown = require( "markdown" ).markdown;
+var markdown = require("markdown").markdown;
 
 var listenPort = process.env.PORT || 8080;
 
-/*
-Features:
-
-* Match a URI to a route
-* Execute a route and generate a response body
-* Map a route to a database resource, then format it with a pipe
-* Iterate over the database and generate responses
-*/
+var arg0 = process.argv.slice(0, 2);
+var argv = process.argv.slice(name.length);
+var config = {};
+var argfiles = [];
 
 var routes = new TemplateRouter.Router();
 

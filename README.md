@@ -35,12 +35,6 @@ Investigate various ways to transform content:
 * Persist documents back to their data source
 * `verify` subroutine that asserts configuration options are OK, referenced files exist, ect.
 
-Route: Represents a set of URIs
-Route#index - List the URIs defined by this route
-Route#prepare - lookup a URI to see if it exists, return Resource if so
-Route#store - save a document at the given URI
-Route#notFound - return a resource with information about the non-existance of the resource. May itself return None, which causes the next matching route to be looked up and notFound to be called.
-
 Resource: Represents a resource found by Route#prepare
 Resource#get: collect all the information necessary to render an information resource
 Resource#post: execute the resource in some fashion

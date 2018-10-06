@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/awwright/dive-httpd#readme",
   "dependencies": {
+    "http-transform": "^0.0.1",
     "markdown": "^0.5.0",
     "uri-template-router": "0.0.2"
   }
