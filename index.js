@@ -17,5 +17,3 @@ module.exports.RouteNotFound = require('./lib/RouteNotFound.js');
 module.exports.RouteError = require('./lib/RouteError.js').RouteError;
 module.exports.RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
 module.exports.RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
-
-module.exports.escapeHTML = require('./lib/html-escape.js').escapeHTML;
