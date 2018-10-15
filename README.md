@@ -27,7 +27,6 @@ Investigate various ways to transform content:
 
 ## To-do
 
-* Implement Route and Resource (below)
 * Responses must encode information on all of the resources used to compute the local content (including database queries, local files, templates, and ideally application revision)
 * accept a block of return data
 * Compute caching headers
