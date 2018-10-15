@@ -16,7 +16,6 @@ const {
 } = require('http-transform');
 
 var TemplateRouter = require('uri-template-router');
-var markdown = require("markdown").markdown;
 
 var listenPort = process.env.PORT || 8080;
 
