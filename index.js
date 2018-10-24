@@ -12,6 +12,7 @@ module.exports.PassThrough = require('http-transform').PassThrough;
 module.exports.Pipe = require('./lib/Route.js').Pipe;
 module.exports.Route = require('./lib/Route.js').Route;
 module.exports.Resource = require('./lib/Resource.js').Resource;
+module.exports.RoutePipeline = require('./lib/RoutePipeline.js').RoutePipeline;
 
 module.exports.RouteNotFound = require('./lib/RouteNotFound.js');
 module.exports.RouteError = require('./lib/RouteError.js').RouteError;
