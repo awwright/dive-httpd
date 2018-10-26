@@ -12,6 +12,13 @@ Attempts to fully implement all the features of HTTP in an easy-to-understand AP
 ## Features
 
 * Map a URI template to a handler that can process a resource
+* Define a data source, with ability to query if a resource (within the data souce) exists or not
+* Store a resource into a data source
+* Enumerate resources hosted at a data source
+* Link a route to multiple data sources to be checked in sequence
+* Render a resource (a pointer provided by a data source) into a response (a document with metadata)
+* Transform a document into a related version (e.g. Markdown into HTML, and plain HTML into themed HTML)
+* Compose a handler from a data source, render method, and additional transforms
 * Enumerate all the resources that can be rendered by the server, e.g. for generating a static website
 
 

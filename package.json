@@ -17,7 +17,7 @@
   "homepage": "https://github.com/awwright/dive-httpd#readme",
   "dependencies": {
     "commander": "^2.19.0",
-    "http-transform": "^0.0.1",
+    "http-transform": "^0.0.2",
     "uri-template-router": "^0.0.4"
   }
 }
