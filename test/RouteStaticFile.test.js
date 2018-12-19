@@ -9,9 +9,8 @@ describe('RouteStaticFile', function(){
 	});
 	it('#listing', function(){
 		return route.listing().then(function(listing){
-			console.log(listing);
-			assert(listing.files.length);
-			assert(listing.dirs.length);
+			// console.log(listing);
+			assert(listing.length);
 			return Promise.resolve();
 		});
 	});
