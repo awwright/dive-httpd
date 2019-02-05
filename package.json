@@ -18,7 +18,7 @@
   "dependencies": {
     "chokidar": "^2.0.4",
     "commander": "^2.19.0",
-    "http-transform": "^0.0.2",
+    "http-transform": "^0.0.4",
     "uri-template-router": "^0.0.5"
   },
   "devDependencies": {
