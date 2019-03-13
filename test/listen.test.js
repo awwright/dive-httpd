@@ -12,7 +12,7 @@ function testMessage(serverOptions, message){
 
 describe('listen', function(){
 	describe('static file', function(){
-		it('static file that exists (path form)', function(){
+		it('static file that exists (origin-form)', function(){
 			var server = new lib.HTTPServer;
 			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
 			return testMessage(server, [
@@ -23,7 +23,7 @@ describe('listen', function(){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 			});
 		});
-		it('static file that does not exist (path form)', function(){
+		it('static file that does not exist (origin-form)', function(){
 			var server = new lib.HTTPServer;
 			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
 			return testMessage(server, [
@@ -54,6 +54,32 @@ describe('listen', function(){
 				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 404 /));
+			});
+		});
+		it('static file base path jail', function(){
+			var server = new lib.HTTPServer;
+			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
+			return testMessage(server, [
+				'GET http://example.com/../listen.test.js HTTP/1.1',
+				'Host: example.com',
+				'Connection: close',
+			]).then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 404 /));
+			});
+		});
+		it('Multiple variants', function(){
+			var server = new lib.HTTPServer;
+			server.routes.addTemplate('http://example.com{/path*}', {}, lib.First([
+				lib.RouteStaticFile(docroot, "{/path*}.xhtml", 'application/xhtml+xml', {}),
+				lib.RouteStaticFile(docroot, "{/path*}.html", 'text/html', {}),
+			]));
+			return testMessage(server, [
+				'GET http://example.com/data-table HTTP/1.1',
+				'Host: example.com',
+				'Connection: close',
+			]).then(function(res){
+				assert(res.toString().match(/HTTP\/1.1 200 /));
+				assert(res.toString().match(/Content-Type: text\/html/));
 			});
 		});
 	});

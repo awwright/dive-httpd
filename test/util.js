@@ -61,6 +61,8 @@ function writeMessage(server, message, body){
 			sock.clientSide.end();
 			resolve(Buffer.concat(parts));
 		});
+		// Start reading
+		sock.clientSide.resume();
 		// An array indicates a list of headers
 		if(Array.isArray(message)){
 			message.forEach(function(v){
