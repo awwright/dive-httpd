@@ -14,4 +14,11 @@ describe('RouteStaticFile', function(){
 			return Promise.resolve();
 		});
 	});
+	it('#watch', function(done){
+		var count = 0;
+		return route.watch(function(data, filepath){
+			count++;
+			if(count===1) return void done();
+		});
+	});
 });
