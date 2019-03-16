@@ -3,19 +3,9 @@ const path = require('path');
 const opts = require('commander');
 
 const {
-	Processor,
-	RouteNotFound,
-	RouteStaticFile,
-	RouteLocalReference,
-	First,
 	handleRequest,
 } = require('./index.js');
-
-const {
-	ServerResponseTransform,
-} = require('http-transform');
-
-var TemplateRouter = require('uri-template-router');
+global.DiveCore = require('./index.js');
 
 var listenPort = process.env.PORT || 8080;
 
