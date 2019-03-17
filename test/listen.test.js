@@ -12,9 +12,14 @@ function testMessage(serverOptions, message){
 
 describe('listen', function(){
 	describe('static file', function(){
+		var server;
+		before(function(){
+			server = new lib.HTTPServer;
+			var route = lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {});
+			route.routerURITemplate = 'http://example.com{/path*}.html'
+			server.addRoute(route);
+		});
 		it('static file that exists (origin-form)', function(){
-			var server = new lib.HTTPServer;
-			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
 			return testMessage(server, [
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
@@ -24,8 +29,6 @@ describe('listen', function(){
 			});
 		});
 		it('static file that does not exist (origin-form)', function(){
-			var server = new lib.HTTPServer;
-			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
 			return testMessage(server, [
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
@@ -35,8 +38,6 @@ describe('listen', function(){
 			});
 		});
 		it('static file that exists (absolute-form)', function(){
-			var server = new lib.HTTPServer;
-			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
 			return testMessage(server, [
 				'GET http://example.com/data-table.html HTTP/1.1',
 				'Host: example.com',
@@ -46,8 +47,6 @@ describe('listen', function(){
 			});
 		});
 		it('static file that does not exist (absolute-form)', function(){
-			var server = new lib.HTTPServer;
-			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
 			return testMessage(server, [
 				'GET http://example.com/some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
@@ -57,8 +56,6 @@ describe('listen', function(){
 			});
 		});
 		it('static file base path jail', function(){
-			var server = new lib.HTTPServer;
-			server.routes.addTemplate('http://example.com{/path*}.html', {}, lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {}));
 			return testMessage(server, [
 				'GET http://example.com/../listen.test.js HTTP/1.1',
 				'Host: example.com',
