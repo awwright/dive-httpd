@@ -10,7 +10,7 @@ function testMessage(serverOptions, message){
 	return writeMessage(server, message);
 }
 
-describe('listen', function(){
+describe('Negotiate', function(){
 	describe('Multiple variants', function(){
 		var server;
 		before(function(){
