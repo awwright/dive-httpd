@@ -34,7 +34,7 @@ describe('RouteStaticFile', function(){
 				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/root/));
+				assert(res.toString().match(/^root$/m));
 			});
 		});
 		it('static file that does not exist (origin-form)', function(){
@@ -53,6 +53,7 @@ describe('RouteStaticFile', function(){
 				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert(res.toString().match(/^root$/m));
 			});
 		});
 		it('static file that does not exist (absolute-form)', function(){
