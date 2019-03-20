@@ -29,12 +29,14 @@ if(opts.listRoutes){
 }
 if(opts.listResources){
 	console.log('Available resources:', serverOptions);
-	router.routes.forEach(function(route){
+	Promise.all(router.routes.map(function(r){
+		return r.listing();
+	})).then(function(list){
 		//console.log('# '+route.template);
 		//console.log(route.name.constructor);
-		route.name.index(router).forEach(function(rsc){
+		list.forEach(function(rsc){
 			console.log('- '+route.gen(rsc));
-		});
+		})
 	});
 }
 
