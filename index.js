@@ -17,5 +17,6 @@ module.exports.RoutePipeline = require('./lib/RoutePipeline.js').RoutePipeline;
 
 module.exports.RouteNotFound = require('./lib/RouteNotFound.js');
 module.exports.RouteError = require('./lib/RouteError.js').RouteError;
+module.exports.RouteGenerated = require('./lib/RouteGenerated.js').RouteGenerated;
 module.exports.RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
 module.exports.RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
