@@ -5,6 +5,7 @@ var assert = require('assert');
 var PassThrough = require('http-transform').PassThrough;
 
 var writeMessage = require('./util.js').writeMessage;
+var ToJSONTransform = require('./util.js').ToJSONTransform;
 var lib = require('../index.js');
 
 function testMessage(serverOptions, message){
@@ -14,7 +15,7 @@ function testMessage(serverOptions, message){
 
 describe('Pipeline', function(){
 	describe('Pipeline variants', function(){
-		it('Base file works', function(){
+		it('Baseline', function(){
 			var server = new lib.HTTPServer;
 			var route = lib.RouteGenerated('http://example.com/~{user}', {
 				contentType: 'text/plain',
@@ -40,10 +41,15 @@ describe('Pipeline', function(){
 					return data.user + "\r\n";
 				},
 			});
-			var route = lib.RoutePipeline(gen, PassThrough);
+			var route = new lib.RoutePipeline({
+				routerURITemplate: 'http://example.com/~{user}.json',
+				contentType: 'text/plain',
+				outboundTransform: PassThrough,
+				innerRoute: gen,
+			});
 			server.addRoute(route);
-			testMessage(server, [
-				'GET http://example.com/~root HTTP/1.1',
+			return testMessage(server, [
+				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
 				'Connection: close',
 			]).then(function(res){
@@ -51,6 +57,30 @@ describe('Pipeline', function(){
 				assert(res.toString().match(/^root$/m));
 			});
 		});
-		it('Base file piped through FooterTransform works');
+		it('Base file piped through ToJSONTransform works', function(){
+			var server = new lib.HTTPServer;
+			var gen = lib.RouteGenerated('http://example.com/~{user}', {
+				contentType: 'text/plain',
+				generateBody: function(uri, data){
+					return data.user + "\r\n";
+				},
+			});
+			var route = new lib.RoutePipeline({
+				routerURITemplate: 'http://example.com/~{user}.json',
+				contentType: 'application/json',
+				outboundTransform: ToJSONTransform,
+				innerRoute: gen,
+			});
+			server.addRoute(route);
+			return testMessage(server, [
+				'GET http://example.com/~root.json HTTP/1.1',
+				'Host: example.com',
+				'Connection: close',
+			]).then(function(res){
+				console.log(res.toString());
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert(res.toString().match(/^"root\\r\\n"$/m));
+			});
+		});
 	});
 });

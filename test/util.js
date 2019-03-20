@@ -2,6 +2,11 @@
 "use strict"
 
 const Duplex = require('stream').Duplex;
+var inherits = require('util').inherits;
+
+var ServerResponseTransform = require('http-transform').ServerResponseTransform;
+
+var lib = require('../index.js');
 
 // Make a pair of Duplex streams
 // what's written to clientSide is readable from serverSide and vice-versa
@@ -78,3 +83,27 @@ function writeMessage(server, message, body){
 		server.emit('connection', sock.serverSide);
 	});
 }
+
+exports.ToJSONTransform = ToJSONTransform;
+inherits(ToJSONTransform, lib.ServerResponseTransform);
+function ToJSONTransform(){
+	if(!(this instanceof ToJSONTransform)) return new ToJSONTransform();
+	ServerResponseTransform.call(this);
+	this.contentType = 'application/json';
+	this.sourceContents = '';
+};
+ToJSONTransform.prototype.name = 'ToJSONTransform';
+ToJSONTransform.prototype._transformHead = function _transformHead(headers){
+	headers.setHeader('Content-Type', this.contentType);
+	return headers;
+};
+ToJSONTransform.prototype._transform = function _transform(data, encoding, callback){
+	this.sourceContents += data;
+	callback(null);
+};
+ToJSONTransform.prototype._flush = function (callback){
+	const self = this;
+	console.log('ToJSONTransform.prototype._flush', this.sourceContents);
+	self.push(JSON.stringify(this.sourceContents)+"\r\n");
+	callback();
+};
