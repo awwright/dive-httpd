@@ -103,7 +103,6 @@ ToJSONTransform.prototype._transform = function _transform(data, encoding, callb
 };
 ToJSONTransform.prototype._flush = function (callback){
 	const self = this;
-	console.log('ToJSONTransform.prototype._flush', this.sourceContents);
 	self.push(JSON.stringify(this.sourceContents)+"\r\n");
 	callback();
 };

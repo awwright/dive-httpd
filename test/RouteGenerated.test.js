@@ -9,11 +9,9 @@ function testMessage(serverOptions, message){
 	return writeMessage(server, message);
 }
 
-describe('RouteStaticFile', function(){
+describe('RouteGenerated', function(){
 	describe('interface', function(){
-		it('#listing');
-		it('#watch');
-		it('#name', function(){
+		it('RouteGenerated#name', function(){
 			var route = lib.RouteGenerated('http://example.com/~{user}', {
 				contentType: 'text/plain',
 				generateBody: function(uri, data){
@@ -21,6 +19,14 @@ describe('RouteStaticFile', function(){
 				},
 			});
 			assert.strictEqual(route.name, 'RouteGenerated');
+		});
+		it('RouteGenerated#listing');
+		it('RouteGenerated#watch', function(done){
+			var count = 0;
+			return route.watch(function(data, filepath){
+				count++;
+				if(count===1) return void done();
+			});
 		});
 	});
 	describe('HTTP tests', function(){

@@ -14,6 +14,29 @@ function testMessage(serverOptions, message){
 }
 
 describe('Pipeline', function(){
+	describe('interface', function(){
+		var server;
+		beforeEach(function(){
+			server = new lib.HTTPServer;
+			var gen = lib.RouteGenerated('http://example.com/~{user}', {
+				contentType: 'text/plain',
+				generateBody: function(uri, data){
+					return data.user + "\r\n";
+				},
+			});
+			var route = new lib.RoutePipeline({
+				routerURITemplate: 'http://example.com/~{user}.json',
+				contentType: 'application/json',
+				outboundTransform: ToJSONTransform,
+				innerRoute: gen,
+			});
+			server.addRoute(route);
+		});
+		it('RoutePipeline#name', function(){
+			assert.strictEqual(server.routes.routes[0].name.name, 'Pipeline(RouteGenerated,ToJSONTransform)');
+		});
+		it('RoutePipeline#watch');
+	});
 	describe('Pipeline variants', function(){
 		it('Baseline', function(){
 			var server = new lib.HTTPServer;
@@ -77,9 +100,28 @@ describe('Pipeline', function(){
 				'Host: example.com',
 				'Connection: close',
 			]).then(function(res){
-				console.log(res.toString());
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^"root\\r\\n"$/m));
+			});
+		});
+		it('Two-argument style with PassThrough', function(){
+			var server = new lib.HTTPServer;
+			var gen = lib.RouteGenerated('http://example.com/~{user}', {
+				contentType: 'text/plain',
+				generateBody: function(uri, data){
+					return data.user + "\r\n";
+				},
+			});
+			var route = lib.RoutePipeline(gen, PassThrough);
+			route.routerURITemplate = 'http://example.com/~{user}.json';
+			server.addRoute(route);
+			return testMessage(server, [
+				'GET http://example.com/~root.json HTTP/1.1',
+				'Host: example.com',
+				'Connection: close',
+			]).then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert(res.toString().match(/^root$/m));
 			});
 		});
 	});
