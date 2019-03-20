@@ -23,6 +23,7 @@ describe('Pipeline', function(){
 				generateBody: function(uri, data){
 					return data.user + "\r\n";
 				},
+				list: ['root'],
 			});
 			route = new lib.RoutePipeline({
 				routerURITemplate: 'http://example.com/~{user}.json',
