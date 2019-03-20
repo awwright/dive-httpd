@@ -33,7 +33,6 @@ describe('RouteStaticFile', function(){
 				'Host: example.com',
 				'Connection: close',
 			]).then(function(res){
-				console.log(res.toString());
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/root/));
 			});
@@ -53,7 +52,6 @@ describe('RouteStaticFile', function(){
 				'Host: example.com',
 				'Connection: close',
 			]).then(function(res){
-				console.log(res.toString());
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 			});
 		});
