@@ -11,9 +11,9 @@ function testMessage(serverOptions, message){
 }
 
 describe('RouteStaticFile', function(){
-	describe('one route', function(){
+	describe('interface', function(){
 		var route;
-		before(function(){
+		beforeEach(function(){
 			route = new lib.RouteStaticFile(__dirname+'/RouteStaticFile-data', "{/path*}.html", 'text/html');
 		});
 		it('RouteStaticFile#name');

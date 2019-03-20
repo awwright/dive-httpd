@@ -11,13 +11,17 @@ function testMessage(serverOptions, message){
 
 describe('RouteGenerated', function(){
 	describe('interface', function(){
-		it('RouteGenerated#name', function(){
-			var route = lib.RouteGenerated('http://example.com/~{user}', {
+		var route;
+		beforeEach(function(){
+			route = lib.RouteGenerated('http://example.com/~{user}', {
 				contentType: 'text/plain',
 				generateBody: function(uri, data){
 					return data.user + "\r\n";
 				},
+				list: ['root', 'guest'],
 			});
+		});
+		it('RouteGenerated#name', function(){
 			assert.strictEqual(route.name, 'RouteGenerated');
 		});
 		it('RouteGenerated#prepare');
