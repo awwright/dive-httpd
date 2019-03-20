@@ -3,7 +3,6 @@ var http = require('http');
 var assert = require('assert');
 var writeMessage = require('./util.js').writeMessage;
 var lib = require('../index.js');
-var docroot = __dirname + '/RouteStaticFile-data';
 
 function testMessage(serverOptions, message){
 	var server = http.createServer(lib.handleRequest.bind(null, serverOptions));
@@ -14,6 +13,15 @@ describe('RouteStaticFile', function(){
 	describe('interface', function(){
 		it('#listing');
 		it('#watch');
+		it('#name', function(){
+			var route = lib.RouteGenerated('http://example.com/~{user}', {
+				contentType: 'text/plain',
+				generateBody: function(uri, data){
+					return data.user + "\r\n";
+				},
+			});
+			assert.strictEqual(route.name, 'RouteGenerated');
+		});
 	});
 	describe('HTTP tests', function(){
 		var server;
