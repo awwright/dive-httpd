@@ -11,6 +11,33 @@ function testMessage(serverOptions, message){
 }
 
 describe('Negotiate', function(){
+	describe('interface', function(){
+		var route;
+		before(function(){
+			var v1 = lib.RouteGenerated('http://example.com/~{user}', {
+				contentType: 'text/plain',
+				generateBody: function(uri, data){
+					return data.user + "\r\n";
+				},
+			});
+			var v2 = lib.RouteGenerated('http://example.com/~{user}', {
+				contentType: 'text/plain',
+				generateBody: function(uri, data){
+					return data.user + "\r\n";
+				},
+			});
+			route = new lib.Negotiate('http://example.com{/path*}', [
+				v1,
+				v2,
+			]);
+		});
+		it('Negotiate#name');
+		it('Negotiate#prepare');
+		it('Negotiate#watch');
+		it('Negotiate#listing');
+		it('Negotiate#store');
+	});
+
 	describe('Multiple variants', function(){
 		var server;
 		before(function(){

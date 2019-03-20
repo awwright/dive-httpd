@@ -20,7 +20,7 @@ describe('RouteGenerated', function(){
 			});
 			assert.strictEqual(route.name, 'RouteGenerated');
 		});
-		it('RouteGenerated#listing');
+		it('RouteGenerated#prepare');
 		it('RouteGenerated#watch', function(done){
 			var count = 0;
 			return route.watch(function(data, filepath){
@@ -28,6 +28,8 @@ describe('RouteGenerated', function(){
 				if(count===1) return void done();
 			});
 		});
+		it('RouteGenerated#listing');
+		it('RouteGenerated#store');
 	});
 	describe('HTTP tests', function(){
 		var server;

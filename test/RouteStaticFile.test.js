@@ -16,20 +16,23 @@ describe('RouteStaticFile', function(){
 		before(function(){
 			route = new lib.RouteStaticFile(__dirname+'/RouteStaticFile-data', "{/path*}.html", 'text/html');
 		});
-		it('#listing', function(){
-			return route.listing().then(function(listing){
-				// console.log(listing);
-				assert(listing.length);
-				return Promise.resolve();
-			});
-		});
-		it('#watch', function(done){
+		it('RouteStaticFile#name');
+		it('RouteStaticFile#prepare');
+		it('RouteStaticFile#watch', function(done){
 			var count = 0;
 			return route.watch(function(data, filepath){
 				count++;
 				if(count===1) return void done();
 			});
 		});
+		it('RouteStaticFile#listing', function(){
+			return route.listing().then(function(listing){
+				// console.log(listing);
+				assert(listing.length);
+				return Promise.resolve();
+			});
+		});
+		it('RouteStaticFile#store');
 	});
 	describe('static file', function(){
 		var server;

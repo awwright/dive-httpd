@@ -15,7 +15,7 @@ function testMessage(serverOptions, message){
 
 describe('Pipeline', function(){
 	describe('interface', function(){
-		var server;
+		var server, route;
 		beforeEach(function(){
 			server = new lib.HTTPServer;
 			var gen = lib.RouteGenerated('http://example.com/~{user}', {
@@ -24,7 +24,7 @@ describe('Pipeline', function(){
 					return data.user + "\r\n";
 				},
 			});
-			var route = new lib.RoutePipeline({
+			route = new lib.RoutePipeline({
 				routerURITemplate: 'http://example.com/~{user}.json',
 				contentType: 'application/json',
 				outboundTransform: ToJSONTransform,
@@ -33,9 +33,18 @@ describe('Pipeline', function(){
 			server.addRoute(route);
 		});
 		it('RoutePipeline#name', function(){
-			assert.strictEqual(server.routes.routes[0].name.name, 'Pipeline(RouteGenerated,ToJSONTransform)');
+			assert.strictEqual(route.name, 'Pipeline(RouteGenerated,ToJSONTransform)');
 		});
-		it('RoutePipeline#watch');
+		it('RoutePipeline#prepare');
+		it('RoutePipeline#watch', function(done){
+			var count = 0;
+			return route.watch(function(data, filepath){
+				count++;
+				if(count===1) return void done();
+			});
+		});
+		it('RoutePipeline#listing');
+		it('RoutePipeline#store');
 	});
 	describe('Pipeline variants', function(){
 		it('Baseline', function(){
