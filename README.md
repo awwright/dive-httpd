@@ -9,6 +9,7 @@ Attempts to fully implement all the features of HTTP in an easy-to-understand AP
 * Dynamic rendering of resources on local filesystem
 * Automatically computing and sending caching headers
 
+
 ## Features
 
 * Define data sources that map URIs to database resources
@@ -20,6 +21,38 @@ Attempts to fully implement all the features of HTTP in an easy-to-understand AP
 * Render a resource (a pointer provided by a data source) into a response (a document with metadata)
 * Transform a document into a related version (e.g. Markdown into HTML, and plain HTML into themed HTML)
 * Enumerate all the resources that can be rendered by the server, e.g. for generating a static website
+
+
+Dive defines two primary concepts: resources and routes. However, these are defined with very specific definitions, somewhat different than other HTTP frameworks:
+
+### Resources
+
+A resource is an entity identified by a URI, that has a media type and has a body of a string of bytes. There may also be other metadata that describes this resource, like caching information.
+
+A `Resource` instance represents a single snapshot of a resource at a point in time for use in a single HTTP request. A `Resource` instance has the following properties:
+
+* uri
+* render()
+* post()
+* del()
+* patch()
+
+### Routes
+
+A route is an entity that describes a set of resources with a URI Template. The values for the variables in the URI Template can themselves be used to uniquely identifiy the resource within the route.
+
+A `Route` instance provides the following properties:
+
+* routerURITemplate - a URI Template that can generate URIs for all of the resources in its resource set
+* prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
+* listing() - resolves to an array of all of the URI Template values of resources in the set
+* watch(cb) - call the provided callback when any of the resources in the set changes
+
+A route provides a method that can look up a Resource instance given a URI.
+
+This somewhat veries from the typical definition of a "route" in an HTTP framework, and is a more general definition
+
+Resources can technically be in multiple routes, and Resources can be considered to be a singleton route (a route that serves a single resource, itself).
 
 
 ### Transforms
