@@ -42,7 +42,11 @@ describe('RouteGenerated', function(){
 				if(count===1) return void done();
 			});
 		});
-		it('RouteGenerated#listing');
+		it('RouteGenerated#listing', function(){
+			return route.listing().then(function(list){
+				assert(list.length);
+			});
+		});
 		it('RouteGenerated#store');
 	});
 	describe('HTTP tests', function(){
