@@ -16,6 +16,7 @@ describe('RouteGenerated', function(){
 			route = lib.RouteGenerated('http://example.com/~{user}', {
 				contentType: 'text/plain',
 				generateBody: function(uri, data){
+					if(data.user.length < 4) return;
 					return data.user + "\r\n";
 				},
 				list: ['root', 'guest'],
@@ -24,7 +25,16 @@ describe('RouteGenerated', function(){
 		it('RouteGenerated#name', function(){
 			assert.strictEqual(route.name, 'RouteGenerated');
 		});
-		it('RouteGenerated#prepare');
+		it('RouteGenerated#prepare (200)', function(){
+			return route.prepare('http://example.com/~root').then(function(res){
+				assert(res instanceof lib.Resource);
+			});
+		});
+		it('RouteGenerated#prepare (404)', function(){
+			return route.prepare('http://example.com/~foo').then(function(res){
+				assert(!res);
+			});
+		});
 		it('RouteGenerated#watch', function(done){
 			var count = 0;
 			return route.watch(function(data, filepath){
