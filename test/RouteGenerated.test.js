@@ -35,6 +35,21 @@ describe('RouteGenerated', function(){
 				assert(!res);
 			});
 		});
+		it('RouteGenerated#prepare uri', function(){
+			return route.prepare('http://example.com/~root').then(function(res){
+				assert.strictEqual(res.uri, 'http://example.com/~root');
+			});
+		});
+		it('RouteGenerated#prepare data', function(){
+			return route.prepare('http://example.com/~root').then(function(res){
+				assert.strictEqual(res.params.name, 'root');
+			});
+		});
+		it('RouteGenerated#prepare route', function(){
+			return route.prepare('http://example.com/~root').then(function(res){
+				assert.strictEqual(res.route, route);
+			});
+		});
 		it('RouteGenerated#watch', function(done){
 			var count = 0;
 			return route.watch(function(data, filepath){
