@@ -13,7 +13,7 @@ function testMessage(serverOptions, message){
 	return writeMessage(server, message);
 }
 
-describe('Pipeline', function(){
+describe('RoutePipeline', function(){
 	describe('interface', function(){
 		var server, route;
 		beforeEach(function(){

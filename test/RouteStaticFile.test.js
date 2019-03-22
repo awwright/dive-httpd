@@ -15,9 +15,19 @@ describe('RouteStaticFile', function(){
 		var route;
 		beforeEach(function(){
 			route = new lib.RouteStaticFile(__dirname+'/RouteStaticFile-data', "{/path*}.html", 'text/html');
+			route.routerURITemplate = 'http://example.com{/path*}.html';
 		});
 		it('RouteStaticFile#name');
-		it('RouteStaticFile#prepare');
+		it('RouteStaticFile#prepare (200)', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				assert(res instanceof lib.Resource);
+			});
+		});
+		it('RouteStaticFile#prepare (404)', function(){
+			return route.prepare('http://example.com/some-path-that-does-not-exist').then(function(res){
+				assert(!res);
+			});
+		});
 		it('RouteStaticFile#watch', function(done){
 			var count = 0;
 			return route.watch(function(data, filepath){
