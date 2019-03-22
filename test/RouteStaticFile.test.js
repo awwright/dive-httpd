@@ -25,8 +25,13 @@ describe('RouteStaticFile', function(){
 				assert(res instanceof lib.Resource);
 			});
 		});
-		it('RouteStaticFile#prepare (404)', function(){
-			return route.prepare('http://example.com/some-path-that-does-not-exist').then(function(res){
+		it('RouteStaticFile#prepare (no file)', function(){
+			return route.prepare('http://example.com/dne.html').then(function(res){
+				assert(!res);
+			});
+		});
+		it('RouteStaticFile#prepare (no route)', function(){
+			return route.prepare('http://example.com/dne.txt').then(function(res){
 				assert(!res);
 			});
 		});
