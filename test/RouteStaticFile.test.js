@@ -17,7 +17,9 @@ describe('RouteStaticFile', function(){
 			route = new lib.RouteStaticFile(__dirname+'/RouteStaticFile-data', "{/path*}.html", 'text/html');
 			route.routerURITemplate = 'http://example.com{/path*}.html';
 		});
-		it('RouteStaticFile#name');
+		it('RouteStaticFile#name', function(){
+			assert.strictEqual(route.name.substring(0,16), 'RouteStaticFile(');
+		});
 		it('RouteStaticFile#prepare (200)', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert(res instanceof lib.Resource);
