@@ -42,7 +42,7 @@ describe('RouteGenerated', function(){
 		});
 		it('RouteGenerated#prepare params', function(){
 			return route.prepare('http://example.com/~root').then(function(res){
-				assert.strictEqual(res.params.name, 'root');
+				assert.strictEqual(res.params.user, 'root');
 			});
 		});
 		it('RouteGenerated#prepare route', function(){

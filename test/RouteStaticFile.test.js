@@ -47,7 +47,7 @@ describe('RouteStaticFile', function(){
 			});
 		});
 		it('RouteStaticFile#prepare route', function(){
-			return route.prepare('http://example.com/~root').then(function(res){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert.strictEqual(res.route, route);
 			});
 		});
