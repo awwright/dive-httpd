@@ -40,7 +40,7 @@ describe('RouteGenerated', function(){
 				assert.strictEqual(res.uri, 'http://example.com/~root');
 			});
 		});
-		it('RouteGenerated#prepare data', function(){
+		it('RouteGenerated#prepare params', function(){
 			return route.prepare('http://example.com/~root').then(function(res){
 				assert.strictEqual(res.params.name, 'root');
 			});

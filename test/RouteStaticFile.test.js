@@ -40,7 +40,7 @@ describe('RouteStaticFile', function(){
 				assert.strictEqual(res.uri, 'http://example.com/data-table.html');
 			});
 		});
-		it('RouteStaticFile#prepare data', function(){
+		it('RouteStaticFile#prepare params', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert.strictEqual(res.params.path[0], 'data-table');
 				assert.strictEqual(res.params.path.length, 1);
