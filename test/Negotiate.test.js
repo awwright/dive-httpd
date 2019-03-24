@@ -14,24 +14,26 @@ describe('Negotiate', function(){
 	describe('interface', function(){
 		var route;
 		before(function(){
-			var v1 = lib.RouteGenerated('http://example.com/~{user}', {
+			var v1 = lib.RouteGenerated('http://example.com/~{user}.txt', {
 				contentType: 'text/plain',
 				generateBody: function(uri, data){
 					return data.user + "\r\n";
 				},
 			});
-			var v2 = lib.RouteGenerated('http://example.com/~{user}', {
-				contentType: 'text/plain',
+			var v2 = lib.RouteGenerated('http://example.com/~{user}.html', {
+				contentType: 'text/html',
 				generateBody: function(uri, data){
 					return data.user + "\r\n";
 				},
 			});
-			route = new lib.Negotiate('http://example.com{/path*}', [
+			route = new lib.Negotiate('http://example.com/~{user}', [
 				v1,
 				v2,
 			]);
 		});
-		it('Negotiate#name');
+		it('Negotiate#name', function(){
+			assert.strictEqual(route.name, 'Negotiate');
+		});
 		it('Negotiate#prepare');
 		it('Negotiate#watch');
 		it('Negotiate#listing');
