@@ -67,7 +67,6 @@ describe('Negotiate', function(){
 			return testMessage(server, [
 				'GET http://example.com/document HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				// assert(res.toString().match(/Content-Type: text\/html/));
@@ -80,7 +79,6 @@ describe('Negotiate', function(){
 				'GET http://example.com/document HTTP/1.1',
 				'Host: example.com',
 				'Accept: text/html',
-				'Connection: close',
 			]).then(function(res){
 				// console.log(res.toString());
 				assert(res.toString().match(/HTTP\/1.1 200 /));
@@ -94,7 +92,6 @@ describe('Negotiate', function(){
 				'GET http://example.com/document HTTP/1.1',
 				'Host: example.com',
 				'Accept: application/xhtml+xml',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: application\/xhtml\+xml/));
