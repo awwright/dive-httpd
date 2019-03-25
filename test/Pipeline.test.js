@@ -38,12 +38,12 @@ describe('RoutePipeline', function(){
 			assert.strictEqual(route.name, 'Pipeline(RouteGenerated,ToJSONTransform)');
 		});
 		it('RoutePipeline#prepare (200)', function(){
-			return route.prepare('http://example.com/~root').then(function(res){
+			return route.prepare('http://example.com/~root.json').then(function(res){
 				assert(res instanceof lib.Resource);
 			});
 		});
 		it('RoutePipeline#prepare (404)', function(){
-			return route.prepare('http://example.com/~foo').then(function(res){
+			return route.prepare('http://example.com/~foo.json').then(function(res){
 				assert(!res);
 			});
 		});

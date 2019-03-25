@@ -17,24 +17,32 @@ describe('Negotiate', function(){
 			var v1 = lib.RouteGenerated('http://example.com/~{user}.txt', {
 				contentType: 'text/plain',
 				generateBody: function(uri, data){
+					if(data.user.length < 4) return;
 					return data.user + "\r\n";
 				},
 			});
 			var v2 = lib.RouteGenerated('http://example.com/~{user}.html', {
 				contentType: 'text/html',
 				generateBody: function(uri, data){
+					if(data.user.length < 4) return;
 					return data.user + "\r\n";
 				},
 			});
-			route = new lib.Negotiate('http://example.com/~{user}', [
-				v1,
-				v2,
-			]);
+			route = new lib.Negotiate('http://example.com/~{user}', [v1,v2]);
 		});
 		it('Negotiate#name', function(){
 			assert.strictEqual(route.name, 'Negotiate');
 		});
-		it('Negotiate#prepare');
+		it('RoutePipeline#prepare (200)', function(){
+			return route.prepare('http://example.com/~root').then(function(res){
+				assert(res instanceof lib.Resource);
+			});
+		});
+		it('RoutePipeline#prepare (404)', function(){
+			return route.prepare('http://example.com/~foo').then(function(res){
+				assert(!res);
+			});
+		});
 		it('Negotiate#watch');
 		it('Negotiate#listing');
 		it('Negotiate#store');
@@ -44,12 +52,15 @@ describe('Negotiate', function(){
 		var server;
 		before(function(){
 			server = new lib.HTTPServer;
-			var route = lib.Negotiate('http://example.com{/path*}', [
-				lib.RouteStaticFile(docroot, "{/path*}.xhtml", 'application/xhtml+xml', {}),
-				lib.RouteStaticFile(docroot, "{/path*}.html", 'text/html', {}),
-				lib.RouteStaticFile(docroot, "{/path*}.md", 'text/markdown', {}),
-				lib.RouteStaticFile(docroot, "{/path*}.txt", 'text/plain', {}),
-			]);
+			var r0 = lib.RouteStaticFile(docroot, "{/path*}.xhtml", 'application/xhtml+xml', {});
+			r0.routerURITemplate = 'http://example.com{/path*}.xhtml';
+			var r1 = lib.RouteStaticFile(docroot, "{/path*}.html", 'text/html', {});
+			r1.routerURITemplate = 'http://example.com{/path*}.html';
+			var r2 = lib.RouteStaticFile(docroot, "{/path*}.md", 'text/markdown', {});
+			r2.routerURITemplate = 'http://example.com{/path*}.html';
+			var r3 = lib.RouteStaticFile(docroot, "{/path*}.txt", 'text/plain', {});
+			r3.routerURITemplate = 'http://example.com{/path*}.html';
+			var route = lib.Negotiate('http://example.com{/path*}', [r0, r1, r2, r3]);
 			server.addRoute(route);
 		});
 		it('no preference', function(){
