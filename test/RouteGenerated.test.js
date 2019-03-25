@@ -80,7 +80,6 @@ describe('RouteGenerated', function(){
 			return testMessage(server, [
 				'GET /~root HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^root$/m));
@@ -90,7 +89,6 @@ describe('RouteGenerated', function(){
 			return testMessage(server, [
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 404 /));
 			});
@@ -99,7 +97,6 @@ describe('RouteGenerated', function(){
 			return testMessage(server, [
 				'GET http://example.com/~root HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^root$/m));
@@ -109,7 +106,6 @@ describe('RouteGenerated', function(){
 			return testMessage(server, [
 				'GET http://example.com/some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 404 /));
 			});

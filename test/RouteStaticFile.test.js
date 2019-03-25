@@ -79,7 +79,6 @@ describe('RouteStaticFile', function(){
 			return testMessage(server, [
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 			});
@@ -88,7 +87,6 @@ describe('RouteStaticFile', function(){
 			return testMessage(server, [
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 404 /));
 			});
@@ -97,7 +95,6 @@ describe('RouteStaticFile', function(){
 			return testMessage(server, [
 				'GET http://example.com/data-table.html HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 			});
@@ -106,7 +103,6 @@ describe('RouteStaticFile', function(){
 			return testMessage(server, [
 				'GET http://example.com/some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 404 /));
 			});
@@ -115,7 +111,6 @@ describe('RouteStaticFile', function(){
 			return testMessage(server, [
 				'GET http://example.com/../listen.test.js HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 404 /));
 			});

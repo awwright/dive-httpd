@@ -73,6 +73,7 @@ function writeMessage(server, message, body){
 			message.forEach(function(v){
 				sock.clientSide.write(v+'\r\n');
 			});
+			sock.clientSide.write('Connection: close\r\n');
 			sock.clientSide.write('\r\n');
 		}else if(typeof message==='string' || Buffer.isBuffer(message)){
 			sock.clientSide.write(message);

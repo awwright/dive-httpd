@@ -70,7 +70,6 @@ describe('RoutePipeline', function(){
 			testMessage(server, [
 				'GET http://example.com/~root HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^root$/m));
@@ -94,7 +93,6 @@ describe('RoutePipeline', function(){
 			return testMessage(server, [
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^root$/m));
@@ -118,7 +116,6 @@ describe('RoutePipeline', function(){
 			return testMessage(server, [
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^"root\\r\\n"$/m));
@@ -138,7 +135,6 @@ describe('RoutePipeline', function(){
 			return testMessage(server, [
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
-				'Connection: close',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^root$/m));
