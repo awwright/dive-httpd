@@ -14,8 +14,12 @@ describe('RouteStaticFile', function(){
 	describe('interface', function(){
 		var route;
 		beforeEach(function(){
-			route = new lib.RouteStaticFile(__dirname+'/RouteStaticFile-data', "{/path*}.html", 'text/html');
-			route.routerURITemplate = 'http://example.com{/path*}.html';
+			route = new lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.html',
+				contentType: 'text/html',
+				fileroot: __dirname+'/RouteStaticFile-data',
+				pathTemplate: "{/path*}.html",
+			});
 		});
 		it('RouteStaticFile#name', function(){
 			assert.strictEqual(route.name.substring(0,16), 'RouteStaticFile(');
