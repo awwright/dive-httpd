@@ -22,11 +22,34 @@ const serverOptions = require(path.resolve(opts.args[0]));
 const router = serverOptions.routes;
 
 if(opts.listRoutes){
-	console.log('Defined routes:');
-	router.routes.forEach(function(route){
-		console.log('# '+route.name.name, route.template);
-	});
+	var list = [serverOptions];
+	console.log('digraph structs {');
+	console.log('\trankdir = LR;');
+	console.log('\tnode [shape=record];');
+	for(var i=0; i<list.length; i++){
+		var item = list[i];
+		// var label = `{${item.routerURITemplate} | ${item.contentType} | ${item.name}}`;
+		var label = `${(item.name+'').slice(0, 40)} | ${item.routerURITemplate} | ${item.contentType}`.replace(/{/g, '\\{').replace(/}/g, '\\}');
+		console.log(`\te${i} [label="${label}"];`);
+		if(!item.listDependents) continue;
+		item.listDependents().forEach(function(v){
+			var idx = list.indexOf(v);
+			if(idx===-1){
+				idx = list.length;
+				list.push(v);
+			}
+			console.log(`\te${i} -> e${idx};`);
+		});
+	}
+	// console.log('Defined routes:');
+	// router.routes.forEach(function(route){
+	// 	console.log(route.template + '\t' + route.name.name);
+	// });
+	console.log('}');
+	process.exit(0);
+	return;
 }
+
 if(opts.listResources){
 	console.log('Available resources:', serverOptions);
 	Promise.all(router.routes.map(function(r){
