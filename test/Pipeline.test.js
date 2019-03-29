@@ -24,7 +24,7 @@ describe('RoutePipeline', function(){
 					if(data.user.length < 4) return;
 					return data.user + "\r\n";
 				},
-				list: ['root'],
+				list: [ {user:'root'}, {user:'guest'} ],
 			});
 			route = new lib.RoutePipeline({
 				routerURITemplate: 'http://example.com/~{user}.json',
@@ -49,12 +49,20 @@ describe('RoutePipeline', function(){
 		});
 		it('RoutePipeline#watch', function(done){
 			var count = 0;
-			return route.watch(function(data, filepath){
+			route.watch(function(data, filepath){
 				count++;
-				if(count===1) return void done();
+				if(data.user==='guest') return void done();
+				// if(count>=2) assert.fail();
 			});
 		});
-		it('RoutePipeline#listing');
+		it('RoutePipeline#listing', function(){
+			return route.listing().then(function(list){
+				assert.equal(list.length, 2);
+				var values = list.map(function(v){ return v.user; }).sort();
+				assert.equal(values[0], 'guest');
+				assert.equal(values[1], 'root');
+			});
+		});
 		it('RoutePipeline#store');
 	});
 	describe('Pipeline variants', function(){
