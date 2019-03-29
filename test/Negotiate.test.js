@@ -20,6 +20,7 @@ describe('Negotiate', function(){
 					if(data.user.length < 4) return;
 					return data.user + "\r\n";
 				},
+				list: [ {user:'root'}, {user:'guest'} ],
 			});
 			var v2 = lib.RouteGenerated('http://example.com/~{user}.html', {
 				contentType: 'text/html',
@@ -27,24 +28,40 @@ describe('Negotiate', function(){
 					if(data.user.length < 4) return;
 					return data.user + "\r\n";
 				},
+				list: [ {user:'root'}, {user:'guest'} ],
 			});
 			route = new lib.Negotiate('http://example.com/~{user}', [v1,v2]);
 		});
 		it('Negotiate#name', function(){
 			assert.strictEqual(route.name, 'Negotiate');
 		});
-		it('RoutePipeline#prepare (200)', function(){
+		it('Negotiate#prepare (200)', function(){
 			return route.prepare('http://example.com/~root').then(function(res){
 				assert(res instanceof lib.Resource);
 			});
 		});
-		it('RoutePipeline#prepare (404)', function(){
+		it('Negotiate#prepare (404)', function(){
 			return route.prepare('http://example.com/~foo').then(function(res){
 				assert(!res);
 			});
 		});
-		it('Negotiate#watch');
-		it('Negotiate#listing');
+		it('Negotiate#watch', function(done){
+			var count = 0;
+			route.watch(function(data, filepath){
+				count++;
+				if(data.user==='guest') return void done();
+				// if(count>=2) assert.fail();
+			});
+		});
+		it('Negotiate#listing', function(){
+			return route.listing().then(function(list){
+				console.log(list);
+				assert.equal(list.length, 2);
+				var values = list.map(function(v){ return v.user; }).sort();
+				assert.equal(values[0], 'guest');
+				assert.equal(values[1], 'root');
+			});
+		});
 		it('Negotiate#store');
 	});
 
@@ -80,7 +97,6 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: text/html',
 			]).then(function(res){
-				// console.log(res.toString());
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: text\/html/));
 				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
