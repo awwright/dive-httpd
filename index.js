@@ -2,7 +2,7 @@
 module.exports.HTTPServer = require('./lib/http.js').HTTPServer;
 module.exports.handleRequest = require('./lib/http.js').handleRequest;
 module.exports.Negotiate = require('./lib/Negotiate.js').Negotiate;
-module.exports.First = require('./lib/http.js').First;
+module.exports.First = require('./lib/First.js').First;
 module.exports.Processor = require('./lib/http.js').Processor;
 
 module.exports.TemplateRouter = require('uri-template-router');

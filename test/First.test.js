@@ -19,7 +19,6 @@ describe('First', function(){
 			return route.listing().then(function(listing){
 				// console.log(listing);
 				assert(listing.length);
-				return Promise.resolve();
 			});
 		});
 		it('First#store');
