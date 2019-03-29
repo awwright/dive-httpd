@@ -19,7 +19,7 @@ describe('RouteGenerated', function(){
 					if(data.user.length < 4) return;
 					return data.user + "\r\n";
 				},
-				list: ['root', 'guest'],
+				list: [{user:'root'}, {user:'guest'}],
 			});
 		});
 		it('RouteGenerated#name', function(){
@@ -52,14 +52,18 @@ describe('RouteGenerated', function(){
 		});
 		it('RouteGenerated#watch', function(done){
 			var count = 0;
-			return route.watch(function(data, filepath){
+			route.watch(function(data, filepath){
 				count++;
-				if(count===1) return void done();
+				if(data.user==='guest') return void done();
+				// if(count>=2) assert.fail();
 			});
 		});
 		it('RouteGenerated#listing', function(){
 			return route.listing().then(function(list){
-				assert(list.length);
+				assert.equal(list.length, 2);
+				var values = list.map(function(v){ return v.user; }).sort();
+				assert.equal(values[0], 'guest');
+				assert.equal(values[1], 'root');
 			});
 		});
 		it('RouteGenerated#store');
