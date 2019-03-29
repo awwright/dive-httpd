@@ -121,4 +121,31 @@ describe('RouteStaticFile', function(){
 		});
 	});
 
+	describe('static file (with link to file: URI)', function(){
+		var server;
+		before(function(){
+			server = new lib.HTTPServer;
+			var route = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.html',
+				contentType: 'application/xhtml+xml',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.html",
+				filepathLink: true,
+				filepathAuthority: 'localhost',
+				filepathRel: 'tag:awwright.github.io,2019:dive-httpd/source',
+			});
+			server.addRoute(route);
+		});
+		it('static file that exists (origin-form)', function(){
+			return testMessage(server, [
+				'GET /data-table.html HTTP/1.1',
+				'Host: example.com',
+			]).then(function(res){
+				console.log(res.toString());
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert(res.toString().match(/^Link: <file:\/\/[^>]+\/data-table.html>;rel="tag:awwright\.github\.io,2019:dive-httpd\/source"/m));
+			});
+		});
+	});
+
 });
