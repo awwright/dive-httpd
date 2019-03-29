@@ -141,7 +141,6 @@ describe('RouteStaticFile', function(){
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				console.log(res.toString());
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^Link: <file:\/\/[^>]+\/data-table.html>;rel="tag:awwright\.github\.io,2019:dive-httpd\/source"/m));
 			});
