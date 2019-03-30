@@ -58,7 +58,13 @@ describe('First', function(){
 		it('First#listing', function(){
 			return route.listing().then(function(listing){
 				// console.log(listing);
-				assert(listing.length);
+				// We want to see listings for:
+				// - directory/data-table.html
+				// - data-table.html
+				// - document.html
+				// - document.xhtml
+				// TODO it's possible to construct a First route with unreachable documents; test this.
+				assert.equal(listing.length, 4);
 			});
 		});
 		it('First#store');
