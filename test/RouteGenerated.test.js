@@ -28,6 +28,7 @@ describe('RouteGenerated', function(){
 		it('RouteGenerated#prepare (200)', function(){
 			return route.prepare('http://example.com/~root').then(function(res){
 				assert(res instanceof lib.Resource);
+				assert.equal(res.contentType, 'text/plain');
 			});
 		});
 		it('RouteGenerated#prepare (404)', function(){
