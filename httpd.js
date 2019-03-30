@@ -51,16 +51,25 @@ if(opts.listRoutes){
 }
 
 if(opts.listResources){
-	console.log('Available resources:', serverOptions);
-	Promise.all(router.routes.map(function(r){
-		return r.listing();
-	})).then(function(list){
-		//console.log('# '+route.template);
-		//console.log(route.name.constructor);
-		list.forEach(function(rsc){
-			console.log('- '+route.gen(rsc));
+	Promise.all(router.routes.map(function(r, i){
+		if(r.name && r.name.listing){
+			// console.error(r.template);
+			return r.name.listing();
+		}else{
+			console.error('No listing function: ',r);
+			return Promise.resolve([]);
+		}
+	})).then(function(lists){
+		lists.forEach(function(list, i){
+			var route = router.routes[i];
+			console.log('# '+route.template);
+			// console.log(route.name.constructor);
+			list.forEach(function(rsc){
+				console.log(''+route.gen(rsc));
+			});
 		})
 	});
+	return;
 }
 
 var server = http.createServer(handleRequest.bind(null, serverOptions));
