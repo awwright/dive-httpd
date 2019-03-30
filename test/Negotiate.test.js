@@ -69,14 +69,30 @@ describe('Negotiate', function(){
 		var server;
 		before(function(){
 			server = new lib.HTTPServer;
-			var r0 = lib.RouteStaticFile(docroot, "{/path*}.xhtml", 'application/xhtml+xml', {});
-			r0.routerURITemplate = 'http://example.com{/path*}.xhtml';
-			var r1 = lib.RouteStaticFile(docroot, "{/path*}.html", 'text/html', {});
-			r1.routerURITemplate = 'http://example.com{/path*}.html';
-			var r2 = lib.RouteStaticFile(docroot, "{/path*}.md", 'text/markdown', {});
-			r2.routerURITemplate = 'http://example.com{/path*}.html';
-			var r3 = lib.RouteStaticFile(docroot, "{/path*}.txt", 'text/plain', {});
-			r3.routerURITemplate = 'http://example.com{/path*}.html';
+			var r0 = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.xhtml',
+				contentType: 'application/xhtml+xml',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.xhtml",
+			});
+			var r1 = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.html',
+				contentType: 'text/html',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.html",
+			});
+			var r2 = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.md',
+				contentType: 'text/markdown',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.md",
+			});
+			var r3 = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.txt',
+				contentType: 'text/plain',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.txt",
+			});
 			var route = lib.Negotiate('http://example.com{/path*}', [r0, r1, r2, r3]);
 			server.addRoute(route);
 		});
@@ -112,6 +128,31 @@ describe('Negotiate', function(){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: application\/xhtml\+xml/));
 				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
+				// assert(res.toString().match(/Vary: Accept/));
+			});
+		});
+		it('text/markdown preference', function(){
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+				'Accept: text/markdown',
+			]).then(function(res){
+				assert(res.toString().match(/HTTP\/1.1 200 /));
+				assert(res.toString().match(/Content-Type: text\/markdown/));
+				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
+				// assert(res.toString().match(/Vary: Accept/));
+			});
+		});
+		it('text/plain (no document)', function(){
+			// There's no text/plain variant, so expect something else
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+				'Accept: text/plain, text/markdown;q=0.50',
+			]).then(function(res){
+				assert(res.toString().match(/HTTP\/1.1 200 /));
+				assert(res.toString().match(/Content-Type: text\/markdown/));
+				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
 				// assert(res.toString().match(/Vary: Accept/));
 			});
 		});
