@@ -67,7 +67,8 @@ if(opts.listResources){
 			list.forEach(function(rsc){
 				console.log(''+route.gen(rsc));
 			});
-		})
+		});
+		process.exit(0);
 	});
 	return;
 }
