@@ -12,8 +12,7 @@ Attempts to fully implement all the features of HTTP in an easy-to-understand AP
 
 ## Features
 
-* Define data sources that map URIs to database resources
-* Map a URI template to a render function
+* Define routes that map sets of HTTP resources in terms of other data resources
 * Content-negotiate a media type when requesting a data source
 * Store a resource into a data source
 * Enumerate resources hosted at a data source
@@ -22,8 +21,8 @@ Attempts to fully implement all the features of HTTP in an easy-to-understand AP
 * Transform a document into a related version (e.g. Markdown into HTML, and plain HTML into themed HTML)
 * Enumerate all the resources that can be rendered by the server, e.g. for generating a static website
 
-
 Dive defines two primary concepts: resources and routes. However, these are defined with very specific definitions, somewhat different than other HTTP frameworks:
+
 
 ### Resources
 
@@ -32,6 +31,9 @@ A resource is an entity identified by a URI, that has a media type and has a bod
 A `Resource` instance represents a single snapshot of a resource at a point in time for use in a single HTTP request. A `Resource` instance has the following properties:
 
 * uri
+* contentType
+* params
+* route
 * render()
 * post()
 * del()
@@ -58,11 +60,13 @@ Resources can technically be in multiple routes, and Resources can be considered
 
 ## To-do
 
+* define `edgeLabel` property that describes when the route is selected or what transformations are applied on the inner route
+* Specify custom error handling of Not Found and Internal Server Errors
+* Content-Location and Vary header support
 * Responses must encode information on all of the resources used to compute the local content (including database queries, local files, templates, and ideally application revision)
 * Script/stylesheet compression
 * Template systems
 * accept a block of return data
 * Compute caching headers
-* Pass & set metadata like media type, caching, authorization, etc.
 * Persist documents back to their data source
 * `verify` subroutine that asserts configuration options are OK, referenced files exist, ect.
