@@ -33,11 +33,13 @@ describe('First', function(){
 		it('First#prepare (200, data-table.html)', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert(res instanceof lib.Resource);
+				assert.equal(res.contentType, 'text/html');
 			});
 		});
 		it('First#prepare (200, document.xhtml)', function(){
 			return route.prepare('http://example.com/document.xhtml').then(function(res){
 				assert(res instanceof lib.Resource);
+				assert.equal(res.contentType, 'application/xhtml+xml');
 			});
 		});
 		it('First#prepare (404)', function(){
