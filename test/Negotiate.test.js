@@ -55,7 +55,6 @@ describe('Negotiate', function(){
 		});
 		it('Negotiate#listing', function(){
 			return route.listing().then(function(list){
-				console.log(list);
 				assert.equal(list.length, 2);
 				var values = list.map(function(v){ return v.user; }).sort();
 				assert.equal(values[0], 'guest');
