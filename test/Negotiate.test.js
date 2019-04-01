@@ -114,8 +114,8 @@ describe('Negotiate', function(){
 			]).then(function(res){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: text\/html/));
-				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
-				// assert(res.toString().match(/Vary: Accept/));
+				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
+				assert(res.toString().match(/Vary: Accept/));
 			});
 		});
 		it('application/xhtml+xml preference', function(){
@@ -126,8 +126,8 @@ describe('Negotiate', function(){
 			]).then(function(res){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: application\/xhtml\+xml/));
-				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
-				// assert(res.toString().match(/Vary: Accept/));
+				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.xhtml/));
+				assert(res.toString().match(/Vary: Accept/));
 			});
 		});
 		it('text/markdown preference', function(){
@@ -138,8 +138,8 @@ describe('Negotiate', function(){
 			]).then(function(res){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: text\/markdown/));
-				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
-				// assert(res.toString().match(/Vary: Accept/));
+				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
+				assert(res.toString().match(/Vary: Accept/));
 			});
 		});
 		it('text/plain (no document)', function(){
@@ -151,8 +151,8 @@ describe('Negotiate', function(){
 			]).then(function(res){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: text\/markdown/));
-				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
-				// assert(res.toString().match(/Vary: Accept/));
+				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
+				assert(res.toString().match(/Vary: Accept/));
 			});
 		});
 	});
