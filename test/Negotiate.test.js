@@ -1,7 +1,10 @@
 
 var http = require('http');
 var assert = require('assert');
+
 var writeMessage = require('./util.js').writeMessage;
+var ToJSONTransform = require('./util.js').ToJSONTransform;
+
 var lib = require('../index.js');
 var docroot = __dirname + '/RouteStaticFile-data';
 
@@ -65,8 +68,7 @@ describe('Negotiate', function(){
 		});
 		it('Negotiate#store');
 	});
-
-	describe('Multiple variants', function(){
+	describe('Multiple variants (files)', function(){
 		var server;
 		before(function(){
 			server = new lib.HTTPServer;
@@ -154,6 +156,74 @@ describe('Negotiate', function(){
 				assert(res.toString().match(/HTTP\/1.1 200 /));
 				assert(res.toString().match(/Content-Type: text\/markdown/));
 				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
+				assert(res.toString().match(/Vary: Accept/));
+			});
+		});
+	});
+	describe('Multiple variants (pipeline)', function(){
+		var server;
+		before(function(){
+			server = new lib.HTTPServer;
+			var r0 = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.md',
+				contentType: 'text/markdown',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.md",
+			});
+			var r1 = new lib.RoutePipeline({
+				routerURITemplate: 'http://example.com{/path*}.json',
+				contentType: 'application/json',
+				outboundTransform: ToJSONTransform,
+				innerRoute: r0,
+			});
+			var route = lib.Negotiate('http://example.com{/path*}', [r0, r1]);
+			server.addRoute(route);
+		});
+		it('no preference', function(){
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+			]).then(function(res){
+				assert(res.toString().match(/HTTP\/1.1 200 /));
+				// assert(res.toString().match(/Content-Type: text\/html/));
+				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
+				// assert(res.toString().match(/Vary: Accept/));
+			});
+		});
+		it('text/markdown preference', function(){
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+				'Accept: text/markdown',
+			]).then(function(res){
+				assert(res.toString().match(/HTTP\/1.1 200 /));
+				assert(res.toString().match(/Content-Type: text\/markdown/));
+				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
+				assert(res.toString().match(/Vary: Accept/));
+			});
+		});
+		it('application/json preference', function(){
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+				'Accept: application/json',
+			]).then(function(res){
+				assert(res.toString().match(/HTTP\/1.1 200 /));
+				assert(res.toString().match(/Content-Type: application\/json/));
+				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.json/));
+				assert(res.toString().match(/Vary: Accept/));
+			});
+		});
+		it('multiple preference', function(){
+			// There's no text/plain variant, so expect something else
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+				'Accept: text/markdown;q=0.50, application/json',
+			]).then(function(res){
+				assert(res.toString().match(/HTTP\/1.1 200 /));
+				assert(res.toString().match(/Content-Type: application\/json/));
+				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.json/));
 				assert(res.toString().match(/Vary: Accept/));
 			});
 		});
