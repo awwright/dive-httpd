@@ -51,10 +51,14 @@ describe('Negotiate', function(){
 			});
 		});
 		it('Negotiate#watch', function(done){
-			var count = 0;
+			var found = false;
 			route.watch(function(data, filepath){
-				count++;
-				if(data.user==='guest') return void done();
+				if(found) return;
+				if(data.user==='guest'){
+					// this function can be called multiple times and that's perfectly OK
+					found = true;
+					return void done();
+				}
 				// if(count>=2) assert.fail();
 			});
 		});
