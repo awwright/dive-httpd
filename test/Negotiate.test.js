@@ -38,6 +38,8 @@ describe('Negotiate', function(){
 		it('Negotiate#prepare (200)', function(){
 			return route.prepare('http://example.com/~root').then(function(res){
 				assert(res instanceof lib.Resource);
+				// I don't actually know if this should be the URI of the negotiating resource or the selected resource
+				// assert.equal(res.uri, 'http://example.com/~root');
 			});
 		});
 		it('Negotiate#prepare (404)', function(){

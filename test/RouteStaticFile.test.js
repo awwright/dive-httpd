@@ -27,6 +27,7 @@ describe('RouteStaticFile', function(){
 		it('RouteStaticFile#prepare (200)', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert(res instanceof lib.Resource);
+				assert.equal(res.uri, 'http://example.com/data-table.html');
 				assert.equal(res.contentType, 'text/html');
 			});
 		});

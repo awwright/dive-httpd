@@ -40,6 +40,7 @@ describe('RoutePipeline', function(){
 		it('RoutePipeline#prepare (200)', function(){
 			return route.prepare('http://example.com/~root.json').then(function(res){
 				assert(res instanceof lib.Resource);
+				assert.equal(res.uri, 'http://example.com/~root.json');
 				assert.equal(res.contentType, 'application/json');
 			});
 		});
