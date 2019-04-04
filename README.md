@@ -57,16 +57,39 @@ This somewhat veries from the typical definition of a "route" in an HTTP framewo
 
 Resources can technically be in multiple routes, and Resources can be considered to be a singleton route (a route that serves a single resource, itself).
 
+Route by itself is an abstract class, there are three broad subclasses of routes:
+
+
+#### Data source routes
+
+First are data sources, which are the lowest level. They map HTTP resources in terms of other resources, for example a filesystem, or a hard-coded document.
+
+Data sources use the parameters from the parsed URI to lookup values from a data source. For example, a file by its file path, or a database record by its stringified id.
+
+
+#### Transforming routes
+
+Second are transforming routes, which defines a set of resources in terms of a 1:1 mapping onto another set via some function. For example, a template route can produce a set of HTML documents from a set of JSON documents, via an isomorphic mapping.
+
+Transforming routes use the parameters from the parsed URI to fill in the URI template from an underlying set. For example, an HTML template might provide a set of HTML documents at `http://localhost/{file}.html`, the `file` variable will be extracted and filled in to find the equivelant JSON document at `http://localhost/{file}.json`.
+
+
+#### Combination routes
+
+Finally, there are combination routes, which defines a set as a union of multiple sets. For example, the `First` route, and the URI Template router in the HTTPServer.
+
+Combination routes do not read parameters from the parsed URI, though they may still have an associated URI Template that's used by transforming routes.
+
 
 ## To-do
 
 * define `edgeLabel` property that describes when the route is selected or what transformations are applied on the inner route
+* Allow different methods of rendering a resource (to a stream, to a byte array, to a string, or to an arbritrary value).
 * Specify custom error handling of Not Found and Internal Server Errors
-* Content-Location and Vary header support
 * Responses must encode information on all of the resources used to compute the local content (including database queries, local files, templates, and ideally application revision)
 * Script/stylesheet compression
 * Template systems
-* accept a block of return data
 * Compute caching headers
 * Persist documents back to their data source
 * `verify` subroutine that asserts configuration options are OK, referenced files exist, ect.
+* consider different start-up behaviors: Buffer HTTP requests, return 503, or don't listen at all until ready.
