@@ -57,6 +57,27 @@ describe('RouteStaticFile', function(){
 				assert.strictEqual(res.route, route);
 			});
 		});
+		it('RouteStaticFile#prepare renderStream', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				return res.render();
+			}).then(function(buf){
+				assert(buf.pipe);
+			});
+		});
+		it('RouteStaticFile#prepare renderBytes', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				return res.renderBytes();
+			}).then(function(buf){
+				assert.equal(buf.body.length, 565);
+			});
+		});
+		it('RouteStaticFile#prepare renderString', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				return res.renderString();
+			}).then(function(buf){
+				assert.equal(buf.body.length, 563);
+			});
+		});
 		it('RouteStaticFile#watch', function(done){
 			var count = 0;
 			return route.watch(function(data, filepath){

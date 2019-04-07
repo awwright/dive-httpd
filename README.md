@@ -35,9 +35,19 @@ A `Resource` instance represents a single snapshot of a resource at a point in t
 * params
 * route
 * render()
+* renderBytes()
+* renderString()
+* renderValue()
 * post()
 * del()
 * patch()
+
+Resources can have one of several _interfaces_, methods by which data about the resource is exposed.
+
+* Stream - returned by `Resource#render()`
+* bytes (Buffer or UInt8Array) - returned in `Resource#renderBytes().body`
+* string - returned in `Resource#renderString().body`
+* arbitrary value - returned in `Resource#renderValue().value`
 
 
 ### Routes
