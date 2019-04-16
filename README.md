@@ -2,26 +2,18 @@
 
 A prototype HTTP application framework using URI Templates and streams for looking up, rendering, and persisting content from/to a data store.
 
-Attempts to fully implement all the features of HTTP in an easy-to-understand API:
-
-* Content-Type negotiation with Content-Location header
-* Link header
-* Dynamic rendering of resources on local filesystem
-* Automatically computing and sending caching headers
-
 
 ## Features
 
-* Define routes that map sets of HTTP resources in terms of other data resources
-* Content-negotiate a media type when requesting a data source
-* Store a resource into a data source
+* Define routes that map sets of HTTP resources in terms of other data sources
 * Enumerate resources hosted at a data source
-* Link a route to multiple data sources to be checked in sequence
+* Static file generation
+* Content-Type negotiation between different underlying resources, with Content-Location & Vary header
+* Store a resource into a data source
 * Render a resource (a pointer provided by a data source) into a response (a document with metadata)
 * Transform a document into a related version (e.g. Markdown into HTML, and plain HTML into themed HTML)
-* Enumerate all the resources that can be rendered by the server, e.g. for generating a static website
 
-Dive defines two primary concepts: resources and routes. However, these are defined with very specific definitions, somewhat different than other HTTP frameworks:
+To accomplish this, Dive defines two primary concepts: _resources_ and _routes_. However, these have specific definitions, somewhat different than other HTTP frameworks:
 
 
 ### Resources
@@ -65,8 +57,6 @@ A route provides a method that can look up a Resource instance given a URI.
 
 This somewhat veries from the typical definition of a "route" in an HTTP framework, and is a more general definition
 
-Resources can technically be in multiple routes, and Resources can be considered to be a singleton route (a route that serves a single resource, itself).
-
 Route by itself is an abstract class, there are three broad subclasses of routes:
 
 
@@ -86,7 +76,11 @@ Transforming routes use the parameters from the parsed URI to fill in the URI te
 
 #### Combination routes
 
-Finally, there are combination routes, which defines a set as a union of multiple sets. For example, the `First` route, and the URI Template router in the HTTPServer.
+Finally, there are combination routes, which defines a set in terms of multiple other sets. Dive defines several of these:
+
+* `First` looks (in sequence) through an ordered list of sets and returns the first Resource that it finds
+* `HTTPServer` uses a URI Template Router to pick the most specific pattern that matches the input URI
+* `Negotiate` queries all underlying sets for the specified resource and, depending on the HTTP request headers, returns a suitable matching document
 
 Combination routes do not read parameters from the parsed URI, though they may still have an associated URI Template that's used by transforming routes.
 
