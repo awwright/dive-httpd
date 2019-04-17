@@ -74,6 +74,13 @@ Second are transforming routes, which defines a set of resources in terms of a 1
 Transforming routes use the parameters from the parsed URI to fill in the URI template from an underlying set. For example, an HTML template might provide a set of HTML documents at `http://localhost/{file}.html`, the `file` variable will be extracted and filled in to find the equivelant JSON document at `http://localhost/{file}.json`.
 
 
+#### Caching routes
+
+Caching routes are similar to transforming routes, in that they map to a single underlying route. Cache routes try to fill the request from a cache first, forwarding the request to an inner route after a cache miss.
+
+Caching routes copy the uriTemplate of the inner route exactly.
+
+
 #### Combination routes
 
 Finally, there are combination routes, which defines a set in terms of multiple other sets. Dive defines several of these:
