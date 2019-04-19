@@ -52,6 +52,7 @@ A `Route` instance provides the following properties:
 * prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
 * listing() - resolves to an array of all of the URI Template values of resources in the set
 * watch(cb) - call the provided callback when any of the resources in the set changes
+* listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)
 
 A route provides a method that can look up a Resource instance given a URI.
 
