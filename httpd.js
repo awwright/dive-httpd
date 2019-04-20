@@ -30,9 +30,9 @@ if(opts.listRoutes){
 	console.log('\tnode [shape=record];');
 	for(var i=0; i<list.length; i++){
 		var item = list[i];
-		// var label = `{${item.routerURITemplate} | ${item.contentType} | ${item.name}}`;
-		var label = `${(item.name+'').slice(0, 40)} | ${item.routerURITemplate} | ${item.contentType}`.replace(/{/g, '\\{').replace(/}/g, '\\}');
-		console.log(`\te${i} [label="${label}"];`);
+		var label = item.label || item.name || '';
+		var nodeCells = `${(label+'').slice(0, 40)} | ${item.routerURITemplate} | ${item.contentType}`.replace(/{/g, '\\{').replace(/}/g, '\\}');
+		console.log(`\te${i} [label="${nodeCells}"];`);
 		if(!item.listDependents) continue;
 		item.listDependents().forEach(function(v){
 			var idx = list.indexOf(v);
