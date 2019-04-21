@@ -19,7 +19,7 @@
     "accepts": "^1.3.5",
     "chokidar": "^2.1.2",
     "commander": "^2.19.0",
-    "http-transform": "^0.0.4",
+    "http-transform": "^0.0.5",
     "uri-template-router": "^0.0.6"
   },
   "devDependencies": {
