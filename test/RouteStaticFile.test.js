@@ -24,6 +24,9 @@ describe('RouteStaticFile', function(){
 		it('RouteStaticFile#name', function(){
 			assert.strictEqual(route.name.substring(0,16), 'RouteStaticFile(');
 		});
+		it('RouteStaticFile#label', function(){
+			assert.strictEqual(route.label.substring(0,16), 'RouteStaticFile(');
+		});
 		it('RouteStaticFile#prepare (200)', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert(res instanceof lib.Resource);

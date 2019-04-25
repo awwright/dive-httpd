@@ -25,6 +25,9 @@ describe('RouteGenerated', function(){
 		it('RouteGenerated#name', function(){
 			assert.strictEqual(route.name, 'RouteGenerated');
 		});
+		it('RouteGenerated#label', function(){
+			assert.strictEqual(route.label, 'RouteGenerated');
+		});
 		it('RouteGenerated#prepare (200)', function(){
 			return route.prepare('http://example.com/~root').then(function(res){
 				assert(res instanceof lib.Resource);

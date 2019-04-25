@@ -30,6 +30,9 @@ describe('First', function(){
 		it('First#name', function(){
 			assert.strictEqual(route.name.substring(0,5), 'First');
 		});
+		it('First#label', function(){
+			assert.strictEqual(route.label, 'First(3)');
+		});
 		it('First#prepare (200, data-table.html)', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert(res instanceof lib.Resource);
