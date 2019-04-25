@@ -36,7 +36,10 @@ describe('Negotiate', function(){
 			route = new lib.Negotiate('http://example.com/~{user}', [v1,v2]);
 		});
 		it('Negotiate#name', function(){
-			assert.strictEqual(route.name, 'Negotiate');
+			assert.strictEqual(route.name, 'Negotiate(2) [RouteGenerated , RouteGenerated]');
+		});
+		it('Negotiate#label', function(){
+			assert.strictEqual(route.label, 'Negotiate(2)');
 		});
 		it('Negotiate#prepare (200)', function(){
 			return route.prepare('http://example.com/~root').then(function(res){

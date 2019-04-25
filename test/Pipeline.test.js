@@ -35,7 +35,10 @@ describe('RoutePipeline', function(){
 			server.addRoute(route);
 		});
 		it('RoutePipeline#name', function(){
-			assert.strictEqual(route.name, 'Pipeline(RouteGenerated,ToJSONTransform)');
+			assert.strictEqual(route.name, 'RouteGenerated | ToJSONTransform');
+		});
+		it('RoutePipeline#label', function(){
+			assert.strictEqual(route.label, 'RoutePipeline');
 		});
 		it('RoutePipeline#prepare (200)', function(){
 			return route.prepare('http://example.com/~root.json').then(function(res){
