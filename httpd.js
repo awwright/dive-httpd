@@ -76,7 +76,7 @@ if(opts.listResources){
 	return;
 }
 
-var server = http.createServer(handleRequest.bind(null, serverOptions));
+var server = http.createServer(serverOptions.handleRequestFactory());
 server.listen(listenPort);
 console.log('Server running at http://127.0.0.1:' + listenPort + '/');
 

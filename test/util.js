@@ -88,7 +88,7 @@ function writeMessage(server, message, body){
 
 module.exports.testMessage = testMessage;
 function testMessage(serverOptions, message){
-	var server = http.createServer(lib.handleRequest.bind(null, serverOptions));
+	var server = http.createServer(serverOptions.handleRequestFactory());
 	return writeMessage(server, message);
 }
 
