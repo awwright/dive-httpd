@@ -1,6 +1,7 @@
 
 "use strict"
 
+const http = require('http');
 const Duplex = require('stream').Duplex;
 var inherits = require('util').inherits;
 
@@ -83,6 +84,12 @@ function writeMessage(server, message, body){
 		}
 		server.emit('connection', sock.serverSide);
 	});
+}
+
+module.exports.testMessage = testMessage;
+function testMessage(serverOptions, message){
+	var server = http.createServer(lib.handleRequest.bind(null, serverOptions));
+	return writeMessage(server, message);
 }
 
 exports.ToJSONTransform = ToJSONTransform;

@@ -1,14 +1,8 @@
 
-var http = require('http');
 var assert = require('assert');
-var writeMessage = require('./util.js').writeMessage;
+var testMessage = require('./util.js').testMessage;
 var lib = require('../index.js');
 var docroot = __dirname + '/RouteStaticFile-data';
-
-function testMessage(serverOptions, message){
-	var server = http.createServer(lib.handleRequest.bind(null, serverOptions));
-	return writeMessage(server, message);
-}
 
 describe('RouteStaticFile', function(){
 	describe('interface', function(){

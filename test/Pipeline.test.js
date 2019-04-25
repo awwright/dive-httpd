@@ -1,17 +1,11 @@
 
-var http = require('http');
 var assert = require('assert');
 
 var PassThrough = require('http-transform').PassThrough;
 
-var writeMessage = require('./util.js').writeMessage;
+var testMessage = require('./util.js').testMessage;
 var ToJSONTransform = require('./util.js').ToJSONTransform;
 var lib = require('../index.js');
-
-function testMessage(serverOptions, message){
-	var server = http.createServer(lib.handleRequest.bind(null, serverOptions));
-	return writeMessage(server, message);
-}
 
 describe('RoutePipeline', function(){
 	describe('interface', function(){
