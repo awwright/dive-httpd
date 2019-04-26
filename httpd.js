@@ -2,9 +2,6 @@ const http = require('http');
 const path = require('path');
 const opts = require('commander');
 
-const {
-	handleRequest,
-} = require('./index.js');
 global.DiveCore = require('./index.js');
 
 var listenPort = process.env.PORT || 8080;
@@ -49,6 +46,7 @@ if(opts.listRoutes){
 	// 	console.log(route.template + '\t' + route.name.name);
 	// });
 	console.log('}');
+	// FIXME: Don't open hooks in the first place and let the process end by itself, instead of using process.exit
 	process.exit(0);
 	return;
 }
@@ -71,6 +69,7 @@ if(opts.listResources){
 				console.log(''+route.gen(rsc));
 			});
 		});
+		// FIXME: Don't open hooks in the first place and let the process end by itself, instead of using process.exit
 		process.exit(0);
 	});
 	return;

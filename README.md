@@ -53,6 +53,7 @@ A `Route` instance provides the following properties:
 * listing() - resolves to an array of all of the URI Template values of resources in the set
 * watch(cb) - call the provided callback when any of the resources in the set changes
 * listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)
+* error(uri, error) - resolve to a Resource that describes the given `error`, when no Route#resolve call resolved a Resource (usually 404 or a 5xx error)
 
 A route provides a method that can look up a Resource instance given a URI.
 
