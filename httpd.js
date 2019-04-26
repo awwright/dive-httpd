@@ -1,3 +1,6 @@
+
+/* eslint-disable no-console */
+
 const http = require('http');
 const path = require('path');
 const opts = require('commander');
@@ -52,7 +55,7 @@ if(opts.listRoutes){
 }
 
 if(opts.listResources){
-	Promise.all(router.routes.map(function(r, i){
+	Promise.all(router.routes.map(function(r){
 		if(r.name && r.name.listing){
 			// console.error(r.template);
 			return r.name.listing();
