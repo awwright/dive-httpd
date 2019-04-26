@@ -78,9 +78,9 @@ Transforming routes use the parameters from the parsed URI to fill in the URI te
 
 #### Caching routes
 
-Caching routes are similar to transforming routes, in that they map to a single underlying route. Cache routes try to fill the request from a cache first, forwarding the request to an inner route after a cache miss.
+Caching routes try to fill from a data source (the cache) first, forwarding the request to an inner route after a cache miss.
 
-Caching routes copy the uriTemplate of the inner route exactly.
+Caching routes are otherwise transparent, and do not perform any transformations on the data or resource URI; they copy the uriTemplate of the inner route exactly.
 
 
 #### Combination routes
