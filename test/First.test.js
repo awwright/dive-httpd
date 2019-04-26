@@ -52,6 +52,7 @@ describe('First', function(){
 				assert(!res);
 			});
 		});
+		it('First#error');
 		it('First#watch', function(done){
 			var count = 0;
 			route.watch(function(data, filepath){

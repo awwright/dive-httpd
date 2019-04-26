@@ -46,6 +46,7 @@ describe('RoutePipeline', function(){
 				assert(!res);
 			});
 		});
+		it('RoutePipeline#error');
 		it('RoutePipeline#watch', function(done){
 			var count = 0;
 			route.watch(function(data, filepath){

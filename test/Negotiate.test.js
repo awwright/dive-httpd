@@ -47,6 +47,7 @@ describe('Negotiate', function(){
 				assert(!res);
 			});
 		});
+		it('Negotiate#error');
 		it('Negotiate#watch', function(done){
 			var found = false;
 			route.watch(function(data, filepath){

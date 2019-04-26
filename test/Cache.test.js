@@ -25,6 +25,7 @@ describe('Cache', function(){
 		});
 		it('Cache#prepare (200)');
 		it('Cache#prepare (404)');
+		it('Cache#error');
 		it('Cache#watch');
 		it('Cache#listing');
 		it('Cache#store');
