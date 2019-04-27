@@ -48,7 +48,7 @@ A route is an entity that describes a set of resources with a URI Template. The 
 
 A `Route` instance provides the following properties:
 
-* routerURITemplate - a URI Template that can generate URIs for all of the resources in its resource set
+* uriTemplate - a URI Template that can generate URIs for all of the resources in its resource set
 * prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
 * listing() - resolves to an array of all of the URI Template values of resources in the set
 * watch(cb) - call the provided callback when any of the resources in the set changes

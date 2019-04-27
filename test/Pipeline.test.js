@@ -21,7 +21,7 @@ describe('RoutePipeline', function(){
 				list: [ {user:'root'}, {user:'guest'} ],
 			});
 			route = new lib.RoutePipeline({
-				routerURITemplate: 'http://example.com/~{user}.json',
+				uriTemplate: 'http://example.com/~{user}.json',
 				contentType: 'application/json',
 				outboundTransform: ToJSONTransform,
 				innerRoute: gen,
@@ -92,7 +92,7 @@ describe('RoutePipeline', function(){
 				},
 			});
 			var route = new lib.RoutePipeline({
-				routerURITemplate: 'http://example.com/~{user}.json',
+				uriTemplate: 'http://example.com/~{user}.json',
 				contentType: 'text/plain',
 				outboundTransform: PassThrough,
 				innerRoute: gen,
@@ -115,7 +115,7 @@ describe('RoutePipeline', function(){
 				},
 			});
 			var route = new lib.RoutePipeline({
-				routerURITemplate: 'http://example.com/~{user}.json',
+				uriTemplate: 'http://example.com/~{user}.json',
 				contentType: 'application/json',
 				outboundTransform: ToJSONTransform,
 				innerRoute: gen,
@@ -138,7 +138,7 @@ describe('RoutePipeline', function(){
 				},
 			});
 			var route = lib.RoutePipeline(gen, PassThrough);
-			route.routerURITemplate = 'http://example.com/~{user}.json';
+			route.uriTemplate = 'http://example.com/~{user}.json';
 			server.addRoute(route);
 			return testMessage(server, [
 				'GET http://example.com/~root.json HTTP/1.1',

@@ -173,7 +173,7 @@ describe('Negotiate', function(){
 				pathTemplate: "{/path*}.md",
 			});
 			var r1 = new lib.RoutePipeline({
-				routerURITemplate: 'http://example.com{/path*}.json',
+				uriTemplate: 'http://example.com{/path*}.json',
 				contentType: 'application/json',
 				outboundTransform: ToJSONTransform,
 				innerRoute: r0,

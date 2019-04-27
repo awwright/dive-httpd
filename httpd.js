@@ -32,7 +32,7 @@ if(opts.listRoutes){
 		var item = list[i];
 		var label = item.label || item.name || '';
 		var ctLabel = item.contentType || '*/*';
-		var nodeCells = `${(label+'').slice(0, 40)} | ${item.routerURITemplate} | ${ctLabel}`.replace(/{/g, '\\{').replace(/}/g, '\\}');
+		var nodeCells = `${(label+'').slice(0, 40)} | ${item.uriTemplate} | ${ctLabel}`.replace(/{/g, '\\{').replace(/}/g, '\\}');
 		console.log(`\te${i} [label="${nodeCells}"];`);
 		if(!item.listDependents) continue;
 		item.listDependents().forEach(function(v){

@@ -95,8 +95,12 @@ describe('RouteStaticFile', function(){
 		var server;
 		before(function(){
 			server = new lib.HTTPServer;
-			var route = lib.RouteStaticFile(docroot, "{/path*}.html", 'application/xhtml+xml', {});
-			route.routerURITemplate = 'http://example.com{/path*}.html'
+			var route = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.html',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.html",
+				contentType: 'application/xhtml+xml',
+			});
 			server.addRoute(route);
 		});
 		it('static file that exists (origin-form)', function(){
