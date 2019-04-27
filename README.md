@@ -20,13 +20,14 @@ To accomplish this, Dive defines two primary concepts: _resources_ and _routes_.
 
 A resource is an entity identified by a URI, that has a media type and has a body of a string of bytes. There may also be other metadata that describes this resource, like caching information.
 
-A `Resource` instance represents a single snapshot of a resource at a point in time for use in a single HTTP request. A `Resource` instance has the following properties:
+A `Resource` instance represents a single snapshot of a resource at a point in time for use in a single HTTP request. The contents of the resource need not be stored in memory, the resource just has to know it can get at them if necessary. A `Resource` instance has the following properties:
 
 * uri
 * contentType
-* params
-* route
-* render()
+* params - data that can fill into route.uriTemplate to generate the uri
+* route - the innermost route to which this resource belongs
+* methods - array of custom methods this resource recognises
+* render() - stream the contents of this resource
 * renderBytes()
 * renderString()
 * renderValue()
@@ -49,6 +50,7 @@ A route is an entity that describes a set of resources with a URI Template. The 
 A `Route` instance provides the following properties:
 
 * uriTemplate - a URI Template that can generate URIs for all of the resources in its resource set
+* resourceType - The prototype that prepare usually resolves to
 * prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
 * listing() - resolves to an array of all of the URI Template values of resources in the set
 * watch(cb) - call the provided callback when any of the resources in the set changes
