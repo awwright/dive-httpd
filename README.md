@@ -5,13 +5,19 @@ A prototype HTTP application framework using URI Templates and streams for looki
 
 ## Features
 
-* Define routes that map sets of HTTP resources in terms of other data sources
-* Enumerate resources hosted at a data source
-* Static file generation
-* Content-Type negotiation between different underlying resources, with Content-Location & Vary header
-* Store a resource into a data source
-* Render a resource (a pointer provided by a data source) into a response (a document with metadata)
-* Transform a document into a related version (e.g. Markdown into HTML, and plain HTML into themed HTML)
+* Implementation of HTTP Semantics for transport over any HTTP-compatible protocol
+* Suitable for HTML websites, static website generation, and RESTful HTTP APIs
+* Encourages adherance to HTTP specifications, otherwise unopinionated
+* Automatically send correct status codes and response headers
+* Automatically sends:
+	* 404 Not Found
+	* 405 Method Not Allowed
+	* 501 Not Implemented
+	* Allow (list of permitted methods)
+	* Content-Location
+	* Vary
+* Fully routable and negotiable errors, including 404 and 5xx errors
+* Content-Type negotiation
 
 To accomplish this, Dive defines two primary concepts: _resources_ and _routes_. However, these have specific definitions, somewhat different than other HTTP frameworks:
 
@@ -95,16 +101,3 @@ Finally, there are combination routes, which defines a set in terms of multiple 
 
 Combination routes do not read parameters from the parsed URI, though they may still have an associated URI Template that's used by transforming routes.
 
-
-## To-do
-
-* define `edgeLabel` property that describes when the route is selected or what transformations are applied on the inner route
-* Allow different methods of rendering a resource (to a stream, to a byte array, to a string, or to an arbritrary value).
-* Specify custom error handling of Not Found and Internal Server Errors
-* Responses must encode information on all of the resources used to compute the local content (including database queries, local files, templates, and ideally application revision)
-* Script/stylesheet compression
-* Template systems
-* Compute caching headers
-* Persist documents back to their data source
-* `verify` subroutine that asserts configuration options are OK, referenced files exist, ect.
-* consider different start-up behaviors: Buffer HTTP requests, return 503, or don't listen at all until ready.
