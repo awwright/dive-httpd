@@ -52,6 +52,48 @@ describe('First', function(){
 				assert(!res);
 			});
 		});
+		it('First#prepare uri', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				assert.strictEqual(res.uri, 'http://example.com/data-table.html');
+			});
+		});
+		it('First#prepare params', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				assert.strictEqual(res.params.path[0], 'data-table');
+				assert.strictEqual(res.params.path.length, 1);
+			});
+		});
+		it.skip('First#prepare route', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				// TODO determine a value for this
+				// assert.strictEqual(res.route, route);
+			});
+		});
+		it('First#prepare renderStream', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				var stream = res.render();
+				assert(stream.pipe);
+				return stream.headersReady.then(function(){ return stream; });
+			}).then(function(buf){
+				assert.equal(buf.statusCode, 200);
+			});
+		});
+		it('First#prepare renderBytes', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				return res.renderBytes();
+			}).then(function(buf){
+				assert.equal(buf.statusCode, 200);
+				assert.equal(buf.body.length, 565);
+			});
+		});
+		it('First#prepare renderString', function(){
+			return route.prepare('http://example.com/data-table.html').then(function(res){
+				return res.renderString();
+			}).then(function(buf){
+				assert.equal(buf.statusCode, 200);
+				assert.equal(buf.body.length, 563);
+			});
+		});
 		it('First#error');
 		it('First#watch', function(done){
 			var count = 0;

@@ -49,6 +49,15 @@ describe('RouteGenerated', function(){
 				assert.strictEqual(res.route, route);
 			});
 		});
+		it('RouteGenerated#prepare renderStream', function(){
+			return route.prepare('http://example.com/~root').then(function(res){
+				var stream = res.render();
+				assert(stream.pipe);
+				return stream.headersReady.then(function(){ return stream; });
+			}).then(function(buf){
+				assert.equal(buf.statusCode, 200);
+			});
+		});
 		it('RouteGenerated#watch', function(done){
 			var count = 0;
 			route.watch(function(data, filepath){

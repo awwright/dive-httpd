@@ -56,15 +56,18 @@ describe('RouteStaticFile', function(){
 		});
 		it('RouteStaticFile#prepare renderStream', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
-				return res.render();
+				var stream = res.render();
+				assert(stream.pipe);
+				return stream.headersReady.then(function(){ return stream; });
 			}).then(function(buf){
-				assert(buf.pipe);
+				assert.equal(buf.statusCode, 200);
 			});
 		});
 		it('RouteStaticFile#prepare renderBytes', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				return res.renderBytes();
 			}).then(function(buf){
+				assert.equal(buf.statusCode, 200);
 				assert.equal(buf.body.length, 565);
 			});
 		});
@@ -72,6 +75,7 @@ describe('RouteStaticFile', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				return res.renderString();
 			}).then(function(buf){
+				assert.equal(buf.statusCode, 200);
 				assert.equal(buf.body.length, 563);
 			});
 		});
