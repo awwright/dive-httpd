@@ -78,7 +78,8 @@ if(opts.listResources){
 	return;
 }
 
-serverOptions.onError = function handleError(err){
+serverOptions.onError = function handleError(req, err){
+	console.error('Internal Server Error: '+req.method+' '+(req.uri||req.url));
 	console.error(err);
 }
 
