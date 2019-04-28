@@ -17,6 +17,7 @@ A prototype HTTP application framework using URI Templates and streams for looki
 	* Content-Location
 	* Vary
 * Fully routable and negotiable errors, including 404 and 5xx errors
+* Deterministic URI router, not affected by insertion order & better than O(log n) scaling
 * Content-Type negotiation
 
 To accomplish this, Dive defines two primary concepts: _resources_ and _routes_. However, these have specific definitions, somewhat different than other HTTP frameworks:
