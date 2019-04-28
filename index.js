@@ -2,6 +2,7 @@
 module.exports.HTTPServer = require('./lib/http.js').HTTPServer;
 module.exports.handleRequest = require('./lib/http.js').handleRequest;
 module.exports.Cache = require('./lib/Cache.js').Cache;
+module.exports.Gateway = require('./lib/Gateway.js').Gateway;
 module.exports.Negotiate = require('./lib/Negotiate.js').Negotiate;
 module.exports.First = require('./lib/First.js').First;
 
