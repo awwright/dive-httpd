@@ -23,6 +23,8 @@
     "uri-template-router": "^0.0.6"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "eslint": "^5.16.0",
+    "mocha": "^5.2.0",
+    "nyc": "^14.0.0"
   }
 }
