@@ -123,10 +123,10 @@ function URIReflect(uriTemplate, resourceList){
 	this.resourceList = resourceList;
 }
 URIReflect.prototype.prepare = function prepare(uri){
-	var match = this.resourceList ? this.matchUri(uri) : {uri};
-	if(!match) return Promise.resolve();
+	if(this.uriTemplate && !this.matchUri(uri)) return Promise.resolve();
+	if(uri.uri) uri = uri;
 	return Promise.resolve(new lib.StreamResource(this, {}, {
-		uri: uri.uri,
+		uri: uri,
 		contentType: 'text/plain',
 	}));
 }
