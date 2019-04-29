@@ -64,7 +64,9 @@ describe('RoutePipeline', function(){
 			});
 		});
 		it('RoutePipeline#store');
-		it('RoutePipeline#listDependents');
+		it('RoutePipeline#listDependents', function(){
+			assert(route.listDependents().length);
+		});
 	});
 	describe('Pipeline variants', function(){
 		it('Baseline', function(){

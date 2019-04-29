@@ -6,13 +6,19 @@ var lib = require('../../dive-httpd/index.js');
 
 describe('HTTPServer', function(){
 	describe('interface', function(){
+		var route;
+		beforeEach(function(){
+			route = lib.HTTPServer();
+		});
 		it('HTTPServer#label');
 		it('HTTPServer#prepare');
 		it('HTTPServer#error');
 		it('HTTPServer#watch');
 		it('HTTPServer#listing');
 		it('HTTPServer#store');
-		it('HTTPServer#listDependents');
+		it('HTTPServer#listDependents', function(){
+			assert(route.listDependents().length);
+		});
 	});
 	describe('Not Found routing', function(){
 		var app;

@@ -69,7 +69,9 @@ describe('Negotiate', function(){
 			});
 		});
 		it('Negotiate#store');
-		it('Negotiate#listDependents');
+		it('Negotiate#listDependents', function(){
+			assert(route.listDependents().length);
+		});
 	});
 	describe('Multiple variants (files)', function(){
 		var server;

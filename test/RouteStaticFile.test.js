@@ -95,7 +95,9 @@ describe('RouteStaticFile', function(){
 			});
 		});
 		it('RouteStaticFile#store');
-		it('RouteStaticFile#listDependents');
+		it('RouteStaticFile#listDependents', function(){
+			assert(route.listDependents().length);
+		});
 	});
 	describe('static file', function(){
 		var server;

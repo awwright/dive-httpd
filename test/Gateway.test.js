@@ -18,6 +18,8 @@ describe('Gateway', function(){
 		it('Gateway#watch');
 		it('Gateway#listing');
 		it('Gateway#store');
-		it('Gateway#listDependents');
+		it('Gateway#listDependents', function(){
+			assert(route.listDependents().length);
+		});
 	});
 });

@@ -118,6 +118,8 @@ describe('First', function(){
 			});
 		});
 		it('First#store');
-		it('First#listDependents');
+		it('First#listDependents', function(){
+			assert(route.listDependents().length);
+		});
 	});
 });
