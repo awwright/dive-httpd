@@ -79,6 +79,7 @@ describe('RouteStaticFile', function(){
 				assert.equal(buf.body.length, 563);
 			});
 		});
+		it('RouteStaticFile#error');
 		it('RouteStaticFile#watch', function(done){
 			var count = 0;
 			return route.watch(function(data, filepath){

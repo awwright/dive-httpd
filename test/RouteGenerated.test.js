@@ -58,6 +58,7 @@ describe('RouteGenerated', function(){
 				// assert.equal(buf.statusCode, 200);
 			});
 		});
+		it('RouteGenerated#error');
 		it('RouteGenerated#watch', function(done){
 			var count = 0;
 			route.watch(function(data, filepath){

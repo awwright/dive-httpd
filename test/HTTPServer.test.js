@@ -5,6 +5,14 @@ var testMessage = require('../../dive-httpd/test/util.js').testMessage;
 var lib = require('../../dive-httpd/index.js');
 
 describe('HTTPServer', function(){
+	describe('interface', function(){
+		it('HTTPServer#label');
+		it('HTTPServer#prepare');
+		it('HTTPServer#error');
+		it('HTTPServer#watch');
+		it('HTTPServer#listing');
+		it('HTTPServer#store');
+	});
 	describe('Not Found routing', function(){
 		var app;
 		before(function(){
