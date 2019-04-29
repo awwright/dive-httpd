@@ -4,7 +4,7 @@ var stream = require('stream');
 
 var u = require('./util.js');
 
-describe('meta-test for util', function(){
+describe('Meta: util.js', function(){
 	describe('PassThrough works this way in Node.js right?', function(){
 		it('writes are read', function(){
 			var s = new stream.PassThrough();

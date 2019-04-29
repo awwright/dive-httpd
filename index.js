@@ -1,5 +1,6 @@
 
 module.exports.HTTPServer = require('./lib/http.js').HTTPServer;
+module.exports.RouteURITemplate = require('./lib/RouteURITemplate.js').RouteURITemplate;
 module.exports.handleRequest = require('./lib/http.js').handleRequest;
 module.exports.Cache = require('./lib/Cache.js').Cache;
 module.exports.Gateway = require('./lib/Gateway.js').Gateway;
