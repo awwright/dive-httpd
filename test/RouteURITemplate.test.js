@@ -21,6 +21,7 @@ describe('RouteURITemplate', function(){
 		it('RouteURITemplate#watch');
 		it('RouteURITemplate#listing');
 		it('RouteURITemplate#store');
+		it('RouteURITemplate#listDependents');
 		// This route doesn't really need an HTTP interface test,
 		// because HTTPServer and most of the other tests handle it.
 	});

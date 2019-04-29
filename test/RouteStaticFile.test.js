@@ -95,6 +95,7 @@ describe('RouteStaticFile', function(){
 			});
 		});
 		it('RouteStaticFile#store');
+		it('RouteStaticFile#listDependents');
 	});
 	describe('static file', function(){
 		var server;

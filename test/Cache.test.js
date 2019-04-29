@@ -29,5 +29,6 @@ describe('Cache', function(){
 		it('Cache#watch');
 		it('Cache#listing');
 		it('Cache#store');
+		it('Cache#listDependents');
 	});
 });

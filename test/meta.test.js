@@ -8,6 +8,7 @@ describe('Meta: Tests exist', function(){
 		var root = this.test.parent.parent;
 		var methodList = [
 			'label', 'prepare', 'error', 'watch', 'listing', 'store',
+			'listDependents',
 		];
 		var interfaceList = [];
 		for(var k in lib) if(lib[k] && lib[k].prototype && lib[k].prototype instanceof lib.Route) interfaceList.push(k);

@@ -51,6 +51,7 @@ describe('RouteLocalReference', function(){
 		it('RouteLocalReference#watch');
 		it('RouteLocalReference#listing');
 		it('RouteLocalReference#store');
+		it('RouteLocalReference#listDependents');
 	});
 	describe('interface (series)', function(){
 		var route;

@@ -64,6 +64,7 @@ describe('RoutePipeline', function(){
 			});
 		});
 		it('RoutePipeline#store');
+		it('RoutePipeline#listDependents');
 	});
 	describe('Pipeline variants', function(){
 		it('Baseline', function(){

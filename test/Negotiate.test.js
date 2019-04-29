@@ -69,6 +69,7 @@ describe('Negotiate', function(){
 			});
 		});
 		it('Negotiate#store');
+		it('Negotiate#listDependents');
 	});
 	describe('Multiple variants (files)', function(){
 		var server;

@@ -12,6 +12,7 @@ describe('HTTPServer', function(){
 		it('HTTPServer#watch');
 		it('HTTPServer#listing');
 		it('HTTPServer#store');
+		it('HTTPServer#listDependents');
 	});
 	describe('Not Found routing', function(){
 		var app;

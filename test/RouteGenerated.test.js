@@ -76,6 +76,7 @@ describe('RouteGenerated', function(){
 			});
 		});
 		it('RouteGenerated#store');
+		it('RouteGenerated#listDependents');
 	});
 	describe('HTTP tests', function(){
 		var server;
