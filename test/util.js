@@ -6,6 +6,7 @@ const Duplex = require('stream').Duplex;
 var inherits = require('util').inherits;
 
 var ServerResponseTransform = require('http-transform').ServerResponseTransform;
+var PassThrough = require('http-transform').PassThrough;
 
 var lib = require('../index.js');
 
@@ -99,7 +100,7 @@ function ToJSONTransform(){
 	ServerResponseTransform.call(this);
 	this.contentType = 'application/json';
 	this.sourceContents = '';
-};
+}
 ToJSONTransform.prototype.name = 'ToJSONTransform';
 ToJSONTransform.prototype._transformHead = function _transformHead(headers){
 	headers.setHeader('Content-Type', this.contentType);
@@ -114,3 +115,24 @@ ToJSONTransform.prototype._flush = function (callback){
 	self.push(JSON.stringify(this.sourceContents)+"\r\n");
 	callback();
 };
+
+module.exports.URIReflect = URIReflect;
+inherits(URIReflect, lib.Route);
+function URIReflect(uriTemplate, resourceList){
+	this.uriTemplate = uriTemplate;
+	this.resourceList = resourceList;
+}
+URIReflect.prototype.prepare = function prepare(uri){
+	var match = this.resourceList ? this.matchUri(uri) : {uri};
+	if(!match) return Promise.resolve();
+	return Promise.resolve(new lib.StreamResource(this, {}, {
+		uri: uri.uri,
+		contentType: 'text/plain',
+	}));
+}
+URIReflect.prototype.render = function(resource){
+	var res = new PassThrough;
+	res.setHeader('Content-Type', resource.contentType);
+	res.end(resource.uri+'\r\n');
+	return res;
+}

@@ -1,0 +1,55 @@
+
+var assert = require('assert');
+var lib = require('../index.js');
+var URIReflect = require('./util.js').URIReflect;
+
+describe('RouteLocalReference', function(){
+	describe('interface', function(){
+		var route;
+		beforeEach(function(){
+			var src = new URIReflect(null, ['http://localhost/index', 'http://localhost/dir/index']);
+			route = lib.RouteLocalReference('http://localhost{/path*}/', src, 'http://localhost{/path*}/index');
+		});
+		it('RouteLocalReference#name', function(){
+			assert.strictEqual(route.name.substring(0,19), 'RouteLocalReference');
+		});
+		it('RouteLocalReference#label', function(){
+			assert.strictEqual(route.label, 'RouteLocalReference(http://localhost{/path*}/index)');
+		});
+		it('RouteLocalReference#prepare (200)', function(){
+			return route.prepare('http://localhost/').then(function(res){
+				assert(res);
+				assert(res instanceof lib.Resource);
+				assert.equal(res.uri, 'http://localhost/index');
+			});
+		});
+		it('RouteLocalReference#prepare (404)', function(){
+			return route.prepare('http://localhost/index').then(function(res){
+				assert(!res);
+			});
+		});
+		it('RouteLocalReference#prepare uri', function(){
+			return route.prepare('http://localhost/').then(function(res){
+				assert.strictEqual(res.uri, 'http://localhost/index');
+			});
+		});
+		it('RouteLocalReference#prepare renderBytes', function(){
+			return route.prepare('http://localhost/').then(function(res){
+				return res.renderBytes();
+			}).then(function(buf){
+				assert.equal(buf.body, 'http://localhost/index\r\n');
+			});
+		});
+		it('RouteLocalReference#prepare renderString', function(){
+			return route.prepare('http://localhost/').then(function(res){
+				return res.renderString();
+			}).then(function(buf){
+				assert.equal(buf.body, 'http://localhost/index\r\n');
+			});
+		});
+		it('RouteLocalReference#error');
+		it('RouteLocalReference#watch');
+		it('RouteLocalReference#listing');
+		it('RouteLocalReference#store');
+	});
+});
