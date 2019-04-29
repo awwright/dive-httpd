@@ -9,6 +9,7 @@ module.exports = {
 	},
 	"rules": {
 		"indent": [ "error", "tab", { SwitchCase: 1 } ],
+		"strict": ["error", "global"],
 		"no-unused-vars": [ "warn" ],
 		"no-unreachable": [ "error" ],
 		"linebreak-style": [  "error", "unix" ],

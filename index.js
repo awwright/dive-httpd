@@ -1,3 +1,4 @@
+"use strict";
 
 module.exports.HTTPServer = require('./lib/http.js').HTTPServer;
 module.exports.RouteURITemplate = require('./lib/RouteURITemplate.js').RouteURITemplate;
