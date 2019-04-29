@@ -123,8 +123,12 @@ function URIReflect(uriTemplate, resourceList){
 	this.resourceList = resourceList;
 }
 URIReflect.prototype.prepare = function prepare(uri){
+	// If uriTemplate is defined, then only return resources matching that template
 	if(this.uriTemplate && !this.matchUri(uri)) return Promise.resolve();
-	if(uri.uri) uri = uri;
+	// Discard the matched parameters
+	if(uri.uri) uri = uri.uri;
+	// If resourceList is set, then only return resources named in that array
+	if(this.resourceList && this.resourceList.indexOf(uri)<0) return Promise.resolve();
 	return Promise.resolve(new lib.StreamResource(this, {}, {
 		uri: uri,
 		contentType: 'text/plain',

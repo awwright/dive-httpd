@@ -9,14 +9,19 @@ describe('RouteURITemplate', function(){
 		var route;
 		beforeEach(function(){
 			route = lib.RouteURITemplate();
-			route.addRoute(lib.RouteLocalReference('http://localhost/foo', new URIReflect));
+			route.addRoute(new URIReflect('http://localhost/{name}', ['http://localhost/foo']));
 		});
 		it('RouteURITemplate#label', function(){
 			assert.strictEqual(route.label, 'RouteURITemplate(1)');
 		});
-		it('RouteURITemplate#prepare', function(){
+		it('RouteURITemplate#prepare (found)', function(){
 			return route.prepare('http://localhost/foo').then(function(res){
 				assert(res instanceof lib.Resource);
+			});
+		});
+		it('RouteURITemplate#prepare (not found)', function(){
+			return route.prepare('http://localhost/bar').then(function(res){
+				assert(!res);
 			});
 		});
 		it('RouteURITemplate#error');
