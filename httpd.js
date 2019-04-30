@@ -21,7 +21,6 @@ if (opts.args.length !== 1) return void opts.help();
 listenPort = opts.port;
 
 const serverOptions = require(path.resolve(opts.args[0]));
-const router = serverOptions.routes;
 
 if(opts.listRoutes){
 	var list = [serverOptions];
@@ -57,25 +56,11 @@ if(opts.listRoutes){
 }
 
 if(opts.listResources){
-	Promise.all(router.routes.map(function(r){
-		if(r.name && r.name.listing){
-			// console.error(r.template);
-			return r.name.listing();
-		}else{
-			console.error('No listing function: ',r);
-			return Promise.resolve([]);
-		}
-	})).then(function(lists){
-		lists.forEach(function(list, i){
-			var route = router.routes[i];
-			console.log('# '+route.template);
-			// console.log(route.name.constructor);
-			list.forEach(function(rsc){
-				console.log(''+route.gen(rsc));
-			});
+	serverOptions.listing().then(function(list){
+		list.forEach(function(v){
+			if(typeof v==='string') console.log(v);
+			else serverOptions.generateUri(v);
 		});
-		// FIXME: Don't open hooks in the first place and let the process end by itself, instead of using process.exit
-		process.exit(0);
 	});
 	return;
 }
