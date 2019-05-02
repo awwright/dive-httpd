@@ -23,3 +23,7 @@ module.exports.RoutePipeline = require('./lib/RoutePipeline.js').RoutePipeline;
 module.exports.RouteGenerated = require('./lib/RouteGenerated.js').RouteGenerated;
 module.exports.RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
 module.exports.RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
+module.exports.RouteRedirect = require('./lib/RouteRedirect.js').RouteRedirect;
+module.exports.RouteSeeOther = require('./lib/RouteRedirect.js').RouteSeeOther;
+module.exports.RouteTemporaryRedirect = require('./lib/RouteRedirect.js').RouteTemporaryRedirect;
+module.exports.RoutePermanentRedirect = require('./lib/RouteRedirect.js').RoutePermanentRedirect;
