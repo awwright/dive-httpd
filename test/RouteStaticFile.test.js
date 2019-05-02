@@ -98,6 +98,9 @@ describe('RouteStaticFile', function(){
 		it('RouteStaticFile#listDependents', function(){
 			assert(route.listDependents().length);
 		});
+		it('RouteStaticFile#onReady', function(){
+			return route.onReady;
+		});
 	});
 	describe('static file', function(){
 		var server;

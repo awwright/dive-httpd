@@ -72,6 +72,10 @@ serverOptions.onError = function handleError(req, err){
 
 var server = http.createServer(serverOptions.handleRequestFactory());
 server.listen(listenPort);
-console.log('Server running at http://127.0.0.1:' + listenPort + '/');
+
+console.log('Initializing');
+serverOptions.onReady.then(function(){
+	console.log('Server running at http://127.0.0.1:' + listenPort + '/');
+});
 
 //console.log(routes.resolveURI('http://localhost/123.src'));
