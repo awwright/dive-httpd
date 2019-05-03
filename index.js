@@ -27,3 +27,5 @@ module.exports.RouteRedirect = require('./lib/RouteRedirect.js').RouteRedirect;
 module.exports.RouteSeeOther = require('./lib/RouteRedirect.js').RouteSeeOther;
 module.exports.RouteTemporaryRedirect = require('./lib/RouteRedirect.js').RouteTemporaryRedirect;
 module.exports.RoutePermanentRedirect = require('./lib/RouteRedirect.js').RoutePermanentRedirect;
+
+module.exports.Servers = require('./lib/Servers.js').Servers;
