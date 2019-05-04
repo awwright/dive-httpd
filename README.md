@@ -27,20 +27,7 @@ To accomplish this, Dive defines two primary concepts: _resources_ and _routes_.
 
 A resource is an entity identified by a URI, that has a media type and has a body of a string of bytes. There may also be other metadata that describes this resource, like caching information.
 
-A `Resource` instance represents a single snapshot of a resource at a point in time for use in a single HTTP request. The contents of the resource need not be stored in memory, the resource just has to know it can get at them if necessary. A `Resource` instance has the following properties:
-
-* uri
-* contentType
-* params - data that can fill into route.uriTemplate to generate the uri
-* route - the innermost route to which this resource belongs
-* methods - array of custom methods this resource recognises
-* render() - stream the contents of this resource
-* renderBytes()
-* renderString()
-* renderValue()
-* post()
-* del()
-* patch()
+A `Resource` instance represents a single snapshot of a resource at a point in time for use in a single HTTP request. The contents of the resource need not be stored in memory, the resource just has to know it can get at them if necessary.
 
 Resources can have one of several _interfaces_, methods by which data about the resource is exposed.
 
@@ -53,16 +40,6 @@ Resources can have one of several _interfaces_, methods by which data about the 
 ### Routes
 
 A route is an entity that describes a set of resources with a URI Template. The values for the variables in the URI Template can themselves be used to uniquely identifiy the resource within the route.
-
-A `Route` instance provides the following properties:
-
-* uriTemplate - a URI Template that can generate URIs for all of the resources in its resource set
-* resourceType - The prototype that prepare usually resolves to
-* prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
-* listing() - resolves to an array of all of the URI Template values of resources in the set
-* watch(cb) - call the provided callback when any of the resources in the set changes
-* listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)
-* error(uri, error) - resolve to a Resource that describes the given `error`, when no Route#resolve call resolved a Resource (usually 404 or a 5xx error)
 
 A route provides a method that can look up a Resource instance given a URI.
 
@@ -101,4 +78,112 @@ Finally, there are combination routes, which defines a set in terms of multiple 
 * `Negotiate` queries all underlying sets for the specified resource and, depending on the HTTP request headers, returns a suitable matching document
 
 Combination routes do not read parameters from the parsed URI, though they may still have an associated URI Template that's used by transforming routes.
+
+## API
+
+
+
+### Resource
+
+ A `Resource` instance has the following properties:
+
+* uri
+* contentType
+* params - data that can fill into route.uriTemplate to generate the uri
+* route - the innermost route to which this resource belongs
+* methods - array of custom methods this resource recognises
+* render() - stream the contents of this resource
+* renderBytes()
+* renderString()
+* renderValue()
+* post()
+* del()
+* patch()
+
+
+### Route
+
+A `Route` instance provides the following properties:
+
+* uriTemplate - a URI Template that can generate URIs for all of the resources in its resource set
+* resourceType - The prototype that prepare usually resolves to
+* prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
+* listing() - resolves to an array of all of the URI Template values of resources in the set
+* watch(cb) - call the provided callback when any of the resources in the set changes
+* listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)
+* error(uri, error) - resolve to a Resource that describes the given `error`, when no Route#resolve call resolved a Resource (usually 404 or a 5xx error)
+
+
+
+### HTTPServer
+
+Most applications are defined as an HTTPServer. It is a type of Route that implements several features commonly implemented by a Web applicaion:
+
+- Ability to fix host name (i.e. assume a constant value for the Host header)
+- Ability to fix the scheme (i.e. assume `http:`)
+- Creates a downstream URITemplate router by default
+
+
+### RouteURITemplate
+
+* new RouteURITemplate()
+* RouteURITemplate#router - the URITemplateRouter instance
+* RouteURITemplate#addRoute - adds a router (with a `uriTemplate` property) to the list of routes
+
+
+### RouteLocalReference
+
+Change the URI of a resource being routed.
+
+* new RouteLocalReference(uriTemplate, inbound, [targetTemplate])
+
+
+### First
+
+For incoming requests, check several downstream routes in order.
+
+* new First(uriTemplate, routes)
+
+
+### Negotiate
+
+Check several inbound routes and pick the one that best matches the client's Accept header.
+
+* new Negotiate(uriTemplate, routes)
+
+
+### Cache
+
+Cache responses on a filesystem or other database.
+
+* new Cache(inbound, options)
+
+
+### Gateway
+
+Forward an HTTP response over the network.
+
+* new Gateway(options)
+
+
+### RoutePipeline
+
+Transform an HTTP request and/or response, e.g. apply a template.
+
+* new RoutePipeline(options)
+
+
+### RouteGenerated
+
+Generate a response using a function.
+
+* new RouteGenerated(options)
+
+
+### RouteStaticFile
+
+Generate a response from a file.
+
+* new RouteStaticFile(options)
+
 
