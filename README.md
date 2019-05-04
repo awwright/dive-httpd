@@ -115,13 +115,22 @@ A `Route` instance provides the following properties:
 
 
 
-### HTTPServer
+### Application
 
-Most applications are defined as an HTTPServer. It is a type of Route that implements several features commonly implemented by a Web applicaion:
+Most applications are defined inside an Application. It is a type of Route that implements several features commonly implemented by a Web applicaion:
 
 - Ability to fix host name (i.e. assume a constant value for the Host header)
 - Ability to fix the scheme (i.e. assume `http:`)
 - Creates a downstream URITemplate router by default
+
+
+### HTTPServer
+
+HTTPServer is a Listener that translates HTTP 1.x requests into calls to Application.
+
+* new HTTPServer(app, flags, config)
+* HTTPServer#open
+* HTTPServer#close
 
 
 ### RouteURITemplate
