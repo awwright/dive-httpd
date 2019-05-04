@@ -51,7 +51,7 @@ describe('RouteRedirect', function(){
 	describe('HTTP tests', function(){
 		var server;
 		beforeEach(function(){
-			server = new lib.HTTPServer;
+			server = new lib.Application;
 			var route = new lib.RouteRedirect('http://example.com/~{user}', 'http://www.example.com/~{user}', {statusCode: 300});
 			server.addRoute(route);
 		});
@@ -123,7 +123,7 @@ describe('RouteSeeOther', function(){
 	describe('HTTP tests', function(){
 		var server;
 		beforeEach(function(){
-			server = new lib.HTTPServer;
+			server = new lib.Application;
 			var route = new lib.RouteSeeOther('http://example.com/~{user}', 'http://www.example.com/~{user}');
 			server.addRoute(route);
 		});
@@ -195,7 +195,7 @@ describe('RouteTemporaryRedirect', function(){
 	describe('HTTP tests', function(){
 		var server;
 		beforeEach(function(){
-			server = new lib.HTTPServer;
+			server = new lib.Application;
 			var route = new lib.RouteTemporaryRedirect('http://example.com/~{user}', 'http://www.example.com/~{user}');
 			server.addRoute(route);
 		});
@@ -267,7 +267,7 @@ describe('RoutePermanentRedirect', function(){
 	describe('HTTP tests', function(){
 		var server;
 		beforeEach(function(){
-			server = new lib.HTTPServer;
+			server = new lib.Application;
 			var route = new lib.RoutePermanentRedirect('http://example.com/~{user}', 'http://www.example.com/~{user}');
 			server.addRoute(route);
 		});

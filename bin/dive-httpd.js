@@ -145,6 +145,8 @@ app.onError = function handleError(req, err){
 
 if(opts.verbose) console.log('Initializing');
 
+var listeners = {};
+
 var serverObject = configData.server || {};
 Object.keys(serverObject).forEach(function(name){
 	if(name==='app') return;
@@ -155,7 +157,8 @@ Object.keys(serverObject).forEach(function(name){
 	var type = config.type || name.split(':',1)[0];
 	if(opts.verbose) console.log('Initializing '+name);
 	if(!(type in serverTypes)) throw new Error('Unknown server type: '+name);
-	serverTypes[type](app, opts, configData.server[name]).then(function(){
+	listeners[name] = new serverTypes[type](app, opts, configData.server[name]);
+	listeners[name].open().then(function(){
 		if(opts.verbose) console.log('Initialized');
 	});
 });

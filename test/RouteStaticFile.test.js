@@ -105,7 +105,7 @@ describe('RouteStaticFile', function(){
 	describe('static file', function(){
 		var server;
 		before(function(){
-			server = new lib.HTTPServer;
+			server = new lib.Application;
 			var route = lib.RouteStaticFile({
 				uriTemplate: 'http://example.com{/path*}.html',
 				fileroot: docroot,
@@ -159,7 +159,7 @@ describe('RouteStaticFile', function(){
 	describe('static file (with link to file: URI)', function(){
 		var server;
 		before(function(){
-			server = new lib.HTTPServer;
+			server = new lib.Application;
 			var route = lib.RouteStaticFile({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'application/xhtml+xml',

@@ -83,7 +83,7 @@ describe('RouteGenerated', function(){
 	describe('HTTP tests', function(){
 		var server;
 		beforeEach(function(){
-			server = new lib.HTTPServer;
+			server = new lib.Application;
 			var route = lib.RouteGenerated('http://example.com/~{user}', {
 				contentType: 'text/plain',
 				generateBody: function(uri, data){

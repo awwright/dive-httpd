@@ -4,19 +4,19 @@ var assert = require('assert');
 var testMessage = require('../../dive-httpd/test/util.js').testMessage;
 var lib = require('../../dive-httpd/index.js');
 
-describe('HTTPServer', function(){
+describe('Application', function(){
 	describe('interface', function(){
 		var route;
 		beforeEach(function(){
-			route = lib.HTTPServer();
+			route = lib.Application();
 		});
-		it('HTTPServer#label');
-		it('HTTPServer#prepare');
-		it('HTTPServer#error');
-		it('HTTPServer#watch');
-		it('HTTPServer#listing');
-		it('HTTPServer#store');
-		it('HTTPServer#listDependents', function(){
+		it('Application#label');
+		it('Application#prepare');
+		it('Application#error');
+		it('Application#watch');
+		it('Application#listing');
+		it('Application#store');
+		it('Application#listDependents', function(){
 			assert(route.listDependents().length);
 		});
 	});
@@ -24,7 +24,7 @@ describe('HTTPServer', function(){
 		var app;
 		before(function(){
 			const docroot = __dirname + '/RouteStaticFile-data';
-			app = new lib.HTTPServer;
+			app = new lib.Application;
 			app.fixedScheme = 'http';
 			app.fixedAuthority = 'localhost';
 			app.relaxedHost = true;

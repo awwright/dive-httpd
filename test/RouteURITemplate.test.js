@@ -32,7 +32,7 @@ describe('RouteURITemplate', function(){
 			assert(route.listDependents().length);
 		});
 		// This route doesn't really need an HTTP interface test,
-		// because HTTPServer and most of the other tests handle it.
+		// because Application and most of the other tests handle it.
 	});
 	describe('interface (empty)', function(){
 		var route;
@@ -55,6 +55,6 @@ describe('RouteURITemplate', function(){
 			assert.equal(route.listDependents().length, 0);
 		});
 		// This route doesn't really need an HTTP interface test,
-		// because HTTPServer and most of the other tests handle it.
+		// because Application and most of the other tests handle it.
 	});
 });

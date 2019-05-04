@@ -89,7 +89,8 @@ function writeMessage(server, message, body){
 
 module.exports.testMessage = testMessage;
 function testMessage(serverOptions, message){
-	var server = http.createServer(serverOptions.handleRequestFactory());
+	var listener = new lib.HTTPServer(serverOptions);
+	var server = http.createServer(listener.callback());
 	return writeMessage(server, message);
 }
 

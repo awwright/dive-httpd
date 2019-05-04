@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports.HTTPServer = require('./lib/http.js').HTTPServer;
+module.exports.Application = require('./lib/http.js').Application;
 module.exports.RouteURITemplate = require('./lib/RouteURITemplate.js').RouteURITemplate;
 module.exports.handleRequest = require('./lib/http.js').handleRequest;
 module.exports.Cache = require('./lib/Cache.js').Cache;
@@ -29,3 +29,4 @@ module.exports.RouteTemporaryRedirect = require('./lib/RouteRedirect.js').RouteT
 module.exports.RoutePermanentRedirect = require('./lib/RouteRedirect.js').RoutePermanentRedirect;
 
 module.exports.Servers = require('./lib/Servers.js').Servers;
+module.exports.HTTPServer = require('./lib/Servers.js').HTTPServer;
