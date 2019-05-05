@@ -10,6 +10,7 @@ module.exports.First = require('./lib/First.js').First;
 module.exports.TemplateRouter = require('uri-template-router');
 
 module.exports.ServerResponseTransform = require('http-transform').ServerResponseTransform;
+module.exports.MessageHeaders = require('http-transform').Headers;
 module.exports.PassThrough = require('http-transform').PassThrough;
 
 module.exports.Resource = require('./lib/Resource.js').Resource;
