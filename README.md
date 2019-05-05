@@ -101,6 +101,22 @@ Combination routes do not read parameters from the parsed URI, though they may s
 * patch()
 
 
+### StreamResource
+
+A kind of `Resource` that will call Route#render(resource, request) to satisfy a Resource#render(request) call. To use:
+
+1. Implement `Route#prepare(uri)` with a function that resolves to a `StreamResource(this)`
+2. Implement `Route#renderString(resource)` with a function that returns a `ServerResponse` instance.
+
+
+### StringResource
+
+A kind of `Resource` that will call Route#renderString(resource, request) to satisfy a Resource#render(request) call. To use:
+
+1. Implement `Route#prepare(uri)` with a function that resolves to a `StringResource(this)`
+2. Implement `Route#renderString(resource)` with a function that resolves to a `MessageHeaders` instance with a `body` property.
+
+
 ### Route
 
 A `Route` instance provides the following properties:
@@ -112,7 +128,6 @@ A `Route` instance provides the following properties:
 * watch(cb) - call the provided callback when any of the resources in the set changes
 * listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)
 * error(uri, error) - resolve to a Resource that describes the given `error`, when no Route#resolve call resolved a Resource (usually 404 or a 5xx error)
-
 
 
 ### Application
