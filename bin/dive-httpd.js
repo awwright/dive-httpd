@@ -93,7 +93,7 @@ packagesList.forEach(function(name){
 	}
 });
 
-const appValue = opts.app || configData.app;
+const appValue = opts.app || path.resolve(path.dirname(configFilepath), configData.app);
 const app = require(path.resolve(appValue), 'UTF-8');
 
 if(opts.listRoutes){
