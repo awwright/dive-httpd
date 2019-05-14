@@ -1,5 +1,4 @@
 "use strict";
-/* eslint-disable no-console */
 
 const fs = require('fs');
 const path = require('path');
@@ -9,7 +8,7 @@ const dotenv = require('dotenv');
 
 opts.usage('[options] <app.conf>', 'Run an HTTP server with configuration file <app.conf>');
 opts.option('--env <file.env>', 'Import environment variables from <file.env> instead of .env');
-opts.option('--http-port <int>', 'Override port number on first HTTP server');
+opts.option('--http-port <int>', 'Override port number');
 opts.option('--http-addr <iface>', 'Override address to listen to');
 opts.option('--list-resources', 'Enumerate all of the defined routes and exit');
 opts.option('--list-routes', 'Enumerate all of the resources that can be served and exit');
