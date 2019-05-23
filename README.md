@@ -74,14 +74,13 @@ Caching routes are otherwise transparent, and do not perform any transformations
 Finally, there are combination routes, which defines a set in terms of multiple other sets. Dive defines several of these:
 
 * `First` looks (in sequence) through an ordered list of sets and returns the first Resource that it finds
-* `HTTPServer` uses a URI Template Router to pick the most specific pattern that matches the input URI
+* `RouteURITemplate` uses a URI Template router to pick the most specific pattern that matches the input URI
 * `Negotiate` queries all underlying sets for the specified resource and, depending on the HTTP request headers, returns a suitable matching document
 
 Combination routes do not read parameters from the parsed URI, though they may still have an associated URI Template that's used by transforming routes.
 
+
 ## API
-
-
 
 ### Resource
 
@@ -138,10 +137,40 @@ Most applications are defined inside an Application. It is a type of Route that 
 - Ability to fix the scheme (i.e. assume `http:`)
 - Creates a downstream URITemplate router by default
 
+Application uniquely has a `handleRequest` method. This is called by various listeners, after being normalized down to (abstracted into) standard HTTP semantics (RFC7231). This abstraction applies the following to the standard Node.js req/res objects:
+
+- HTTP connection options (any headers listed in the Connection header) are parsed and removed, including:
+	- Chunked encoding, which is exposed as a stream
+- The request-URI, and headers related to it, including
+	- the Host header
+	- HTTP/2 scheme/host/path pesudo-headers
+- The method, which is stored in the "method" property
+- The response status, which is stored in the "statusCode" property
+- The response status message, which is stored in the "statusMessage" property
+- Other HTTP headers, which are listed in a "headers" object
+
+
+### Listener
+
+A Listener opens a server and translates requests and responses between an Application.
+
+* new Listener(app, flags, config)
+	* app - reference to an Application (or any Route)
+	* flags - a list of runtime flags that the Listener can observe (See runtime flags)
+* HTTPServer#open
+* HTTPServer#close
+
+Runtime flags:
+
+* pretend - don't automatically make changes to resources (filesystem, databases, or otherwise), only print output
+* debug - enable features that would be questionable on production systems, such as printing error stacks inside responses
+* watch - hold the process open and react to changing resources
+* readonly - don't modify resources, return error on requests that would result in a server state change
+
 
 ### HTTPServer
 
-HTTPServer is a Listener that translates HTTP 1.x requests into calls to Application.
+HTTPServer is a Listener that translates HTTP requests into calls to Application. HTTPServer is designed to be Internet-facing, and listens on as many protocols as are supported.
 
 * new HTTPServer(app, flags, config)
 * HTTPServer#open
