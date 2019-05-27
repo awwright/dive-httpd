@@ -25,27 +25,23 @@ To accomplish this, Dive defines two primary concepts: _resources_ and _routes_.
 
 ### Resources
 
-A resource is an entity identified by a URI, that has a media type and has a body of a string of bytes. There may also be other metadata that describes this resource, like caching information.
+A resource is an entity identified by a URI, that has a media type and has a body, that exists in a single point in time. There may also be other metadata that describes this resource, like caching information. The contents of the resource need not be stored in memory, the resource just has to know it can get at them if necessary.
 
-A `Resource` instance represents a single snapshot of a resource at a point in time for use in a single HTTP request. The contents of the resource need not be stored in memory, the resource just has to know it can get at them if necessary.
+Resources can expose the body data by one of several methods:
 
-Resources can have one of several _interfaces_, methods by which data about the resource is exposed.
-
-* Stream - returned by `Resource#render()`
-* bytes (Buffer or UInt8Array) - returned in `Resource#renderBytes().body`
+* A Node.js ReadableStream - returned by `Resource#render()`
+* byte array (Buffer or UInt8Array) - returned in `Resource#renderBytes().body`
 * string - returned in `Resource#renderString().body`
-* arbitrary value - returned in `Resource#renderValue().value`
+* an arbitrary value - returned in `Resource#renderValue().value`
 
 
 ### Routes
 
-A route is an entity that describes a set of resources with a URI Template. The values for the variables in the URI Template can themselves be used to uniquely identifiy the resource within the route.
+A route is an entity that describes a set of resources with a URI Template. The set of resources is usually "the set of all resources of a certain media type and profile, that exist under the authority of this server." For example, the set of HTML documents of blog posts published by this server, or the set of JSON documents describing a Git repository on this server.
 
-A route provides a method that can look up a Resource instance given a URI.
+The resource parameters (the values for the variables in the URI Template) uniquely identify a resource within the route. Formally, resources are always looked up by their URI. Internally for performance, resources are also looked up by their parameters.
 
-This somewhat veries from the typical definition of a "route" in an HTTP framework, and is a more general definition
-
-Route by itself is an abstract class, there are three broad subclasses of routes:
+Route by itself is an abstract class, there are several broad subclasses of routes:
 
 
 #### Data source routes
@@ -53,6 +49,10 @@ Route by itself is an abstract class, there are three broad subclasses of routes
 First are data sources, which are the lowest level. They map HTTP resources in terms of other resources, for example a filesystem, or a hard-coded document.
 
 Data sources use the parameters from the parsed URI to lookup values from a data source. For example, a file by its file path, or a database record by its stringified id.
+
+* `Route` accepts a `prepare` option that can be used to define hard-coded sets of resources
+* `RouteRedirect` always returns a 3xx redirect response
+* `RouteStaticFile` looks up a file on the filesystem
 
 
 #### Transforming routes
@@ -67,6 +67,11 @@ Transforming routes use the parameters from the parsed URI to fill in the URI te
 Caching routes try to fill from a data source (the cache) first, forwarding the request to an inner route after a cache miss.
 
 Caching routes are otherwise transparent, and do not perform any transformations on the data or resource URI; they copy the uriTemplate of the inner route exactly.
+
+
+#### Collection index routes
+
+Collection indexes are used to generate a listing of the resources available under a route. They have a single underlying route, but only expose a single resource, an index (and any variations of the index, for example, pagination of that index.)
 
 
 #### Combination routes
@@ -92,12 +97,7 @@ Combination routes do not read parameters from the parsed URI, though they may s
 * route - the innermost route to which this resource belongs
 * methods - array of custom methods this resource recognises
 * render() - stream the contents of this resource
-* renderBytes()
-* renderString()
-* renderValue()
-* post()
-* del()
-* patch()
+* renderString() - resolves to a MessageHeaders object with a `body` property
 
 
 ### StreamResource
