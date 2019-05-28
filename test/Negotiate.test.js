@@ -11,26 +11,59 @@ describe('Negotiate', function(){
 	describe('interface', function(){
 		var route;
 		before(function(){
-			var v1 = lib.RouteGenerated('http://example.com/~{user}.txt', {
+			var list = [ {user:'root'}, {user:'guest'} ];
+			var v1 = lib.Route({
+				uriTemplate: 'http://example.com/~{user}.txt',
+				name: 'Route',
 				contentType: 'text/plain',
-				generateBody: function(uri, data){
-					if(data.user.length < 4) return;
-					return data.user + "\r\n";
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					if(!match.data.user || match.data.user.length < 4){
+						return Promise.resolve();
+					}
+					return Promise.resolve(new lib.StringResource(this, {match}));
 				},
-				list: [ {user:'root'}, {user:'guest'} ],
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
+				},
+				watch: function(cb){
+					list.forEach(cb);
+				},
+				listing: function(cb){
+					return Promise.resolve(list);
+				},
 			});
-			var v2 = lib.RouteGenerated('http://example.com/~{user}.html', {
+			var v2 = lib.Route({
+				uriTemplate: 'http://example.com/~{user}.html',
+				name: 'Route',
 				contentType: 'text/html',
-				generateBody: function(uri, data){
-					if(data.user.length < 4) return;
-					return data.user + "\r\n";
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					if(!match.data.user || match.data.user.length < 4){
+						return Promise.resolve();
+					}
+					return Promise.resolve(new lib.StringResource(this, {match}));
 				},
-				list: [ {user:'root'}, {user:'guest'} ],
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
+				},
+				watch: function(cb){
+					list.forEach(cb);
+				},
+				listing: function(cb){
+					return Promise.resolve(list);
+				},
 			});
 			route = new lib.Negotiate('http://example.com/~{user}', [v1,v2]);
 		});
 		it('Negotiate#name', function(){
-			assert.strictEqual(route.name, 'Negotiate(2) [RouteGenerated , RouteGenerated]');
+			assert.strictEqual(route.name, 'Negotiate(2) [Route , Route]');
 		});
 		it('Negotiate#label', function(){
 			assert.strictEqual(route.label, 'Negotiate(2)');

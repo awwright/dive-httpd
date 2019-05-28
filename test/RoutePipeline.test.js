@@ -12,13 +12,30 @@ describe('RoutePipeline', function(){
 		var server, route;
 		beforeEach(function(){
 			server = new lib.Application;
-			var gen = lib.RouteGenerated('http://example.com/~{user}', {
+			var list = [ {user:'root'}, {user:'guest'} ];
+			var gen = lib.Route({
+				uriTemplate: 'http://example.com/~{user}',
+				name: 'Route',
 				contentType: 'text/plain',
-				generateBody: function(uri, data){
-					if(data.user.length < 4) return;
-					return data.user + "\r\n";
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					if(!match.data.user || match.data.user.length < 4){
+						return Promise.resolve();
+					}
+					return Promise.resolve(new lib.StringResource(this, {match}));
 				},
-				list: [ {user:'root'}, {user:'guest'} ],
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
+				},
+				watch: function(cb){
+					list.forEach(cb);
+				},
+				listing: function(cb){
+					return Promise.resolve(list);
+				},
 			});
 			route = new lib.RoutePipeline({
 				uriTemplate: 'http://example.com/~{user}.json',
@@ -29,7 +46,7 @@ describe('RoutePipeline', function(){
 			server.addRoute(route);
 		});
 		it('RoutePipeline#name', function(){
-			assert.strictEqual(route.name, 'RouteGenerated | ToJSONTransform');
+			assert.strictEqual(route.name, 'Route | ToJSONTransform');
 		});
 		it('RoutePipeline#label', function(){
 			assert.strictEqual(route.label, 'RoutePipeline');
@@ -71,10 +88,19 @@ describe('RoutePipeline', function(){
 	describe('Pipeline variants', function(){
 		it('Baseline', function(){
 			var server = new lib.Application;
-			var route = lib.RouteGenerated('http://example.com/~{user}', {
+			var route = lib.Route({
+				uriTemplate: 'http://example.com/~{user}',
+				name: 'Route',
 				contentType: 'text/plain',
-				generateBody: function(uri, data){
-					return data.user + "\r\n";
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					return Promise.resolve(new lib.StringResource(this, {match}));
+				},
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
 				},
 			});
 			server.addRoute(route);
@@ -88,10 +114,21 @@ describe('RoutePipeline', function(){
 		});
 		it('Base file piped through PassThrough works', function(){
 			var server = new lib.Application;
-			var gen = lib.RouteGenerated('http://example.com/~{user}', {
+			var gen = lib.Route({
+				uriTemplate: 'http://example.com/~{user}',
+				name: 'Route',
 				contentType: 'text/plain',
-				generateBody: function(uri, data){
-					return data.user + "\r\n";
+				prepare: function(uri){
+					console.log('prepare', uri.data);
+					return Promise.resolve(new lib.StringResource(this, {
+						match: this.matchUri(uri),
+					}));
+				},
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
 				},
 			});
 			var route = new lib.RoutePipeline({
@@ -101,20 +138,32 @@ describe('RoutePipeline', function(){
 				innerRoute: gen,
 			});
 			server.addRoute(route);
+			debugger;
 			return testMessage(server, [
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
+				console.log('test');
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^root$/m));
 			});
 		});
 		it('Base file piped through ToJSONTransform works', function(){
 			var server = new lib.Application;
-			var gen = lib.RouteGenerated('http://example.com/~{user}', {
+			var gen = lib.Route({
+				uriTemplate: 'http://example.com/~{user}',
+				name: 'Route',
 				contentType: 'text/plain',
-				generateBody: function(uri, data){
-					return data.user + "\r\n";
+				prepare: function(uri){
+					return Promise.resolve(new lib.StringResource(this, {
+						match: this.matchUri(uri),
+					}));
+				},
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
 				},
 			});
 			var route = new lib.RoutePipeline({
@@ -134,10 +183,19 @@ describe('RoutePipeline', function(){
 		});
 		it('Two-argument style with PassThrough', function(){
 			var server = new lib.Application;
-			var gen = lib.RouteGenerated('http://example.com/~{user}', {
+			var gen = lib.Route({
+				uriTemplate: 'http://example.com/~{user}',
+				name: 'Route',
 				contentType: 'text/plain',
-				generateBody: function(uri, data){
-					return data.user + "\r\n";
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					return Promise.resolve(new lib.StringResource(this, {match}));
+				},
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
 				},
 			});
 			var route = lib.RoutePipeline(gen, PassThrough);

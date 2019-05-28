@@ -20,7 +20,6 @@ module.exports.StringResource = require('./lib/Resource.js').StringResource;
 
 module.exports.Route = require('./lib/Route.js').Route;
 module.exports.RoutePipeline = require('./lib/RoutePipeline.js').RoutePipeline;
-module.exports.RouteGenerated = require('./lib/RouteGenerated.js').RouteGenerated;
 module.exports.RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
 module.exports.RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
 module.exports.RouteRedirect = require('./lib/RouteRedirect.js').RouteRedirect;

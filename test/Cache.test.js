@@ -7,18 +7,30 @@ describe('Cache', function(){
 	describe('interface', function(){
 		var route;
 		before(function(){
-			var source = lib.RouteGenerated('http://example.com/~{user}.txt', {
+			var source = lib.Route({
+				name: 'Route',
+				uriTemplate: 'http://example.com/~{user}.txt',
 				contentType: 'text/plain',
-				generateBody: function(uri, data){
-					if(data.user.length < 4) return;
-					return data.user + "\r\n";
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					if(!match.data.user || match.data.user.length < 4){
+						return Promise.resolve();
+					}
+					return Promise.resolve(new lib.StringResource(this, {
+						match: match,
+					}));
 				},
-				list: [ {user:'root'}, {user:'guest'} ],
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
+				}
 			});
 			route = new lib.Cache('http://example.com/~{user}', source);
 		});
 		it('Cache#name', function(){
-			assert.strictEqual(route.name, 'RouteGenerated | Cache');
+			assert.strictEqual(route.name, 'Route | Cache');
 		});
 		it('Cache#label', function(){
 			assert.strictEqual(route.label, 'Cache');
