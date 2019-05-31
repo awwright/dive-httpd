@@ -109,6 +109,7 @@ The `req` parameter (used in the render and renderString functions) is similar t
 * `method` - the HTTP method being called
 * `uri` - the full, absolute URI being requested (absolute meaning "no fragment")
 * `headers` - map of headers, pseudo-headers and hop-by-hop headers removed
+* `rawHeaders` - Array, alternating name and value of each header
 
 
 ### StreamResource
