@@ -10,6 +10,7 @@ A prototype HTTP application framework using URI Templates and streams for looki
 * Encourages adherance to HTTP specifications, otherwise unopinionated
 * Automatically send correct status codes and response headers
 * Automatically sends:
+	* 304 Not Modified
 	* 404 Not Found
 	* 405 Method Not Allowed
 	* 501 Not Implemented
@@ -73,6 +74,8 @@ Caching routes are otherwise transparent, and do not perform any transformations
 
 Collection indexes are used to generate a listing of the resources available under a route. They have a single underlying route, but only expose a single resource, an index (and any variations of the index, for example, pagination of that index.)
 
+Examples of collection indexes include blog archives, file listings, sitemaps, and Atom/RSS feeds.
+
 
 #### Combination routes
 
@@ -91,10 +94,12 @@ Combination routes do not read parameters from the parsed URI, though they may s
 
  A `Resource` instance has the following properties:
 
-* uri
-* contentType
-* params - data that can fill into route.uriTemplate to generate the uri
-* route - the innermost route to which this resource belongs
+* route - the Route to which this resource belongs
+* uri - the URI of this representation
+* params - data that can fill into route.uriTemplate to generate the URI
+* contentType - the media type
+* etag - the entity tag
+* lastModified - the Last-Modified date
 * methods - array of custom methods this resource recognises
 * render() - stream the contents of this resource
 * renderString() - resolves to a MessageHeaders object with a `body` property
@@ -224,13 +229,6 @@ Forward an HTTP response over the network.
 Transform an HTTP request and/or response, e.g. apply a template.
 
 * new RoutePipeline(options)
-
-
-### RouteGenerated
-
-Generate a response using a function.
-
-* new RouteGenerated(options)
 
 
 ### RouteStaticFile
