@@ -7,7 +7,7 @@ A prototype HTTP application framework using URI Templates and streams for looki
 
 * Implementation of HTTP Semantics for transport over any HTTP-compatible protocol
 * Suitable for HTML websites, static website generation, and RESTful HTTP APIs
-* Encourages adherance to HTTP specifications, otherwise unopinionated
+* Encourages adherence to HTTP specifications, otherwise unopinionated
 * Automatically send correct status codes and response headers
 * Automatically sends:
 	* 304 Not Modified
@@ -60,7 +60,7 @@ Data sources use the parameters from the parsed URI to lookup values from a data
 
 Second are transforming routes, which defines a set of resources in terms of a 1:1 mapping onto another set via some function. For example, a template route can produce a set of HTML documents from a set of JSON documents, via an isomorphic mapping.
 
-Transforming routes use the parameters from the parsed URI to fill in the URI template from an underlying set. For example, an HTML template might provide a set of HTML documents at `http://localhost/{file}.html`, the `file` variable will be extracted and filled in to find the equivelant JSON document at `http://localhost/{file}.json`.
+Transforming routes use the parameters from the parsed URI to fill in the URI template from an underlying set. For example, an HTML template might provide a set of HTML documents at `http://localhost/{file}.html`, the `file` variable will be extracted and filled in to find the equivalent JSON document at `http://localhost/{file}.json`.
 
 
 #### Caching routes
@@ -100,9 +100,15 @@ Combination routes do not read parameters from the parsed URI, though they may s
 * contentType - the media type
 * etag - the entity tag
 * lastModified - the Last-Modified date
-* methods - array of custom methods this resource recognises
-* render() - stream the contents of this resource
-* renderString() - resolves to a MessageHeaders object with a `body` property
+* methods - array of custom methods this resource recognizes
+* render(req) - stream the contents of this resource
+* renderString(req) - resolves to a MessageHeaders object with a `body` property
+
+The `req` parameter (used in the render and renderString functions) is similar to IncomingMessage, and uses the following properties:
+
+* `method` - the HTTP method being called
+* `uri` - the full, absolute URI being requested (absolute meaning "no fragment")
+* `headers` - map of headers, pseudo-headers and hop-by-hop headers removed
 
 
 ### StreamResource
@@ -136,7 +142,7 @@ A `Route` instance provides the following properties:
 
 ### Application
 
-Most applications are defined inside an Application. It is a type of Route that implements several features commonly implemented by a Web applicaion:
+Most applications are defined inside an Application. It is a type of Route that implements several features commonly implemented by a Web application:
 
 - Ability to fix host name (i.e. assume a constant value for the Host header)
 - Ability to fix the scheme (i.e. assume `http:`)
@@ -148,7 +154,7 @@ Application uniquely has a `handleRequest` method. This is called by various lis
 	- Chunked encoding, which is exposed as a stream
 - The request-URI, and headers related to it, including
 	- the Host header
-	- HTTP/2 scheme/host/path pesudo-headers
+	- HTTP/2 scheme/host/path pseudo-headers
 - The method, which is stored in the "method" property
 - The response status, which is stored in the "statusCode" property
 - The response status message, which is stored in the "statusMessage" property
