@@ -95,14 +95,16 @@ describe('First', function(){
 			});
 		});
 		it('First#error');
-		it('First#watch', function(done){
+		it('First#watch', function(){
 			var count = 0;
-			route.watch(function(data, filepath){
+			var filePaths = {};
+			function handleEvent(data, filepath){
 				count++;
-				if(data.path && data.path.length===2 && data.path[0]==='directory' && data.path[1]==='data-table'){
-					return void done();
-				}
-				// if(count>=2) assert.fail();
+				filePaths[data.path.join('/')] = null;
+			}
+			return route.watch(handleEvent).then(function(){
+				// Adjust this as new files are added
+				assert.equal(Object.keys(filePaths).length, 4);
 			});
 		});
 		it('First#listing', function(){

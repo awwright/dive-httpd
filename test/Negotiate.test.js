@@ -81,16 +81,14 @@ describe('Negotiate', function(){
 			});
 		});
 		it('Negotiate#error');
-		it('Negotiate#watch', function(done){
-			var found = false;
-			route.watch(function(data, filepath){
-				if(found) return;
-				if(data.user==='guest'){
-					// this function can be called multiple times and that's perfectly OK
-					found = true;
-					return void done();
-				}
-				// if(count>=2) assert.fail();
+		it('Negotiate#watch', function(){
+			var filePaths = {};
+			function handleEvent(data, filepath){
+				filePaths[data.user] = null;
+			}
+			return route.watch(handleEvent).then(function(){
+				// Adjust this as new files are added
+				assert.equal(Object.keys(filePaths).length, 2);
 			});
 		});
 		it('Negotiate#listing', function(){

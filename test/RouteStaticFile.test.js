@@ -80,11 +80,17 @@ describe('RouteStaticFile', function(){
 			});
 		});
 		it('RouteStaticFile#error');
-		it('RouteStaticFile#watch', function(done){
+		it('RouteStaticFile#watch', function(){
 			var count = 0;
-			return route.watch(function(data, filepath){
+			var filePaths = {};
+			function handleEvent(data, filepath){
 				count++;
-				if(count===1) return void done();
+				filePaths[data.path.join('/')] = null;
+			}
+			return route.watch(handleEvent).then(function(){
+				// Adjust this as new files are added
+				assert.equal(count, 3);
+				assert.equal(Object.keys(filePaths).length, 3);
 			});
 		});
 		it('RouteStaticFile#listing', function(){
