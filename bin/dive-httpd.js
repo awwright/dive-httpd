@@ -7,6 +7,7 @@ const iniparse = require('ini');
 const dotenv = require('dotenv');
 
 opts.usage('[options] <app.conf>', 'Run an HTTP server with configuration file <app.conf>');
+opts.option('--app <app.js>', 'Import from listed app.js file');
 opts.option('--env <file.env>', 'Import environment variables from <file.env> instead of .env');
 opts.option('--http-port <int>', 'Override port number');
 opts.option('--http-addr <iface>', 'Override address to listen to');
@@ -15,7 +16,8 @@ opts.option('--list-routes', 'Enumerate all of the resources that can be served 
 opts.option('--verbose', 'Output a lot of logs');
 opts.option('--pretend', 'Only show operations, stop short of writing or making modifications');
 opts.parse(process.argv);
-if (opts.args.length !== 1) return void opts.help();
+
+if(!opts.app && opts.args.length !== 1) return void opts.help();
 
 /*
 ; an app.conf file looks a little something like this:
@@ -50,10 +52,23 @@ fixedHost = example.com
 
 */
 
-const configFilepath = path.resolve(opts.args[0]);
-const configDirpath = path.dirname(configFilepath);
-const configContent = fs.readFileSync(configFilepath, 'UTF-8');
-const configData = iniparse.parse(configContent);
+if(opts.args[0]){
+	var configFilepath = path.resolve(opts.args[0]);
+	var configDirpath = path.dirname(configFilepath);
+	var configContent = fs.readFileSync(configFilepath, 'UTF-8');
+	var configData = iniparse.parse(configContent);
+}else{
+	var configData = {
+		app: opts.app,
+		server: {
+			http: {
+				port: 8080,
+				fixedScheme: 'http',
+				fixedHost: '',
+			},
+		},
+	};
+}
 
 if(opts.verbose){
 	console.log(configFilepath+':');
