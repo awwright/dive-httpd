@@ -21,6 +21,7 @@ module.exports.StringResource = require('./lib/Resource.js').StringResource;
 module.exports.Route = require('./lib/Route.js').Route;
 module.exports.RoutePipeline = require('./lib/RoutePipeline.js').RoutePipeline;
 module.exports.RouteStaticFile = require('./lib/RouteStaticFile.js').RouteStaticFile;
+module.exports.RouteFilesystem = require('./lib/RouteStaticFile.js').RouteStaticFile; // maybe change the name in the future
 module.exports.RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
 module.exports.RouteRedirect = require('./lib/RouteRedirect.js').RouteRedirect;
 module.exports.RouteSeeOther = require('./lib/RouteRedirect.js').RouteSeeOther;
