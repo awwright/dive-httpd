@@ -28,7 +28,7 @@ To accomplish this, Dive defines two primary concepts: _resources_ and _routes_.
 
 A resource is an entity identified by a URI, that has a media type and has a body, that exists in a single point in time. There may also be other metadata that describes this resource, like caching information. The contents of the resource need not be stored in memory, the resource just has to know it can get at them if necessary.
 
-Resources can expose the body data by one of several methods:
+Resources render representations by one of several methods:
 
 * A Node.js ReadableStream - returned by `Resource#render()`
 * byte array (Buffer or UInt8Array) - returned in `Resource#renderBytes().body`
