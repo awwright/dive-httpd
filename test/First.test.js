@@ -96,11 +96,9 @@ describe('First', function(){
 		});
 		it('First#error');
 		it('First#watch', function(){
-			var count = 0;
 			var filePaths = {};
-			function handleEvent(data, filepath){
-				count++;
-				filePaths[data.path.join('/')] = null;
+			function handleEvent(resource){
+				filePaths[resource.uri] = null;
 			}
 			return route.watch(handleEvent).then(function(){
 				// Adjust this as new files are added

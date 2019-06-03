@@ -11,17 +11,24 @@ describe('Negotiate', function(){
 	describe('interface', function(){
 		var route;
 		before(function(){
-			var list = [ {user:'root'}, {user:'guest'} ];
-			var v1 = lib.Route({
-				uriTemplate: 'http://example.com/~{user}.txt',
+			var list = ['root', 'guest'];
+			var v_base = lib.Route({
+				uriTemplate: 'http://example.com/~{user}.json',
 				name: 'Route',
 				contentType: 'text/plain',
 				prepare: function(uri){
 					var match = this.matchUri(uri);
-					if(!match.data.user || match.data.user.length < 4){
+					assert(match.uri.indexOf('.json') >= 0);
+					assert(match.uri.indexOf('.txt') < 0);
+					assert(match.uri.indexOf('.html') < 0);
+					assert(match.data.user.indexOf('.json') < 0);
+					assert(match.data.user.indexOf('.txt') < 0);
+					assert(match.data.user.indexOf('.html') < 0);
+					if(match && match.data.user && match.data.user.length>=4){
+						return Promise.resolve(new lib.StringResource(this, {match}));
+					}else{
 						return Promise.resolve();
 					}
-					return Promise.resolve(new lib.StringResource(this, {match}));
 				},
 				renderString: function(resource){
 					var res = new lib.MessageHeaders;
@@ -30,22 +37,119 @@ describe('Negotiate', function(){
 					return Promise.resolve(res);
 				},
 				watch: function(cb){
-					list.forEach(cb);
+					var self = this;
+					function emitUpdate(){
+						self.listing().then(function(list){
+							list.forEach(function(resource){
+								assert(resource.uri.indexOf('.json') >= 0);
+								assert(resource.uri.indexOf('.txt') < 0);
+								assert(resource.uri.indexOf('.html') < 0);
+								assert(resource.params.user.indexOf('.json') < 0);
+								assert(resource.params.user.indexOf('.txt') < 0);
+								assert(resource.params.user.indexOf('.html') < 0);
+								self.watchers.forEach(function(cb){ cb(resource, resource); });
+							});
+						});
+					}
+					if(this.watchers){
+						this.watchers.push(cb);
+					}else{
+						this.watchers = [cb];
+						process.nextTick(emitUpdate);
+					}
 				},
-				listing: function(cb){
-					return Promise.resolve(list);
+				listing: function(){
+					var self = this;
+					return Promise.all(list.map(function(v){
+						return self.prepare(`http://example.com/~${v}.json`);
+					}));
 				},
 			});
-			var v2 = lib.Route({
+			var v_txt = lib.Route({
+				uriTemplate: 'http://example.com/~{user}.txt',
+				name: 'Route',
+				contentType: 'text/plain',
+				prepare: function(uri){
+					var self = this;
+					var match = this.matchUri(uri);
+					if(!match) return Promise.resolve();
+					assert(match.uri.indexOf('.json') < 0);
+					assert(match.uri.indexOf('.txt') >= 0);
+					assert(match.uri.indexOf('.html') < 0);
+					assert(match.data.user.indexOf('.json') < 0);
+					assert(match.data.user.indexOf('.txt') < 0);
+					assert(match.data.user.indexOf('.html') < 0);
+					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
+						if(!inner) return;
+						return new lib.StringResource(self, {match, inner});
+					});
+				},
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = resource.params.user + "\r\n";
+					return Promise.resolve(res);
+				},
+				watch: function(cb){
+					var self = this;
+					return v_base.watch(function onUpdate(inner, ancestor){
+						assert(inner.uri.indexOf('.json') >= 0);
+						assert(inner.uri.indexOf('.txt') < 0);
+						assert(inner.uri.indexOf('.html') < 0);
+						assert(inner.params.user.indexOf('.json') < 0);
+						assert(inner.params.user.indexOf('.txt') < 0);
+						assert(inner.params.user.indexOf('.html') < 0);
+						var match = inner.match.rewrite(self.uriTemplate);
+						assert(match.uri.indexOf('.json') < 0);
+						assert(match.uri.indexOf('.txt') >= 0);
+						assert(match.uri.indexOf('.html') < 0);
+						assert(match.data.user.indexOf('.json') < 0);
+						assert(match.data.user.indexOf('.txt') < 0);
+						assert(match.data.user.indexOf('.html') < 0);
+						var rsc = new lib.StringResource(self, {match, inner});
+						cb(rsc, ancestor);
+					});
+				},
+				listing: function(){
+					var self = this;
+					return v_base.listing().then(function(list){
+						return Promise.resolve(list.map(function(inner){
+							assert(inner.uri.indexOf('.json') >= 0);
+							assert(inner.uri.indexOf('.txt') < 0);
+							assert(inner.uri.indexOf('.html') < 0);
+							assert(inner.params.user.indexOf('.json') < 0);
+							assert(inner.params.user.indexOf('.txt') < 0);
+							assert(inner.params.user.indexOf('.html') < 0);
+							var match = inner.match.rewrite(self.uriTemplate);
+							assert(match.uri.indexOf('.json') < 0);
+							assert(match.uri.indexOf('.txt') >= 0);
+							assert(match.uri.indexOf('.html') < 0);
+							assert(match.data.user.indexOf('.json') < 0);
+							assert(match.data.user.indexOf('.txt') < 0);
+							assert(match.data.user.indexOf('.html') < 0);
+							return new lib.StringResource(self, {match, inner});
+						}));
+					});
+				},
+			});
+			var v_html = lib.Route({
 				uriTemplate: 'http://example.com/~{user}.html',
 				name: 'Route',
 				contentType: 'text/html',
 				prepare: function(uri){
+					var self = this;
 					var match = this.matchUri(uri);
-					if(!match.data.user || match.data.user.length < 4){
-						return Promise.resolve();
-					}
-					return Promise.resolve(new lib.StringResource(this, {match}));
+					if(!match) return Promise.resolve();
+					assert(match.uri.indexOf('.json') < 0);
+					assert(match.uri.indexOf('.txt') < 0);
+					assert(match.uri.indexOf('.html') >= 0);
+					assert(match.data.user.indexOf('.json') < 0);
+					assert(match.data.user.indexOf('.txt') < 0);
+					assert(match.data.user.indexOf('.html') < 0);
+					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
+						if(!inner) return;
+						return new lib.StringResource(self, {match, inner});
+					});
 				},
 				renderString: function(resource){
 					var res = new lib.MessageHeaders;
@@ -54,13 +158,48 @@ describe('Negotiate', function(){
 					return Promise.resolve(res);
 				},
 				watch: function(cb){
-					list.forEach(cb);
+					var self = this;
+					return v_base.watch(function onUpdate(inner, ancestor){
+						assert(inner.uri.indexOf('.json') >= 0);
+						assert(inner.uri.indexOf('.txt') < 0);
+						assert(inner.uri.indexOf('.html') < 0);
+						assert(inner.params.user.indexOf('.json') < 0);
+						assert(inner.params.user.indexOf('.txt') < 0);
+						assert(inner.params.user.indexOf('.html') < 0);
+						var match = inner.match.rewrite(self.uriTemplate);
+						assert(match.uri.indexOf('.json') < 0);
+						assert(match.uri.indexOf('.txt') < 0);
+						assert(match.uri.indexOf('.html') >= 0);
+						assert(match.data.user.indexOf('.json') < 0);
+						assert(match.data.user.indexOf('.txt') < 0);
+						assert(match.data.user.indexOf('.html') < 0);
+						var rsc = new lib.StringResource(self, {match, inner});
+						cb(rsc, ancestor);
+					});
 				},
-				listing: function(cb){
-					return Promise.resolve(list);
+				listing: function(){
+					var self = this;
+					return v_base.listing().then(function(list){
+						return Promise.resolve(list.map(function(inner){
+							assert(inner.uri.indexOf('.json') >= 0);
+							assert(inner.uri.indexOf('.txt') < 0);
+							assert(inner.uri.indexOf('.html') < 0);
+							assert(inner.params.user.indexOf('.json') < 0);
+							assert(inner.params.user.indexOf('.txt') < 0);
+							assert(inner.params.user.indexOf('.html') < 0);
+							var match = inner.match.rewrite(self.uriTemplate);
+							assert(match.uri.indexOf('.json') < 0);
+							assert(match.uri.indexOf('.txt') < 0);
+							assert(match.uri.indexOf('.html') >= 0);
+							assert(match.data.user.indexOf('.json') < 0);
+							assert(match.data.user.indexOf('.txt') < 0);
+							assert(match.data.user.indexOf('.html') < 0);
+							return new lib.StringResource(self, {match, inner});
+						}));
+					});
 				},
 			});
-			route = new lib.Negotiate('http://example.com/~{user}', [v1,v2]);
+			route = new lib.Negotiate('http://example.com/~{user}', [v_txt,v_html]);
 		});
 		it('Negotiate#name', function(){
 			assert.strictEqual(route.name, 'Negotiate(2) [Route , Route]');
@@ -76,25 +215,24 @@ describe('Negotiate', function(){
 			});
 		});
 		it('Negotiate#prepare (404)', function(){
-			return route.prepare('http://example.com/~foo').then(function(res){
-				assert(!res);
+			return route.prepare('http://example.com/~foo').then(function(rsc){
+				assert(!rsc);
 			});
 		});
 		it('Negotiate#error');
 		it('Negotiate#watch', function(){
 			var filePaths = {};
-			function handleEvent(data, filepath){
-				filePaths[data.user] = null;
+			function handleEvent(resource){
+				filePaths[resource.uri] = null;
 			}
 			return route.watch(handleEvent).then(function(){
-				// Adjust this as new files are added
 				assert.equal(Object.keys(filePaths).length, 2);
 			});
 		});
 		it('Negotiate#listing', function(){
 			return route.listing().then(function(list){
 				assert.equal(list.length, 2);
-				var values = list.map(function(v){ return v.user; }).sort();
+				var values = list.map(function(v){ return v.params.user; }).sort();
 				assert.equal(values[0], 'guest');
 				assert.equal(values[1], 'root');
 			});

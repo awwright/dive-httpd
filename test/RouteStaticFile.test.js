@@ -83,9 +83,9 @@ describe('RouteStaticFile', function(){
 		it('RouteStaticFile#watch', function(){
 			var count = 0;
 			var filePaths = {};
-			function handleEvent(data, filepath){
+			function handleEvent(resource){
 				count++;
-				filePaths[data.path.join('/')] = null;
+				filePaths[resource.uri] = null;
 			}
 			return route.watch(handleEvent).then(function(){
 				// Adjust this as new files are added

@@ -31,10 +31,32 @@ describe('RoutePipeline', function(){
 					return Promise.resolve(res);
 				},
 				watch: function(cb){
-					list.forEach(cb);
+					var self = this;
+					var _resolve;
+					function emitUpdate(){
+						self.listing().then(function(list){
+							list.forEach(function(resource){
+								self.watchers.forEach(function(cb){ cb(resource, resource); });
+							});
+						}).then(_resolve);
+					}
+					if(this.watchers){
+						this.watchers.push(cb);
+					}else{
+						this.watchers = [cb];
+						this.watchersReady = new Promise(function(resolve){ _resolve = resolve; });
+						process.nextTick(emitUpdate);
+					}
+					return this.watchersReady;
 				},
-				listing: function(cb){
-					return Promise.resolve(list);
+				listing: function(){
+					var self = this;
+					return Promise.all(list.map(function(v){
+						return self.prepare(`http://example.com/~${v.user}`).then(function(resource){
+							if(!resource) throw new Error('Expeced resource!');
+							return resource;
+						});
+					}));
 				},
 			});
 			route = new lib.RoutePipeline({
@@ -64,18 +86,19 @@ describe('RoutePipeline', function(){
 			});
 		});
 		it('RoutePipeline#error');
-		it('RoutePipeline#watch', function(done){
-			var count = 0;
-			route.watch(function(data, filepath){
-				count++;
-				if(data.user==='guest') return void done();
-				// if(count>=2) assert.fail();
+		it('RoutePipeline#watch', function(){
+			var filePaths = {};
+			function handleEvent(resource){
+				filePaths[resource.uri] = null;
+			}
+			return route.watch(handleEvent).then(function(){
+				assert.equal(Object.keys(filePaths).length, 2);
 			});
 		});
 		it('RoutePipeline#listing', function(){
 			return route.listing().then(function(list){
 				assert.equal(list.length, 2);
-				var values = list.map(function(v){ return v.user; }).sort();
+				var values = list.map(function(v){ return v.params.user; }).sort();
 				assert.equal(values[0], 'guest');
 				assert.equal(values[1], 'root');
 			});
@@ -119,7 +142,6 @@ describe('RoutePipeline', function(){
 				name: 'Route',
 				contentType: 'text/plain',
 				prepare: function(uri){
-					console.log('prepare', uri.data);
 					return Promise.resolve(new lib.StringResource(this, {
 						match: this.matchUri(uri),
 					}));
@@ -138,12 +160,10 @@ describe('RoutePipeline', function(){
 				innerRoute: gen,
 			});
 			server.addRoute(route);
-			debugger;
 			return testMessage(server, [
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				console.log('test');
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^root$/m));
 			});

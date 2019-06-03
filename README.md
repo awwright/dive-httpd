@@ -136,9 +136,14 @@ A `Route` instance provides the following properties:
 * resourceType - The prototype that prepare usually resolves to
 * prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
 * listing() - resolves to an array of all of the URI Template values of resources in the set
-* watch(cb) - call the provided callback when any of the resources in the set changes
+* watch(cb) - call the provided callback when any of the resources in the set changes, returns when all resources have been initialized
 * listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)
 * error(uri, error) - resolve to a Resource that describes the given `error`, when no Route#resolve call resolved a Resource (usually 404 or a 5xx error)
+
+watch takes a callback with two arguments:
+
+* resource - the resource in the Route that changed
+* ancestor - an object representing the data change that triggered the event
 
 
 ### Application
