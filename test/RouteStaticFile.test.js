@@ -94,10 +94,14 @@ describe('RouteStaticFile', function(){
 			});
 		});
 		it('RouteStaticFile#listing', function(){
+			var filePaths = {};
 			return route.listing().then(function(listing){
+				console.log(listing);
+				listing.forEach(function(resource){
+					filePaths[resource.uri] = null;
+				});
 				// console.log(listing);
-				assert(listing.length);
-				return Promise.resolve();
+				assert.equal(Object.keys(filePaths).length, 3);
 			});
 		});
 		it('RouteStaticFile#store');
