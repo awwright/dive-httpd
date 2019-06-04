@@ -38,7 +38,7 @@ if(args.env){
 	dotenv.config();
 }
 
-var appjs = args.f || 'app.js';
+var appjs = args.F || 'app.js';
 if(verbose) console.error('Load application file: '+appjs);
 const app = require(path.resolve(appjs));
 
@@ -88,7 +88,10 @@ if(!args.all && !targets.length && !targetExtensions.size){
 	return;
 }
 
-app.listing().then(function(list){
+app.initialize().then(function(){
+	if(verbose) console.log('Data initialized');
+	return app.listing();
+}).then(function(list){
 	return Promise.all(list.map(function(params){
 		var uri = typeof params==='string' ? params : app.generateUri(params);
 		if(uri.substring(0, base.length)!==base) return;

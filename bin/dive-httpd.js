@@ -177,6 +177,6 @@ Object.keys(serverObject).forEach(function(name){
 	});
 });
 
-app.onReady.then(function(){
+app.initialize().then(function(){
 	if(opts.verbose) console.log('App initialized');
 });
