@@ -96,12 +96,15 @@ describe('First', function(){
 		});
 		it('First#error');
 		it('First#watch', function(){
+			var fileCount = 0;
 			var filePaths = {};
 			function handleEvent(resource){
+				fileCount++;
 				filePaths[resource.uri] = null;
 			}
 			return route.watch(handleEvent).then(function(){
 				// Adjust this as new files are added
+				assert.equal(fileCount, 4);
 				assert.equal(Object.keys(filePaths).length, 4);
 			});
 		});
