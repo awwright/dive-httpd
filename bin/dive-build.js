@@ -40,6 +40,10 @@ if(args.env){
 
 var appjs = args.F || 'app.js';
 if(verbose) console.error('Load application file: '+appjs);
+// Q: Why have the file export the Application instance directly?
+// ... Why not a function that returns or resolves an Application?
+// A: That might be possible, as long as the Application is predictable.
+// The Application configuration is not designed to be changed dynamically, and certainly not after initialization-time.
 const app = require(path.resolve(appjs));
 
 const argbase = args.base && args.base[args.base.length-1]=='/' ? args.base.substring(0, args.base.length-1) : args.base ;
