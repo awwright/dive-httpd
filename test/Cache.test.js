@@ -25,7 +25,7 @@ describe('Cache', function(){
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
 					return Promise.resolve(res);
-				}
+				},
 			});
 			route = new lib.Cache('http://example.com/~{user}', source);
 		});

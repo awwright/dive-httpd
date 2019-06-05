@@ -10,7 +10,7 @@ describe('Gateway', function(){
 		var route;
 		beforeEach(function(){
 			route = lib.Gateway({
-				uriTemplate: 'http://localhost/{path}'
+				uriTemplate: 'http://localhost/{path}',
 			});
 		});
 		it('Gateway#label', function(){
