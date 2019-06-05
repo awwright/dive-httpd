@@ -19,6 +19,16 @@ describe('Application', function(){
 		it('Application#listDependents', function(){
 			assert(route.listDependents().length);
 		});
+		it('Application#before', function(){
+			var flag = false;
+			route.before(function(){
+				flag = true;
+			});
+			assert.equal(flag, false);
+			return route.initialize().then(function(){
+				assert.equal(flag, true);
+			});
+		});
 	});
 	describe('Not Found routing', function(){
 		var app;
