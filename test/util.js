@@ -23,6 +23,7 @@ function makeDuplexPair() {
 	}
 	clientSide._write = function _write(chunk, enc, callback){
 		if(serverCallback) throw new Error;
+		if(!chunk.length) return void callback();
 		if(typeof callback==='function') serverCallback = callback;
 		serverSide.push(chunk);
 	}
@@ -39,6 +40,7 @@ function makeDuplexPair() {
 	}
 	serverSide._write = function _write(chunk, enc, callback){
 		if(clientCallback) throw new Error;
+		if(!chunk.length) return void callback();
 		if(typeof callback==='function') clientCallback = callback;
 		clientSide.push(chunk);
 	}
