@@ -190,4 +190,43 @@ describe('RouteStaticFile', function(){
 		});
 	});
 
+	describe('If-Modified-Since', function(){
+		var server;
+		before(function(){
+			server = new lib.Application;
+			var route = lib.RouteStaticFile({
+				uriTemplate: 'http://example.com{/path*}.html',
+				contentType: 'application/xhtml+xml',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.html",
+			});
+			server.addRoute(route);
+		});
+		it('initial request', function(){
+			return testMessage(server, [
+				'GET /data-table.html HTTP/1.1',
+				'Host: example.com',
+			]).then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+			});
+		});
+		it('initial request then freshen request', function(){
+			return testMessage(server, [
+				'GET /data-table.html HTTP/1.1',
+				'Host: example.com',
+			]).then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				var m = res.toString().match(/^Last-Modified:\s+(.*)$/im);
+				assert(m);
+				return testMessage(server, [
+					'GET /data-table.html HTTP/1.1',
+					'Host: example.com',
+					'If-Modified-Since: '+m[1],
+				]);
+			}).then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 304 /));
+			});
+		});
+	});
+
 });
