@@ -266,7 +266,6 @@ describe('RouteStaticFile', function(){
 					'If-None-Match: '+m[1],
 				]);
 			}).then(function(res){
-				console.log(res.toString());
 				assert(res.toString().match(/^HTTP\/1.1 304 /));
 				assert(!res.toString().match(/^Content-Type:/im));
 			});
