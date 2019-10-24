@@ -122,5 +122,15 @@ describe('StringResource', function(){
 				assert(res.toString().match(/^HTTP\/1.1 304 /));
 			});
 		});
+		it('405 Method Not Allowed (PUT)', function(){
+			return testMessage(app, [
+				'PUT http://localhost/document HTTP/1.1',
+				'Host: localhost',
+				'Content-Type: text/plain',
+				'Content-Length: 5',
+			], "Foo\r\n").then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 405 /));
+			});
+		});
 	});
 });

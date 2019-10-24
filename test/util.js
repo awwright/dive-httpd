@@ -85,15 +85,30 @@ function writeMessage(server, message, body){
 		if(typeof body==='string' || Buffer.isBuffer(body)){
 			sock.clientSide.write(body);
 		}
+		// sock.serverSide.server = server;
 		server.emit('connection', sock.serverSide);
+		// server.on('clientError', function(err, socket){
+		// 	if(socket.writable){
+		// 		if(err.code === 'HPE_HEADER_OVERFLOW'){
+		// 			socket.write("HTTP/1.1 431 Request Header Fields Too Large\r\n");
+		// 			socket.write("Connection: close\r\n");
+		// 			socket.write("\r\n");
+		// 		}else{
+		// 			socket.write("HTTP/1.1 400 Client Error\r\n");
+		// 			socket.write("Connection: close\r\n");
+		// 			socket.write("\r\n");
+		// 		}
+		// 	}
+		// 	throw err;
+		// });
 	});
 }
 
 module.exports.testMessage = testMessage;
-function testMessage(serverOptions, message){
+function testMessage(serverOptions, message, body){
 	var listener = new lib.HTTPServer(serverOptions);
 	var server = http.createServer(listener.callback());
-	return writeMessage(server, message);
+	return writeMessage(server, message, body);
 }
 
 exports.ToJSONTransform = ToJSONTransform;
