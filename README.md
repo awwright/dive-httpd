@@ -136,7 +136,9 @@ A `Route` instance provides the following properties:
 * uriTemplate - a URI Template that can generate URIs for all of the resources in its resource set
 * resourceType - The prototype that prepare usually resolves to
 * prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
+* prepareMatch(match) - resolves to a Resource object given the matched URI Template, called by the default implementation of Route#prepare
 * allocate(uri) - resolves to a Resource object if something can be stored at the given URI, typically called only for PUT requests if `prepare` yielded no results
+* allocateMatch(match) - resolves to a Resource object if something can be stored at the given URI Template match, called by the default implementation of Route#allocate
 * listing() - resolves to an array of all of the URI Template values of resources in the set
 * watch(cb) - call the provided callback when any of the resources in the set changes, returns when all resources have been initialized
 * listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)

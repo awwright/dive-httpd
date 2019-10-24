@@ -35,6 +35,74 @@ describe('RouteURITemplate', function(){
 		// This route doesn't really need an HTTP interface test,
 		// because Application and most of the other tests handle it.
 	});
+	describe('interface (prepare)', function(){
+		var route;
+		beforeEach(function(){
+			route = lib.RouteURITemplate();
+			route.addRoute(lib.Route({
+				uriTemplate: 'http://localhost/{name}',
+				contentType: 'text/plain',
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					if(!match) return Promise.resolve();
+					if(match.data['name'] === 'foo'){
+						return Promise.resolve(new lib.StringResource(this, {match}));
+					}else{
+						return Promise.resolve();
+					}
+				},
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = 'Bar\r\n';
+					return Promise.resolve(res);
+				},
+			}));
+		});
+		it('RouteURITemplate#prepareMatch (found)', function(){
+			return route.prepare('http://localhost/foo').then(function(res){
+				assert(res instanceof lib.Resource);
+			});
+		});
+		it('RouteURITemplate#prepareMatch (not found)', function(){
+			return route.prepare('http://localhost/bar').then(function(res){
+				assert(!res);
+			});
+		});
+	});
+	describe('interface (prepareMatch)', function(){
+		var route;
+		beforeEach(function(){
+			route = lib.RouteURITemplate();
+			route.addRoute(lib.Route({
+				uriTemplate: 'http://localhost/{name}',
+				contentType: 'text/plain',
+				prepareMatch: function(match){
+					if(match.data['name'] === 'foo'){
+						return Promise.resolve(new lib.StringResource(this, {match}));
+					}else{
+						return Promise.resolve();
+					}
+				},
+				renderString: function(resource){
+					var res = new lib.MessageHeaders;
+					res.setHeader('Content-Type', resource.contentType);
+					res.body = 'Bar\r\n';
+					return Promise.resolve(res);
+				},
+			}));
+		});
+		it('RouteURITemplate#prepareMatch (found)', function(){
+			return route.prepare('http://localhost/foo').then(function(res){
+				assert(res instanceof lib.Resource);
+			});
+		});
+		it('RouteURITemplate#prepareMatch (not found)', function(){
+			return route.prepare('http://localhost/bar').then(function(res){
+				assert(!res);
+			});
+		});
+	});
 	describe('interface (empty)', function(){
 		var route;
 		beforeEach(function(){
