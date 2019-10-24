@@ -1,8 +1,8 @@
 
 var assert = require('assert');
 
-var testMessage = require('../../dive-httpd/test/util.js').testMessage;
-var lib = require('../../dive-httpd/index.js');
+var testMessage = require('./util.js').testMessage;
+var lib = require('../index.js');
 
 describe('StringResource', function(){
 	describe('app', function(){

@@ -71,9 +71,9 @@ Caching routes try to fill from a data source (the cache) first, forwarding the 
 Caching routes are otherwise transparent, and do not perform any transformations on the data or resource URI; they copy the uriTemplate of the inner route exactly.
 
 
-#### Collection index routes
+#### Aggregation routes
 
-Collection indexes are used to generate a listing of the resources available under a route. They have a single underlying route, but only expose a single resource, an index (and any variations of the index, for example, pagination of that index.)
+Aggregation routes generate a fixed resource (or set of resources) from another route.
 
 Examples of collection indexes include blog archives, file listings, sitemaps, and Atom/RSS feeds.
 
@@ -136,6 +136,7 @@ A `Route` instance provides the following properties:
 * uriTemplate - a URI Template that can generate URIs for all of the resources in its resource set
 * resourceType - The prototype that prepare usually resolves to
 * prepare(uri) - resolves to a Resource object if the given URI names a resource in the resource set, resolves undefined otherwise
+* allocate(uri) - resolves to a Resource object if something can be stored at the given URI, typically called only for PUT requests if `prepare` yielded no results
 * listing() - resolves to an array of all of the URI Template values of resources in the set
 * watch(cb) - call the provided callback when any of the resources in the set changes, returns when all resources have been initialized
 * listDependents() - returns an array of other routes that this route makes requests to (used for static analysis)
