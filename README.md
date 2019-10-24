@@ -13,6 +13,7 @@ A prototype HTTP application framework using URI Templates and streams for looki
 	* 304 Not Modified
 	* 404 Not Found
 	* 405 Method Not Allowed
+	* 412 Precondition Failed
 	* 501 Not Implemented
 	* Allow (list of permitted methods)
 	* Content-Location

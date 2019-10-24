@@ -258,7 +258,7 @@ describe('RouteStaticFile', function(){
 				'Host: example.com',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				var m = res.toString().match(/^ETag:\s+(.*)$/im);
+				var m = res.toString().match(/^ETag:\s+(".*")$/im);
 				assert(m);
 				return testMessage(server, [
 					'GET /data-table.html HTTP/1.1',
