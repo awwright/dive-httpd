@@ -155,6 +155,7 @@ URIReflect.prototype.prepare = function prepare(uri){
 URIReflect.prototype.render = function(resource){
 	var res = new PassThrough;
 	res.setHeader('Content-Type', resource.contentType);
+	res.setHeader('Content-Length', resource.uri.length+2+'');
 	res.end(resource.uri+'\r\n');
 	return res;
 }
