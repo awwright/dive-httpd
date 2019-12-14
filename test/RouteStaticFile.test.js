@@ -102,6 +102,20 @@ describe('RouteStaticFile', function(){
 				assert.equal(Object.keys(filePaths).length, 3);
 			});
 		});
+		it('RouteStaticFile#listing renderString', function(){
+			var filePaths = {};
+			return route.listing().then(function(listing){
+				return Promise.all(listing.map(function(resource){
+					return resource.renderString().then(function(res){
+						assert.equal(res.statusCode, 200);
+						assert(res.body.length > 0);
+						filePaths[resource.uri] = null;
+					});
+				}));
+			}).then(function(result){
+				assert.equal(Object.keys(filePaths).length, 3);
+			});
+		});
 		it('RouteStaticFile#store');
 		it('RouteStaticFile#listDependents', function(){
 			assert(route.listDependents().length);
