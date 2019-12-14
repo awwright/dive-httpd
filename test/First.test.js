@@ -120,6 +120,7 @@ describe('First', function(){
 				assert.equal(listing.length, 4);
 			});
 		});
+		it('First#listing renderString');
 		it('First#store');
 		it('First#listDependents', function(){
 			assert(route.listDependents().length);

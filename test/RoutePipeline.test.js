@@ -103,6 +103,7 @@ describe('RoutePipeline', function(){
 				assert.equal(values[1], 'root');
 			});
 		});
+		it('RoutePipeline#listing renderString');
 		it('RoutePipeline#store');
 		it('RoutePipeline#listDependents', function(){
 			assert(route.listDependents().length);

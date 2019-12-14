@@ -237,6 +237,7 @@ describe('Negotiate', function(){
 				assert.equal(values[1], 'root');
 			});
 		});
+		it('Negotiate#listing renderString');
 		it('Negotiate#store');
 		it('Negotiate#listDependents', function(){
 			assert(route.listDependents().length);

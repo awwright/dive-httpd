@@ -50,6 +50,7 @@ describe('RouteLocalReference', function(){
 		it('RouteLocalReference#error');
 		it('RouteLocalReference#watch');
 		it('RouteLocalReference#listing');
+		it('RouteLocalReference#listing renderString');
 		it('RouteLocalReference#store');
 		it('RouteLocalReference#listDependents', function(){
 			assert(route.listDependents().length);

@@ -40,6 +40,7 @@ describe('Cache', function(){
 		it('Cache#error');
 		it('Cache#watch');
 		it('Cache#listing');
+		it('Cache#listing renderString');
 		it('Cache#store');
 		it('Cache#listDependents', function(){
 			assert(route.listDependents().length);

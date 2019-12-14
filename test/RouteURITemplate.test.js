@@ -28,6 +28,7 @@ describe('RouteURITemplate', function(){
 		it('RouteURITemplate#error');
 		it('RouteURITemplate#watch');
 		it('RouteURITemplate#listing');
+		it('RouteURITemplate#listing renderString');
 		it('RouteURITemplate#store');
 		it('RouteURITemplate#listDependents', function(){
 			assert(route.listDependents().length);

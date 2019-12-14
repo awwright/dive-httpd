@@ -24,6 +24,7 @@ describe('Gateway', function(){
 		it('Gateway#error');
 		it('Gateway#watch');
 		it('Gateway#listing');
+		it('Gateway#listing renderString');
 		it('Gateway#store');
 		it('Gateway#listDependents', function(){
 			assert(route.listDependents().length);

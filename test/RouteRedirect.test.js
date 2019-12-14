@@ -45,6 +45,7 @@ describe('RouteRedirect', function(){
 		it('RouteRedirect#error');
 		it('RouteRedirect#watch');
 		it('RouteRedirect#listing');
+		it('RouteRedirect#listing renderString');
 		it('RouteRedirect#store');
 		it('RouteRedirect#listDependents');
 	});
@@ -117,6 +118,7 @@ describe('RouteSeeOther', function(){
 		it('RouteSeeOther#error');
 		it('RouteSeeOther#watch');
 		it('RouteSeeOther#listing');
+		it('RouteSeeOther#listing renderString');
 		it('RouteSeeOther#store');
 		it('RouteSeeOther#listDependents');
 	});
@@ -188,7 +190,7 @@ describe('RouteTemporaryRedirect', function(){
 		});
 		it('RouteTemporaryRedirect#error');
 		it('RouteTemporaryRedirect#watch');
-		it('RouteTemporaryRedirect#listing');
+		it('RouteTemporaryRedirect#listing renderString');
 		it('RouteTemporaryRedirect#store');
 		it('RouteTemporaryRedirect#listDependents');
 	});
@@ -260,7 +262,7 @@ describe('RoutePermanentRedirect', function(){
 		});
 		it('RoutePermanentRedirect#error');
 		it('RoutePermanentRedirect#watch');
-		it('RoutePermanentRedirect#listing');
+		it('RoutePermanentRedirect#listing renderString');
 		it('RoutePermanentRedirect#store');
 		it('RoutePermanentRedirect#listDependents');
 	});
