@@ -107,7 +107,7 @@ describe('RouteStaticFile', function(){
 			return route.listing().then(function(listing){
 				return Promise.all(listing.map(function(resource){
 					return resource.renderString().then(function(res){
-						assert.equal(res.statusCode, 200);
+						// assert.equal(res.statusCode, 200);
 						assert(res.body.length > 0);
 						filePaths[resource.uri] = null;
 					});
