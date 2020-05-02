@@ -13,7 +13,8 @@ module.exports = {
 		"no-unused-vars": [ "warn", { "args": "none" } ],
 		"no-unreachable": [ "error" ],
 		"linebreak-style": [  "error", "unix" ],
-		//"semi": [ "error", "always" ],
+		"semi": [ "error", "always" ],
+		"no-extra-semi": [ "error" ],
 		"comma-dangle": [ "error", "always-multiline" ],
 		"no-console": [ "error" ],
 	}
