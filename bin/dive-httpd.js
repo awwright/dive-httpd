@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const opts = require('commander');
-const iniparse = require('ini');
+const tomlparse = require('toml');
 const dotenv = require('dotenv');
 
 opts.usage('[options] <app.conf>', 'Run an HTTP server with configuration file <app.conf>');
@@ -20,35 +20,35 @@ opts.parse(process.argv);
 if(!opts.app && opts.args.length !== 1) return void opts.help();
 
 /*
-; an app.conf file looks a little something like this:
+# an app.conf file looks a little something like this:
 
-; The0 file that contains the application-level information
-app = app.js
+# The file that contains the application-level information
+app = "app.js"
 
-; packages are searched starting in the directory this file is in
-require = ../dive-plugin
+# packages are searched starting in the directory this file is in
+require = "../dive-plugin"
 
-; The application can be configured in one of three ways:
-; 1. Read from environment variables
-; 2. Automatically import environment variables from .env, if it exists
-; 3. Load app configuration from another file
-import = production.env
+# The application can be configured in one of three ways:
+# 1. Read from environment variables
+# 2. Automatically import environment variables from .env, if it exists
+# 3. Load app configuration from another file
+import = "production.env"
 
-; 4. Specify in this file (but no credentials please!)
+# 4. Specify in this file (but no credentials please!)
 [env]
-SECRET_FILE=secret.key
+SECRET_FILE="secret.key"
 
-; Define a server
+# Define a server
 [server.http]
 port = 8080
-fixedScheme = https
-fixedHost = example.com
+fixedScheme = "https"
+fixedHost = "example.com"
 
-; Additional servers can be suffixed with a colon
+# Additional servers can be suffixed with a colon
 [server.http:name]
 port = 80
-fixedScheme = http
-fixedHost = example.com
+fixedScheme = "http"
+fixedHost = "example.com"
 
 */
 
@@ -56,7 +56,7 @@ if(opts.args[0]){
 	var configFilepath = path.resolve(opts.args[0]);
 	var configDirpath = path.dirname(configFilepath);
 	var configContent = fs.readFileSync(configFilepath, 'UTF-8');
-	var configData = iniparse.parse(configContent);
+	var configData = tomlparse.parse(configContent);
 }else{
 	var configData = {
 		app: opts.app,
