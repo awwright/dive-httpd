@@ -1,3 +1,4 @@
+"use strict";
 
 var http = require('http');
 var assert = require('assert');
@@ -47,7 +48,7 @@ describe('Gateway', function(){
 			}));
 			app.onError = function handleError(req, err){
 				throw err;
-			}
+			};
 		});
 		after(function(){
 			// FIXME use a stream or something
