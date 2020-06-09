@@ -26,7 +26,6 @@ describe('Gateway', function(){
 		it('Gateway#error');
 		it('Gateway#watch');
 		it('Gateway#listing');
-		it('Gateway#listing renderString');
 		it('Gateway#store');
 		it('Gateway#listDependents', function(){
 			assert(route.listDependents().length);
@@ -78,7 +77,7 @@ describe('Gateway', function(){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 			});
 		});
-		it('TRACE (no forward)', function(){
+		it('TRACE (forward)', function(){
 			return testMessage(app, [
 				'TRACE http://example.com/test-path HTTP/1.1',
 				'Max-Forwards: 3',
@@ -89,7 +88,7 @@ describe('Gateway', function(){
 				assert(res.toString().match(/^Server: origin$/im));
 			});
 		});
-		it('TRACE', function(){
+		it('TRACE (no forward)', function(){
 			return testMessage(app, [
 				'TRACE http://example.com/test-path HTTP/1.1',
 				'Max-Forwards: 0',

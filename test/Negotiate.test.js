@@ -26,16 +26,16 @@ describe('Negotiate', function(){
 					assert(match.data.user.indexOf('.txt') < 0);
 					assert(match.data.user.indexOf('.html') < 0);
 					if(match && match.data.user && match.data.user.length>=4){
-						return Promise.resolve(new lib.StringResource(this, {match}));
+						return Promise.resolve(new lib.Resource(this, {match}));
 					}else{
 						return Promise.resolve();
 					}
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 				watch: function(cb){
 					var self = this;
@@ -82,14 +82,14 @@ describe('Negotiate', function(){
 					assert(match.data.user.indexOf('.html') < 0);
 					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
 						if(!inner) return;
-						return new lib.StringResource(self, {match, inner});
+						return new lib.Resource(self, {match, inner});
 					});
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 				watch: function(cb){
 					var self = this;
@@ -107,7 +107,7 @@ describe('Negotiate', function(){
 						assert(match.data.user.indexOf('.json') < 0);
 						assert(match.data.user.indexOf('.txt') < 0);
 						assert(match.data.user.indexOf('.html') < 0);
-						var rsc = new lib.StringResource(self, {match, inner});
+						var rsc = new lib.Resource(self, {match, inner});
 						cb(rsc, ancestor);
 					});
 				},
@@ -128,7 +128,7 @@ describe('Negotiate', function(){
 							assert(match.data.user.indexOf('.json') < 0);
 							assert(match.data.user.indexOf('.txt') < 0);
 							assert(match.data.user.indexOf('.html') < 0);
-							return new lib.StringResource(self, {match, inner});
+							return new lib.Resource(self, {match, inner});
 						}));
 					});
 				},
@@ -149,14 +149,14 @@ describe('Negotiate', function(){
 					assert(match.data.user.indexOf('.html') < 0);
 					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
 						if(!inner) return;
-						return new lib.StringResource(self, {match, inner});
+						return new lib.Resource(self, {match, inner});
 					});
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 				watch: function(cb){
 					var self = this;
@@ -174,7 +174,7 @@ describe('Negotiate', function(){
 						assert(match.data.user.indexOf('.json') < 0);
 						assert(match.data.user.indexOf('.txt') < 0);
 						assert(match.data.user.indexOf('.html') < 0);
-						var rsc = new lib.StringResource(self, {match, inner});
+						var rsc = new lib.Resource(self, {match, inner});
 						cb(rsc, ancestor);
 					});
 				},
@@ -195,7 +195,7 @@ describe('Negotiate', function(){
 							assert(match.data.user.indexOf('.json') < 0);
 							assert(match.data.user.indexOf('.txt') < 0);
 							assert(match.data.user.indexOf('.html') < 0);
-							return new lib.StringResource(self, {match, inner});
+							return new lib.Resource(self, {match, inner});
 						}));
 					});
 				},
@@ -238,7 +238,6 @@ describe('Negotiate', function(){
 				assert.equal(values[1], 'root');
 			});
 		});
-		it('Negotiate#listing renderString');
 		it('Negotiate#store');
 		it('Negotiate#listDependents', function(){
 			assert(route.listDependents().length);

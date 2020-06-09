@@ -34,24 +34,9 @@ describe('RouteLocalReference', function(){
 				assert.strictEqual(res.uri, 'http://localhost/index');
 			});
 		});
-		it('RouteLocalReference#prepare renderBytes', function(){
-			return route.prepare('http://localhost/').then(function(res){
-				return res.renderBytes();
-			}).then(function(buf){
-				assert.equal(buf.body, 'http://localhost/index\r\n');
-			});
-		});
-		it('RouteLocalReference#prepare renderString', function(){
-			return route.prepare('http://localhost/').then(function(res){
-				return res.renderString();
-			}).then(function(buf){
-				assert.equal(buf.body, 'http://localhost/index\r\n');
-			});
-		});
 		it('RouteLocalReference#error');
 		it('RouteLocalReference#watch');
 		it('RouteLocalReference#listing');
-		it('RouteLocalReference#listing renderString');
 		it('RouteLocalReference#store');
 		it('RouteLocalReference#listDependents', function(){
 			assert(route.listDependents().length);

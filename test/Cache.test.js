@@ -17,15 +17,15 @@ describe('Cache', function(){
 					if(!match.data.user || match.data.user.length < 4){
 						return Promise.resolve();
 					}
-					return Promise.resolve(new lib.StringResource(this, {
+					return Promise.resolve(new lib.Resource(this, {
 						match: match,
 					}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			});
 			route = new lib.Cache('http://example.com/~{user}', source);
@@ -41,7 +41,6 @@ describe('Cache', function(){
 		it('Cache#error');
 		it('Cache#watch');
 		it('Cache#listing');
-		it('Cache#listing renderString');
 		it('Cache#store');
 		it('Cache#listDependents', function(){
 			assert(route.listDependents().length);

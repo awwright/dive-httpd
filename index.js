@@ -10,13 +10,10 @@ module.exports.First = require('./lib/First.js').First;
 module.exports.TemplateRouter = require('uri-template-router');
 
 module.exports.ServerResponseTransform = require('http-transform').ServerResponseTransform;
-module.exports.MessageHeaders = require('http-transform').Headers;
 module.exports.PassThrough = require('http-transform').PassThrough;
 
 module.exports.Resource = require('./lib/Resource.js').Resource;
-module.exports.StreamResource = require('./lib/Resource.js').StreamResource;
-module.exports.BytesResource = require('./lib/Resource.js').BytesResource;
-module.exports.StringResource = require('./lib/Resource.js').StringResource;
+module.exports.ResponseMessage = require('./lib/ResponseMessage.js').ResponseMessage;
 
 module.exports.Route = require('./lib/Route.js').Route;
 module.exports.RoutePipeline = require('./lib/RoutePipeline.js').RoutePipeline;

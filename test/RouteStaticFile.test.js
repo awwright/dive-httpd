@@ -55,31 +55,6 @@ describe('RouteStaticFile', function(){
 				assert.strictEqual(res.route, route);
 			});
 		});
-		it('RouteStaticFile#prepare renderStream', function(){
-			return route.prepare('http://example.com/data-table.html').then(function(res){
-				var stream = res.render();
-				assert(stream.pipe);
-				return stream.headersReady.then(function(){ return stream; });
-			}).then(function(buf){
-				assert.equal(buf.statusCode || 200, 200);
-			});
-		});
-		it('RouteStaticFile#prepare renderBytes', function(){
-			return route.prepare('http://example.com/data-table.html').then(function(res){
-				return res.renderBytes();
-			}).then(function(buf){
-				assert.equal(buf.statusCode || 200, 200);
-				assert.equal(buf.body.length, 565);
-			});
-		});
-		it('RouteStaticFile#prepare renderString', function(){
-			return route.prepare('http://example.com/data-table.html').then(function(res){
-				return res.renderString();
-			}).then(function(buf){
-				assert.equal(buf.statusCode || 200, 200);
-				assert.equal(buf.body.length, 563);
-			});
-		});
 		it('RouteStaticFile#error');
 		it('RouteStaticFile#watch', function(){
 			var count = 0;
@@ -103,11 +78,11 @@ describe('RouteStaticFile', function(){
 				assert.equal(Object.keys(filePaths).length, 3);
 			});
 		});
-		it('RouteStaticFile#listing renderString', function(){
+		it('RouteStaticFile#listing render', function(){
 			var filePaths = {};
 			return route.listing().then(function(listing){
 				return Promise.all(listing.map(function(resource){
-					return resource.renderString().then(function(res){
+					return lib.ResponseMessage.fromStream(resource.render()).then(function(res){
 						// assert.equal(res.statusCode, 200);
 						assert(res.body.length > 0);
 						filePaths[resource.uri] = null;

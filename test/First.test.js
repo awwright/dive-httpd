@@ -79,22 +79,6 @@ describe('First', function(){
 				// assert.equal(buf.statusCode, 200);
 			});
 		});
-		it('First#prepare renderBytes', function(){
-			return route.prepare('http://example.com/data-table.html').then(function(res){
-				return res.renderBytes();
-			}).then(function(buf){
-				// assert.equal(buf.statusCode, 200);
-				assert.equal(buf.body.length, 565);
-			});
-		});
-		it('First#prepare renderString', function(){
-			return route.prepare('http://example.com/data-table.html').then(function(res){
-				return res.renderString();
-			}).then(function(buf){
-				// assert.equal(buf.statusCode, 200);
-				assert.equal(buf.body.length, 563);
-			});
-		});
 		it('First#error');
 		it('First#watch', function(){
 			var fileCount = 0;
@@ -121,7 +105,6 @@ describe('First', function(){
 				assert.equal(listing.length, 4);
 			});
 		});
-		it('First#listing renderString');
 		it('First#store');
 		it('First#listDependents', function(){
 			assert(route.listDependents().length);

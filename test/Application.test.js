@@ -16,7 +16,6 @@ describe('Application', function(){
 		it('Application#error');
 		it('Application#watch');
 		it('Application#listing');
-		it('Application#listing renderString');
 		it('Application#store');
 		it('Application#listDependents', function(){
 			assert(route.listDependents().length);

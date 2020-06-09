@@ -7,7 +7,7 @@ describe('Meta: Tests exist', function(){
 	it('Route', function(){
 		var root = this.test.parent.parent;
 		var methodList = [
-			'label', 'prepare', 'error', 'watch', 'listing', 'listing renderString', 'store',
+			'label', 'prepare', 'error', 'watch', 'listing', 'store',
 			'listDependents',
 		];
 		var interfaceList = [];

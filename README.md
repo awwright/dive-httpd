@@ -32,8 +32,6 @@ A resource is an entity identified by a URI, that has a media type and has a bod
 Resources render representations by one of several methods:
 
 * A Node.js ReadableStream - returned by `Resource#render()`
-* byte array (Buffer or UInt8Array) - returned in `Resource#renderBytes().body`
-* string - returned in `Resource#renderString().body`
 * an arbitrary value - returned in `Resource#renderValue().value`
 
 
@@ -103,30 +101,13 @@ Combination routes do not read parameters from the parsed URI, though they may s
 * lastModified - the Last-Modified date
 * methods - array of custom methods this resource recognizes
 * render(req) - stream the contents of this resource
-* renderString(req) - resolves to a MessageHeaders object with a `body` property
 
-The `req` parameter (used in the render and renderString functions) is similar to IncomingMessage, and uses the following properties:
+The `req` parameter (used in the render functions) is similar to IncomingMessage, and uses the following properties:
 
 * `method` - the HTTP method being called
 * `uri` - the full, absolute URI being requested (absolute meaning "no fragment")
 * `headers` - map of headers, pseudo-headers and hop-by-hop headers removed
 * `rawHeaders` - Array, alternating name and value of each header
-
-
-### StreamResource
-
-A kind of `Resource` that will call Route#render(resource, request) to satisfy a Resource#render(request) call. To use:
-
-1. Implement `Route#prepare(uri)` with a function that resolves to a `StreamResource(this)`
-2. Implement `Route#renderString(resource)` with a function that returns a `ServerResponse` instance.
-
-
-### StringResource
-
-A kind of `Resource` that will call Route#renderString(resource, request) to satisfy a Resource#render(request) call. To use:
-
-1. Implement `Route#prepare(uri)` with a function that resolves to a `StringResource(this)`
-2. Implement `Route#renderString(resource)` with a function that resolves to a `MessageHeaders` instance with a `body` property.
 
 
 ### Route

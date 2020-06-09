@@ -28,7 +28,7 @@ describe('RouteURITemplate', function(){
 		it('RouteURITemplate#error');
 		it('RouteURITemplate#watch');
 		it('RouteURITemplate#listing');
-		it('RouteURITemplate#listing renderString');
+		it('RouteURITemplate#listing render');
 		it('RouteURITemplate#store');
 		it('RouteURITemplate#listDependents', function(){
 			assert(route.listDependents().length);
@@ -47,16 +47,16 @@ describe('RouteURITemplate', function(){
 					var match = this.matchUri(uri);
 					if(!match) return Promise.resolve();
 					if(match.data['name'] === 'foo'){
-						return Promise.resolve(new lib.StringResource(this, {match}));
+						return Promise.resolve(new lib.Resource(this, {match}));
 					}else{
 						return Promise.resolve();
 					}
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = 'Bar\r\n';
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			}));
 		});
@@ -80,16 +80,16 @@ describe('RouteURITemplate', function(){
 				contentType: 'text/plain',
 				prepareMatch: function(match){
 					if(match.data['name'] === 'foo'){
-						return Promise.resolve(new lib.StringResource(this, {match}));
+						return Promise.resolve(new lib.Resource(this, {match}));
 					}else{
 						return Promise.resolve();
 					}
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = 'Bar\r\n';
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			}));
 		});
@@ -140,11 +140,11 @@ describe('RouteURITemplate', function(){
 					return Promise.resolve();
 				},
 				error: function(uri, err){
-					return Promise.resolve(new lib.StringResource(this, {renderString: function(){
-						var res = new lib.MessageHeaders;
+					return Promise.resolve(new lib.Resource(this, {render: function(){
+						var res = new lib.ResponseMessage;
 						res.setHeader('Content-Type', 'text/plain');
 						res.body = `Error: ${err.statusCode}\r\n`;
-						return Promise.resolve(res);
+						return res.stream();
 					}}));
 				},
 			}));
@@ -154,11 +154,11 @@ describe('RouteURITemplate', function(){
 					return Promise.resolve();
 				},
 				error: function(uri, err){
-					return Promise.resolve(new lib.StringResource(this, {renderString: function(){
-						var res = new lib.MessageHeaders;
+					return Promise.resolve(new lib.Resource(this, {render: function(){
+						var res = new lib.ResponseMessage;
 						res.setHeader('Content-Type', 'text/plain');
 						res.body = `Error special case: ${err.statusCode}\r\n`;
-						return Promise.resolve(res);
+						return res.stream();
 					}}));
 				},
 			}));
@@ -169,13 +169,13 @@ describe('RouteURITemplate', function(){
 					var match = this.matchUri(uri);
 					if(!match) return Promise.resolve();
 					if(typeof data[match.data['name']] !== 'string') return Promise.resolve();
-					return Promise.resolve(new lib.StringResource(this, {match}));
+					return Promise.resolve(new lib.Resource(this, {match}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = JSON.stringify(data[resource.params['name']]);
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			}));
 			server.addRoute(lib.Route({
@@ -185,13 +185,13 @@ describe('RouteURITemplate', function(){
 					var match = this.matchUri(uri);
 					if(!match) return Promise.resolve();
 					if(typeof data[match.data['name']] !== 'string') return Promise.resolve();
-					return Promise.resolve(new lib.StringResource(this, {match}));
+					return Promise.resolve(new lib.Resource(this, {match}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = data[resource.params['name']];
-					return Promise.resolve(res);
+					return res.stream();
 				},
 				allocate: function(uri){
 					var match = this.matchUri(uri);

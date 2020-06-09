@@ -147,15 +147,15 @@ URIReflect.prototype.prepare = function prepare(uri){
 	if(uri.uri) uri = uri.uri;
 	// If resourceList is set, then only return resources named in that array
 	if(this.resourceList && this.resourceList.indexOf(uri)<0) return Promise.resolve();
-	return Promise.resolve(new lib.StreamResource(this, {}, {
+	return Promise.resolve(new lib.Resource(this, {}, {
 		uri: uri,
 		contentType: 'text/plain',
 	}));
-}
+};
 URIReflect.prototype.render = function(resource){
 	var res = new PassThrough;
 	res.setHeader('Content-Type', resource.contentType);
 	res.setHeader('Content-Length', resource.uri.length+2+'');
 	res.end(resource.uri+'\r\n');
 	return res;
-}
+};

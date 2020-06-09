@@ -23,13 +23,13 @@ describe('RoutePipeline', function(){
 					if(!match.data.user || match.data.user.length < 4){
 						return Promise.resolve();
 					}
-					return Promise.resolve(new lib.StringResource(this, {match}));
+					return Promise.resolve(new lib.Resource(this, {match}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 				watch: function(cb){
 					var self = this;
@@ -104,7 +104,6 @@ describe('RoutePipeline', function(){
 				assert.equal(values[1], 'root');
 			});
 		});
-		it('RoutePipeline#listing renderString');
 		it('RoutePipeline#store');
 		it('RoutePipeline#listDependents', function(){
 			assert(route.listDependents().length);
@@ -119,13 +118,13 @@ describe('RoutePipeline', function(){
 				contentType: 'text/plain',
 				prepare: function(uri){
 					var match = this.matchUri(uri);
-					return Promise.resolve(new lib.StringResource(this, {match}));
+					return Promise.resolve(new lib.Resource(this, {match}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			});
 			server.addRoute(route);
@@ -144,15 +143,15 @@ describe('RoutePipeline', function(){
 				name: 'Route',
 				contentType: 'text/plain',
 				prepare: function(uri){
-					return Promise.resolve(new lib.StringResource(this, {
+					return Promise.resolve(new lib.Resource(this, {
 						match: this.matchUri(uri),
 					}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			});
 			var route = new lib.RoutePipeline({
@@ -177,15 +176,15 @@ describe('RoutePipeline', function(){
 				name: 'Route',
 				contentType: 'text/plain',
 				prepare: function(uri){
-					return Promise.resolve(new lib.StringResource(this, {
+					return Promise.resolve(new lib.Resource(this, {
 						match: this.matchUri(uri),
 					}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			});
 			var route = new lib.RoutePipeline({
@@ -211,13 +210,13 @@ describe('RoutePipeline', function(){
 				contentType: 'text/plain',
 				prepare: function(uri){
 					var match = this.matchUri(uri);
-					return Promise.resolve(new lib.StringResource(this, {match}));
+					return Promise.resolve(new lib.Resource(this, {match}));
 				},
-				renderString: function(resource){
-					var res = new lib.MessageHeaders;
+				render: function(resource){
+					var res = new lib.ResponseMessage;
 					res.setHeader('Content-Type', resource.contentType);
 					res.body = resource.params.user + "\r\n";
-					return Promise.resolve(res);
+					return res.stream();
 				},
 			});
 			var route = lib.RoutePipeline(gen, PassThrough);
