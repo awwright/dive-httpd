@@ -16,7 +16,7 @@ describe('Meta: Tests exist', function(){
 		assert(methodList.length);
 		assert(interfaceList.length);
 		interfaceList.forEach(function(interfaceName){
-			if(interfaceName==='RouteFilesystem') return;
+			if(interfaceName==='RouteStaticFile') return;
 			methodList.forEach(function(methodName){
 				var expectedTestName = interfaceName+'#'+methodName;
 				function testTest(test){
