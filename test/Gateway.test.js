@@ -36,6 +36,10 @@ describe('Gateway', function(){
 		var app, originServer;
 		before(function(){
 			originServer = http.createServer(function(req, res){
+				// Inject a header for whatever
+				req.rawHeaders.push('Server');
+				req.rawHeaders.push('origin');
+				req.headers['server'] = 'origin';
 				new TraceResource().render(req).pipe(res);
 			}).listen(0);
 			var originAddress = originServer.address();
@@ -58,10 +62,12 @@ describe('Gateway', function(){
 			return testMessage(app, [
 				'GET http://example.com/test-path HTTP/1.1',
 				'Host: example.com',
+				'Max-Forwards: 2',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
 				assert(res.toString().match(/^GET http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
 				assert(res.toString().match(/^Host: example\.com$/im));
+				assert(res.toString().match(/^Max-Forwards: 1$/im));
 			});
 		});
 		it('HEAD', function(){
@@ -70,6 +76,28 @@ describe('Gateway', function(){
 				'Host: example.com',
 			]).then(function(res){
 				assert(res.toString().match(/^HTTP\/1.1 200 /));
+			});
+		});
+		it('TRACE (no forward)', function(){
+			return testMessage(app, [
+				'TRACE http://example.com/test-path HTTP/1.1',
+				'Max-Forwards: 3',
+				'Host: example.com',
+			]).then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert(res.toString().match(/^Max-Forwards: 2$/im));
+				assert(res.toString().match(/^Server: origin$/im));
+			});
+		});
+		it('TRACE', function(){
+			return testMessage(app, [
+				'TRACE http://example.com/test-path HTTP/1.1',
+				'Max-Forwards: 0',
+				'Host: example.com',
+			]).then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert(res.toString().match(/^Max-Forwards: 0$/im));
+				assert(!res.toString().match(/^Server: origin$/im));
 			});
 		});
 		it('POST', function(){
