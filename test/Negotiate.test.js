@@ -247,25 +247,25 @@ describe('Negotiate', function(){
 		var server;
 		before(function(){
 			server = new lib.Application;
-			var r0 = lib.RouteStaticFile({
+			var r0 = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.xhtml',
 				contentType: 'application/xhtml+xml',
 				fileroot: docroot,
 				pathTemplate: "{/path*}.xhtml",
 			});
-			var r1 = lib.RouteStaticFile({
+			var r1 = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'text/html',
 				fileroot: docroot,
 				pathTemplate: "{/path*}.html",
 			});
-			var r2 = lib.RouteStaticFile({
+			var r2 = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.md',
 				contentType: 'text/markdown',
 				fileroot: docroot,
 				pathTemplate: "{/path*}.md",
 			});
-			var r3 = lib.RouteStaticFile({
+			var r3 = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.txt',
 				contentType: 'text/plain',
 				fileroot: docroot,
@@ -339,7 +339,7 @@ describe('Negotiate', function(){
 		var server;
 		before(function(){
 			server = new lib.Application;
-			var r0 = lib.RouteStaticFile({
+			var r0 = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.md',
 				contentType: 'text/markdown',
 				fileroot: docroot,

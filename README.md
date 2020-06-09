@@ -27,17 +27,18 @@ To accomplish this, Dive defines two primary concepts: _resources_ and _routes_.
 
 ### Resources
 
-A resource is an entity identified by a URI, that has a media type and has a body, that exists in a single point in time. There may also be other metadata that describes this resource, like caching information. The contents of the resource need not be stored in memory, the resource just has to know it can get at them if necessary.
+A resource is an entity identified by a URI, that has a media type and contents, as it exists in a single point in time. There may also be other metadata that describes this resource, like caching information. The actual contents of the resource need not be stored in memory; the resource just has to know it can get at them if necessary.
 
-Resources render representations by one of several methods:
-
-* A Node.js ReadableStream - returned by `Resource#render()`
-* an arbitrary value - returned in `Resource#renderValue().value`
+Resources render representations by implementing the `Resource#render()` method, which typically returns a `ServerResponse` stream.
 
 
 ### Routes
 
-A route is an entity that describes a set of resources with a URI Template. The set of resources is usually "the set of all resources of a certain media type and profile, that exist under the authority of this server." For example, the set of HTML documents of blog posts published by this server, or the set of JSON documents describing a Git repository on this server.
+A route describes a set of similar resources, which may vary by various request parameters, like variables matched to a URI Template, or request headers.
+
+For example, a Route may be a set of HTML blog posts, or a set of JSON documents each describing a Git repository.
+
+Resources within a route may vary along zero dimensions; in which case the set will contain exactly one document (by the multiplicative identity).
 
 The resource parameters (the values for the variables in the URI Template) uniquely identify a resource within the route. Formally, resources are always looked up by their URI. Internally for performance, resources are also looked up by their parameters.
 
@@ -46,13 +47,13 @@ Route by itself is an abstract class, there are several broad subclasses of rout
 
 #### Data source routes
 
-First are data sources, which are the lowest level. They map HTTP resources in terms of other resources, for example a filesystem, or a hard-coded document.
+The "lowest level" of Route is a data source. They map HTTP resources in terms of other resources, for example a filesystem, database query, or a hard-coded document.
 
 Data sources use the parameters from the parsed URI to lookup values from a data source. For example, a file by its file path, or a database record by its stringified id.
 
 * `Route` accepts a `prepare` option that can be used to define hard-coded sets of resources
 * `RouteRedirect` always returns a 3xx redirect response
-* `RouteStaticFile` looks up a file on the filesystem
+* `RouteFilesystem` looks up a file on the filesystem
 
 
 #### Transforming routes
@@ -228,10 +229,10 @@ Transform an HTTP request and/or response, e.g. apply a template.
 * new RoutePipeline(options)
 
 
-### RouteStaticFile
+### RouteFilesystem
 
 Generate a response from a file.
 
-* new RouteStaticFile(options)
+* new RouteFilesystem(options)
 
 

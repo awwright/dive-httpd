@@ -11,6 +11,9 @@ describe('Application', function(){
 		beforeEach(function(){
 			route = lib.Application();
 		});
+		after(function(){
+			route = null;
+		});
 		it('Application#label');
 		it('Application#prepare');
 		it('Application#error');
@@ -40,7 +43,7 @@ describe('Application', function(){
 			app.fixedAuthority = 'localhost';
 			app.relaxedHost = true;
 
-			const dir1 = lib.RouteStaticFile({
+			const dir1 = lib.RouteFilesystem({
 				uriTemplate: 'http://localhost/html{/path*}.html',
 				contentType: 'text/html',
 				fileroot: docroot,
@@ -52,7 +55,7 @@ describe('Application', function(){
 			};
 			app.addRoute(dir1);
 
-			const dir2 = lib.RouteStaticFile({
+			const dir2 = lib.RouteFilesystem({
 				uriTemplate: 'http://localhost/markdown{/path*}.md',
 				contentType: 'text/markdown',
 				fileroot: docroot,
@@ -111,7 +114,7 @@ describe('Application', function(){
 			app.fixedAuthority = 'localhost';
 			app.relaxedHost = true;
 
-			const dir1 = lib.RouteStaticFile({
+			const dir1 = lib.RouteFilesystem({
 				uriTemplate: 'http://localhost/html{/path*}.html',
 				contentType: 'text/html',
 				fileroot: docroot,
@@ -123,7 +126,7 @@ describe('Application', function(){
 			};
 			app.addRoute(dir1);
 
-			const dir2 = lib.RouteStaticFile({
+			const dir2 = lib.RouteFilesystem({
 				uriTemplate: 'http://localhost/markdown{/path*}.md',
 				contentType: 'text/markdown',
 				fileroot: docroot,

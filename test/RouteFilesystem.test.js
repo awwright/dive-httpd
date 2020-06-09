@@ -5,58 +5,58 @@ var testMessage = require('./util.js').testMessage;
 var lib = require('../index.js');
 var docroot = __dirname + '/RouteStaticFile-data';
 
-describe('RouteStaticFile', function(){
+describe('RouteFilesystem', function(){
 	describe('interface', function(){
 		var route;
 		beforeEach(function(){
-			route = new lib.RouteStaticFile({
+			route = new lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'text/html',
 				fileroot: __dirname+'/RouteStaticFile-data',
 				pathTemplate: "{/path*}.html",
 			});
 		});
-		it('RouteStaticFile#name', function(){
-			assert.strictEqual(route.name.substring(0,16), 'RouteStaticFile(');
+		it('RouteFilesystem#name', function(){
+			assert.strictEqual(route.name.substring(0,16), 'RouteFilesystem(');
 		});
-		it('RouteStaticFile#label', function(){
-			assert.strictEqual(route.label.substring(0,16), 'RouteStaticFile(');
+		it('RouteFilesystem#label', function(){
+			assert.strictEqual(route.label.substring(0,16), 'RouteFilesystem(');
 		});
-		it('RouteStaticFile#prepare (200)', function(){
+		it('RouteFilesystem#prepare (200)', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert(res instanceof lib.Resource);
 				assert.equal(res.uri, 'http://example.com/data-table.html');
 				assert.equal(res.contentType, 'text/html');
 			});
 		});
-		it('RouteStaticFile#prepare (no file)', function(){
+		it('RouteFilesystem#prepare (no file)', function(){
 			return route.prepare('http://example.com/dne.html').then(function(res){
 				assert(!res);
 			});
 		});
-		it('RouteStaticFile#prepare (no route)', function(){
+		it('RouteFilesystem#prepare (no route)', function(){
 			return route.prepare('http://example.com/dne.txt').then(function(res){
 				assert(!res);
 			});
 		});
-		it('RouteStaticFile#prepare uri', function(){
+		it('RouteFilesystem#prepare uri', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert.strictEqual(res.uri, 'http://example.com/data-table.html');
 			});
 		});
-		it('RouteStaticFile#prepare params', function(){
+		it('RouteFilesystem#prepare params', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert.strictEqual(res.params.path[0], 'data-table');
 				assert.strictEqual(res.params.path.length, 1);
 			});
 		});
-		it('RouteStaticFile#prepare route', function(){
+		it('RouteFilesystem#prepare route', function(){
 			return route.prepare('http://example.com/data-table.html').then(function(res){
 				assert.strictEqual(res.route, route);
 			});
 		});
-		it('RouteStaticFile#error');
-		it('RouteStaticFile#watch', function(){
+		it('RouteFilesystem#error');
+		it('RouteFilesystem#watch', function(){
 			var count = 0;
 			var filePaths = {};
 			function handleEvent(resource){
@@ -69,7 +69,7 @@ describe('RouteStaticFile', function(){
 				assert.equal(Object.keys(filePaths).length, 3);
 			});
 		});
-		it('RouteStaticFile#listing', function(){
+		it('RouteFilesystem#listing', function(){
 			var filePaths = {};
 			return route.listing().then(function(listing){
 				listing.forEach(function(resource){
@@ -78,7 +78,7 @@ describe('RouteStaticFile', function(){
 				assert.equal(Object.keys(filePaths).length, 3);
 			});
 		});
-		it('RouteStaticFile#listing render', function(){
+		it('RouteFilesystem#listing render', function(){
 			var filePaths = {};
 			return route.listing().then(function(listing){
 				return Promise.all(listing.map(function(resource){
@@ -92,11 +92,11 @@ describe('RouteStaticFile', function(){
 				assert.equal(Object.keys(filePaths).length, 3);
 			});
 		});
-		it('RouteStaticFile#store');
-		it('RouteStaticFile#listDependents', function(){
+		it('RouteFilesystem#store');
+		it('RouteFilesystem#listDependents', function(){
 			assert(route.listDependents().length);
 		});
-		it('RouteStaticFile#onReady', function(){
+		it('RouteFilesystem#onReady', function(){
 			return route.onReady;
 		});
 	});
@@ -104,7 +104,7 @@ describe('RouteStaticFile', function(){
 		var server;
 		before(function(){
 			server = new lib.Application;
-			var route = lib.RouteStaticFile({
+			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				fileroot: docroot,
 				pathTemplate: "{/path*}.html",
@@ -158,7 +158,7 @@ describe('RouteStaticFile', function(){
 		var server;
 		before(function(){
 			server = new lib.Application;
-			var route = lib.RouteStaticFile({
+			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'application/xhtml+xml',
 				fileroot: docroot,
@@ -184,7 +184,7 @@ describe('RouteStaticFile', function(){
 		var server;
 		before(function(){
 			server = new lib.Application;
-			var route = lib.RouteStaticFile({
+			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'application/xhtml+xml',
 				fileroot: docroot,
@@ -225,7 +225,7 @@ describe('RouteStaticFile', function(){
 		var server;
 		before(function(){
 			server = new lib.Application;
-			var route = lib.RouteStaticFile({
+			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'application/xhtml+xml',
 				fileroot: docroot,

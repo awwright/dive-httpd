@@ -189,6 +189,7 @@ describe('RouteTemporaryRedirect', function(){
 		});
 		it('RouteTemporaryRedirect#error');
 		it('RouteTemporaryRedirect#watch');
+		it('RouteTemporaryRedirect#listing');
 		it('RouteTemporaryRedirect#store');
 		it('RouteTemporaryRedirect#listDependents');
 	});
@@ -260,6 +261,7 @@ describe('RoutePermanentRedirect', function(){
 		});
 		it('RoutePermanentRedirect#error');
 		it('RoutePermanentRedirect#watch');
+		it('RoutePermanentRedirect#listing');
 		it('RoutePermanentRedirect#store');
 		it('RoutePermanentRedirect#listDependents');
 	});

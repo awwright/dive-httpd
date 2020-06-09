@@ -8,19 +8,19 @@ describe('First', function(){
 		var route;
 		beforeEach(function(){
 			route = lib.First([
-				new lib.RouteStaticFile({
+				new lib.RouteFilesystem({
 					uriTemplate: 'http://example.com{/path*}.html',
 					contentType: 'text/html',
 					fileroot: __dirname+'/RouteStaticFile-data',
 					pathTemplate: "{/path*}.html",
 				}),
-				new lib.RouteStaticFile({
+				new lib.RouteFilesystem({
 					uriTemplate: 'http://example.com{/path*}.xhtml',
 					contentType: 'application/xhtml+xml',
 					fileroot: __dirname+'/RouteStaticFile-data',
 					pathTemplate: "{/path*}.xhtml",
 				}),
-				new lib.RouteStaticFile({
+				new lib.RouteFilesystem({
 					uriTemplate: 'http://example.com{/path*}.txt',
 					contentType: 'text/plain',
 					fileroot: __dirname+'/RouteStaticFile-data',
