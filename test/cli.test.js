@@ -17,4 +17,8 @@ describe("dive-httpd CLI", function(){
 		const sub = await fork('node', [__dirname+'/../bin/dive-httpd.js', __dirname+'/cli-data/app.conf'], {});
 		assert(sub.stdout.toString().match(/^Success$/m));
 	});
+	it('--list-routes app.conf', async function(){
+		const sub = await fork('node', [__dirname+'/../bin/dive-httpd.js', '--list-routes', __dirname+'/cli-data/app.conf'], {});
+		assert(sub.stdout.toString().match(/digraph/i));
+	});
 });

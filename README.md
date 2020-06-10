@@ -70,11 +70,13 @@ Caching routes try to fill from a data source (the cache) first, forwarding the 
 Caching routes are otherwise transparent, and do not perform any transformations on the data or resource URI; they copy the uriTemplate of the inner route exactly.
 
 
-#### Aggregation routes
+#### Collection/Aggregation routes
 
-Aggregation routes generate a fixed resource (or set of resources) from another route.
+An aggregation routes, or simply a Collection, generates resources using the contents of multiple other resources from another route.
 
-Examples of collection indexes include blog archives, file listings, sitemaps, and Atom/RSS feeds.
+Examples of collections include blog archives, file listings, sitemaps, Atom/RSS feeds, and search results.
+
+In its simplest form, it will contain a single resource that links to each resource in a route. In more complicated forms, it may represent a paginated archive, or dynamically generate search results from an index.
 
 
 #### Combination routes
