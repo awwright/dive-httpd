@@ -146,5 +146,16 @@ describe('Gateway', function(){
 				assert(res.toString().match(/^PATCH http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
 			});
 		});
+		it('LOCK', function(){
+			return testMessage(app, [
+				'LOCK http://example.com/test-path HTTP/1.1',
+				'Host: example.com',
+				'Content-Type: text/plain',
+				'Content-Length: 6',
+			], "Body\r\n").then(function(res){
+				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert(res.toString().match(/^LOCK http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
+			});
+		});
 	});
 });
