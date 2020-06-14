@@ -207,8 +207,8 @@ describe('RouteFilesystem', function(){
 				'Host: example.com',
 			]).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 200 /);
-				var.match m = res.toString(), /^Last-Modified:\s+(.*)$/im;
-				assert(m);
+				assert.match(res.toString(), /^Last-Modified:\s+(.*)$/im);
+				const m = res.toString().match(/^Last-Modified:\s+(.*)$/im);
 				return testMessage(server, [
 					'GET /data-table.html HTTP/1.1',
 					'Host: example.com',
@@ -249,6 +249,7 @@ describe('RouteFilesystem', function(){
 			]).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 				assert.match(res.toString(), /^ETag:\s+(".*")$/im);
+				const m = res.toString().match(/^ETag:\s+(".*")$/im);
 				return testMessage(server, [
 					'GET /data-table.html HTTP/1.1',
 					'Host: example.com',

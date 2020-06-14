@@ -134,6 +134,7 @@ describe('RouteURITemplate', function(){
 			data = {
 				doc: 'foo\r\n',
 			};
+			server.debug = true;
 			server.addRoute(lib.Route({
 				uriTemplate: 'http://localhost/{name}',
 				prepare: function(uri){

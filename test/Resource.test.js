@@ -53,7 +53,7 @@ describe('Resource', function(){
 				'GET http://localhost/test-path HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 		it('Error handling (thrown inline)', function(){
@@ -61,7 +61,7 @@ describe('Resource', function(){
 				'GET http://localhost/crash/throw HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 500 /));
+				assert.match(res.toString(), /^HTTP\/1.1 500 /);
 			});
 		});
 		it('Error handling (emitted)', function(){
@@ -69,7 +69,7 @@ describe('Resource', function(){
 				'GET http://localhost/crash/emit HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 500 /));
+				assert.match(res.toString(), /^HTTP\/1.1 500 /);
 			});
 		});
 		it('200 OK', function(){
@@ -77,7 +77,7 @@ describe('Resource', function(){
 				'GET http://localhost/document HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 		it('405 Method Not Allowed', function(){
@@ -86,7 +86,7 @@ describe('Resource', function(){
 				'PUT http://localhost/document HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 405 /));
+				assert.match(res.toString(), /^HTTP\/1.1 405 /);
 			});
 		});
 	});

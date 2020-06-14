@@ -33,6 +33,9 @@ describe('Application', function(){
 				assert.equal(flag, true);
 			});
 		});
+		// If enabled, print full 500 errors to response
+		// A useful feature for automated testing and development
+		it('Application#debug');
 	});
 	describe('Not Found routing', function(){
 		var app;
