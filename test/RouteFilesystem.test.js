@@ -216,7 +216,7 @@ describe('RouteFilesystem', function(){
 				]);
 			}).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 304 /);
-				assert.match(!res.toString(), /^Content-Type:/im);
+				assert.doesNotMatch(res.toString(), /^Content-Type:/im);
 			});
 		});
 	});
@@ -257,7 +257,7 @@ describe('RouteFilesystem', function(){
 				]);
 			}).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 304 /);
-				assert.match(!res.toString(), /^Content-Type:/im);
+				assert.doesNotMatch(res.toString(), /^Content-Type:/im);
 			});
 		});
 	});
