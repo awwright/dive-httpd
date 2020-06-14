@@ -49,7 +49,8 @@ describe('Gateway', function(){
 				remoteHost: originAddress.address,
 				remotePort: originAddress.port,
 			}));
-			app.onError = function handleError(req, err){
+			app.onError = function handleError(req, res, err){
+				console.error(err);
 				throw err;
 			};
 		});
@@ -63,10 +64,10 @@ describe('Gateway', function(){
 				'Host: example.com',
 				'Max-Forwards: 2',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^GET http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
-				assert(res.toString().match(/^Host: example\.com$/im));
-				assert(res.toString().match(/^Max-Forwards: 1$/im));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^GET http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
+				assert.match(res.toString(), /^Host: example\.com$/im);
+				assert.match(res.toString(), /^Max-Forwards: 1$/im);
 			});
 		});
 		it('HEAD', function(){
@@ -74,7 +75,7 @@ describe('Gateway', function(){
 				'HEAD http://example.com/test-path HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 		it('TRACE (forward)', function(){
@@ -83,9 +84,9 @@ describe('Gateway', function(){
 				'Max-Forwards: 3',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^Max-Forwards: 2$/im));
-				assert(res.toString().match(/^Server: origin$/im));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^Max-Forwards: 2$/im);
+				assert.match(res.toString(), /^Server: origin$/im);
 			});
 		});
 		it('TRACE (no forward)', function(){
@@ -94,9 +95,9 @@ describe('Gateway', function(){
 				'Max-Forwards: 0',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^Max-Forwards: 0$/im));
-				assert(!res.toString().match(/^Server: origin$/im));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^Max-Forwards: 0$/im);
+				assert.doesNotMatch(res.toString(), /^Server: origin$/im);
 			});
 		});
 		it('POST', function(){
@@ -106,11 +107,11 @@ describe('Gateway', function(){
 				'Content-Type: text/plain',
 				'Content-Length: 6',
 			], "Body\r\n").then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match('POST http://example.com/test-path HTTP/1.1'));
-				assert(res.toString().match(/^Host: example\.com$/im));
-				assert(res.toString().match(/^Content-Type: text\/plain$/im));
-				assert(res.toString().match(/^Content-Length: 6$/im));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^POST http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
+				assert.match(res.toString(), /^Host: example\.com$/im);
+				assert.match(res.toString(), /^Content-Type: text\/plain$/im);
+				assert.match(res.toString(), /^Content-Length: 6$/im);
 			});
 		});
 		it('PUT', function(){
@@ -120,8 +121,8 @@ describe('Gateway', function(){
 				'Content-Type: text/plain',
 				'Content-Length: 6',
 			], "Body\r\n").then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^PUT http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^PUT http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
 			});
 		});
 		it('DELETE', function(){
@@ -131,8 +132,8 @@ describe('Gateway', function(){
 				'Content-Type: text/plain',
 				'Content-Length: 6',
 			], "Body\r\n").then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^DELETE http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^DELETE http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
 			});
 		});
 		it('PATCH', function(){
@@ -142,8 +143,8 @@ describe('Gateway', function(){
 				'Content-Type: text/plain',
 				'Content-Length: 6',
 			], "Body\r\n").then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^PATCH http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^PATCH http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
 			});
 		});
 		it('LOCK', function(){
@@ -153,8 +154,8 @@ describe('Gateway', function(){
 				'Content-Type: text/plain',
 				'Content-Length: 6',
 			], "Body\r\n").then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^LOCK http:\/\/example\.com\/test-path HTTP\/1\.1$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^LOCK http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
 			});
 		});
 	});

@@ -209,8 +209,8 @@ describe('RouteURITemplate', function(){
 				'GET /dne HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
-				assert(res.toString().match(/^Error: 404$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
+				assert.match(res.toString(), /^Error: 404$/m);
 			});
 		});
 		it('404 Not Found - GET </prefix-dne>', function(){
@@ -218,8 +218,8 @@ describe('RouteURITemplate', function(){
 				'GET /prefix-dne HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
-				assert(res.toString().match(/^Error special case: 404$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
+				assert.match(res.toString(), /^Error special case: 404$/m);
 			});
 		});
 		it('404 Not Found - GET </dne.json>', function(){
@@ -227,8 +227,8 @@ describe('RouteURITemplate', function(){
 				'GET /dne.json HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
-				assert(res.toString().match(/^Error: 404$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
+				assert.match(res.toString(), /^Error: 404$/m);
 			});
 		});
 		it('404 Not Found - GET </dne.txt>', function(){
@@ -236,8 +236,8 @@ describe('RouteURITemplate', function(){
 				'GET /dne.txt HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
-				assert(res.toString().match(/^Error: 404$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
+				assert.match(res.toString(), /^Error: 404$/m);
 			});
 		});
 		it('200 OK - GET </doc.json>', function(){
@@ -245,7 +245,7 @@ describe('RouteURITemplate', function(){
 				'GET /doc.json HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 		it('200 OK - GET </doc.txt>', function(){
@@ -253,7 +253,7 @@ describe('RouteURITemplate', function(){
 				'GET /doc.txt HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 		it('404 Not Found - PUT </doc>', function(){
@@ -263,8 +263,8 @@ describe('RouteURITemplate', function(){
 				'PUT /dne HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
-				assert(res.toString().match(/^Error: 404$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
+				assert.match(res.toString(), /^Error: 404$/m);
 			});
 		});
 		it('405 Method Not Allowed - PUT </doc.json>', function(){
@@ -272,7 +272,7 @@ describe('RouteURITemplate', function(){
 				'PUT /doc.json HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 		it('200 OK - PUT </doc.txt>', function(){
@@ -280,7 +280,7 @@ describe('RouteURITemplate', function(){
 				'PUT /doc.txt HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 	});

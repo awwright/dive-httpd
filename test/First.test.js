@@ -70,15 +70,6 @@ describe('First', function(){
 				// assert.strictEqual(res.route, route);
 			});
 		});
-		it('First#prepare renderStream', function(){
-			return route.prepare('http://example.com/data-table.html').then(function(res){
-				var stream = res.render();
-				assert(stream.pipe);
-				return stream.headersReady.then(function(){ return stream; });
-			}).then(function(buf){
-				// assert.equal(buf.statusCode, 200);
-			});
-		});
 		it('First#error');
 		it('First#watch', function(){
 			var fileCount = 0;

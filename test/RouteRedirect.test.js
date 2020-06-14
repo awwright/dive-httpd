@@ -61,8 +61,8 @@ describe('RouteRedirect', function(){
 				'GET /~root HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 300 /));
-				assert(res.toString().match(/^Location: http:\/\/www\.example\.com\/~root$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 300 /);
+				assert.match(res.toString(), /^Location: http:\/\/www\.example\.com\/~root$/m);
 			});
 		});
 		it('static file that does not exist (origin-form)', function(){
@@ -70,7 +70,7 @@ describe('RouteRedirect', function(){
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 	});
@@ -133,8 +133,8 @@ describe('RouteSeeOther', function(){
 				'GET /~root HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 303 /));
-				assert(res.toString().match(/^Location: http:\/\/www\.example\.com\/~root$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 303 /);
+				assert.match(res.toString(), /^Location: http:\/\/www\.example\.com\/~root$/m);
 			});
 		});
 		it('static file that does not exist (origin-form)', function(){
@@ -142,7 +142,7 @@ describe('RouteSeeOther', function(){
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 	});
@@ -205,8 +205,8 @@ describe('RouteTemporaryRedirect', function(){
 				'GET /~root HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 307 /));
-				assert(res.toString().match(/^Location: http:\/\/www\.example\.com\/~root$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 307 /);
+				assert.match(res.toString(), /^Location: http:\/\/www\.example\.com\/~root$/m);
 			});
 		});
 		it('static file that does not exist (origin-form)', function(){
@@ -214,7 +214,7 @@ describe('RouteTemporaryRedirect', function(){
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 	});
@@ -277,8 +277,8 @@ describe('RoutePermanentRedirect', function(){
 				'GET /~root HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 308 /));
-				assert(res.toString().match(/^Location: http:\/\/www\.example\.com\/~root$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 308 /);
+				assert.match(res.toString(), /^Location: http:\/\/www\.example\.com\/~root$/m);
 			});
 		});
 		it('static file that does not exist (origin-form)', function(){
@@ -286,7 +286,7 @@ describe('RoutePermanentRedirect', function(){
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 	});

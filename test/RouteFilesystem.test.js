@@ -117,7 +117,7 @@ describe('RouteFilesystem', function(){
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 		it('static file that does not exist (origin-form)', function(){
@@ -125,7 +125,7 @@ describe('RouteFilesystem', function(){
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 		it('static file that exists (absolute-form)', function(){
@@ -133,7 +133,7 @@ describe('RouteFilesystem', function(){
 				'GET http://example.com/data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 			});
 		});
 		it('static file that does not exist (absolute-form)', function(){
@@ -141,7 +141,7 @@ describe('RouteFilesystem', function(){
 				'GET http://example.com/some-path-that-does-not-exist HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 		it('static file base path jail', function(){
@@ -149,7 +149,7 @@ describe('RouteFilesystem', function(){
 				'GET http://example.com/../listen.test.js HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 	});
@@ -174,8 +174,8 @@ describe('RouteFilesystem', function(){
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^Link: <file:\/\/[^>]+\/data-table.html>;rel="tag:awwright\.github\.io,2019:dive-httpd\/source"/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^Link: <file:\/\/[^>]+\/data-table.html>;rel="tag:awwright\.github\.io,2019:dive-httpd\/source"/m);
 			});
 		});
 	});
@@ -197,8 +197,8 @@ describe('RouteFilesystem', function(){
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^Last-Modified:\s+(.*)$/im));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^Last-Modified:\s+(.*)$/im);
 			});
 		});
 		it('initial request then freshen request', function(){
@@ -206,8 +206,8 @@ describe('RouteFilesystem', function(){
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				var m = res.toString().match(/^Last-Modified:\s+(.*)$/im);
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				var.match m = res.toString(), /^Last-Modified:\s+(.*)$/im;
 				assert(m);
 				return testMessage(server, [
 					'GET /data-table.html HTTP/1.1',
@@ -215,8 +215,8 @@ describe('RouteFilesystem', function(){
 					'If-Modified-Since: '+m[1],
 				]);
 			}).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 304 /));
-				assert(!res.toString().match(/^Content-Type:/im));
+				assert.match(res.toString(), /^HTTP\/1.1 304 /);
+				assert.match(!res.toString(), /^Content-Type:/im);
 			});
 		});
 	});
@@ -238,8 +238,8 @@ describe('RouteFilesystem', function(){
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^ETag:\s+(.*)$/im));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^ETag:\s+(.*)$/im);
 			});
 		});
 		it('initial request then freshen request', function(){
@@ -247,17 +247,16 @@ describe('RouteFilesystem', function(){
 				'GET /data-table.html HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				var m = res.toString().match(/^ETag:\s+(".*")$/im);
-				assert(m);
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^ETag:\s+(".*")$/im);
 				return testMessage(server, [
 					'GET /data-table.html HTTP/1.1',
 					'Host: example.com',
 					'If-None-Match: '+m[1],
 				]);
 			}).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 304 /));
-				assert(!res.toString().match(/^Content-Type:/im));
+				assert.match(res.toString(), /^HTTP\/1.1 304 /);
+				assert.match(!res.toString(), /^Content-Type:/im);
 			});
 		});
 	});

@@ -132,8 +132,8 @@ describe('RoutePipeline', function(){
 				'GET http://example.com/~root HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^root$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^root$/m);
 			});
 		});
 		it('Base file piped through PassThrough works', function(){
@@ -165,8 +165,8 @@ describe('RoutePipeline', function(){
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^root$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^root$/m);
 			});
 		});
 		it('Base file piped through ToJSONTransform works', function(){
@@ -198,8 +198,8 @@ describe('RoutePipeline', function(){
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^"root\\r\\n"$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^"root\\r\\n"$/m);
 			});
 		});
 		it('Two-argument style with PassThrough', function(){
@@ -226,8 +226,8 @@ describe('RoutePipeline', function(){
 				'GET http://example.com/~root.json HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^root$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^root$/m);
 			});
 		});
 	});

@@ -72,7 +72,7 @@ describe('Application', function(){
 				'GET /some-path-that-does-not-exist HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
 			});
 		});
 		it('/markdown/document.md', function(){
@@ -80,8 +80,8 @@ describe('Application', function(){
 				'GET /markdown/document.md HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^Content-Type: text\/markdown$/m));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^Content-Type: text\/markdown$/m);
 			});
 		});
 		it('/html/document.html', function(){
@@ -89,9 +89,9 @@ describe('Application', function(){
 				'GET /html/document.html HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 200 /));
-				assert(res.toString().match(/^Content-Type: text\/html$/m));
-				assert(res.toString().match(/A document/));
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^Content-Type: text\/html$/m);
+				assert.match(res.toString(), /A document/);
 			});
 		});
 		it('/html/does-not-exist.html', function(){
@@ -99,9 +99,9 @@ describe('Application', function(){
 				'GET /html/does-not-exist.html HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
-				assert(res.toString().match(/^HTTP\/1.1 404 /));
-				assert(res.toString().match(/^Content-Type: text\/html$/m));
-				assert(res.toString().match(/Homepage/m));
+				assert.match(res.toString(), /^HTTP\/1.1 404 /);
+				assert.match(res.toString(), /^Content-Type: text\/html$/m);
+				assert.match(res.toString(), /Homepage/m);
 			});
 		});
 	});
@@ -144,7 +144,7 @@ describe('Application', function(){
 					'GET /some-path-that-does-not-exist HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 404 /));
+					assert.match(res.toString(), /^HTTP\/1.1 404 /);
 				});
 			});
 			it('TRACE (Max-Forwards: 0)', function(){
@@ -154,8 +154,8 @@ describe('Application', function(){
 					'Host: localhost',
 					'Max-Forwards: 0',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 200 /));
-					assert(res.toString().match(/^Max-Forwards: 0$/im));
+					assert.match(res.toString(), /^HTTP\/1.1 200 /);
+					assert.match(res.toString(), /^Max-Forwards: 0$/im);
 				});
 			});
 			it('TRACE (to origin)', function(){
@@ -164,7 +164,7 @@ describe('Application', function(){
 					'TRACE /some-path-that-does-not-exist HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 404 /));
+					assert.match(res.toString(), /^HTTP\/1.1 404 /);
 				});
 			});
 		});
@@ -174,8 +174,8 @@ describe('Application', function(){
 					'GET /markdown/document.md HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 200 /));
-					assert(res.toString().match(/^Content-Type: text\/markdown$/m));
+					assert.match(res.toString(), /^HTTP\/1.1 200 /);
+					assert.match(res.toString(), /^Content-Type: text\/markdown$/m);
 				});
 			});
 			it('TRACE (to origin)', function(){
@@ -183,9 +183,9 @@ describe('Application', function(){
 					'TRACE /markdown/document.md HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 200 /));
-					assert(res.toString().match(/^Content-Type: message\/http$/m));
-					assert(res.toString().match(/^Host: localhost$/m));
+					assert.match(res.toString(), /^HTTP\/1.1 200 /);
+					assert.match(res.toString(), /^Content-Type: message\/http$/m);
+					assert.match(res.toString(), /^Host: localhost$/m);
 				});
 			});
 		});
@@ -195,9 +195,9 @@ describe('Application', function(){
 					'GET /html/document.html HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 200 /));
-					assert(res.toString().match(/^Content-Type: text\/html$/m));
-					assert(res.toString().match(/A document/));
+					assert.match(res.toString(), /^HTTP\/1.1 200 /);
+					assert.match(res.toString(), /^Content-Type: text\/html$/m);
+					assert.match(res.toString(), /A document/);
 				});
 			});
 			it('TRACE (to origin)', function(){
@@ -205,9 +205,9 @@ describe('Application', function(){
 					'TRACE /html/document.html HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 200 /));
-					assert(res.toString().match(/^Content-Type: message\/http$/m));
-					assert(res.toString().match(/^Host: localhost$/m));
+					assert.match(res.toString(), /^HTTP\/1.1 200 /);
+					assert.match(res.toString(), /^Content-Type: message\/http$/m);
+					assert.match(res.toString(), /^Host: localhost$/m);
 				});
 			});
 		});
@@ -217,9 +217,9 @@ describe('Application', function(){
 					'GET /html/does-not-exist.html HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 404 /));
-					assert(res.toString().match(/^Content-Type: text\/html$/m));
-					assert(res.toString().match(/Homepage/m));
+					assert.match(res.toString(), /^HTTP\/1.1 404 /);
+					assert.match(res.toString(), /^Content-Type: text\/html$/m);
+					assert.match(res.toString(), /Homepage/m);
 				});
 			});
 			it('TRACE (to origin)', function(){
@@ -227,9 +227,9 @@ describe('Application', function(){
 					'TRACE /html/does-not-exist.html HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert(res.toString().match(/^HTTP\/1.1 200 /));
-					assert(res.toString().match(/^Content-Type: message\/http$/m));
-					assert(res.toString().match(/^Host: localhost$/m));
+					assert.match(res.toString(), /^HTTP\/1.1 200 /);
+					assert.match(res.toString(), /^Content-Type: message\/http$/m);
+					assert.match(res.toString(), /^Host: localhost$/m);
 				});
 			});
 		});

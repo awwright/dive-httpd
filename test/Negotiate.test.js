@@ -279,10 +279,10 @@ describe('Negotiate', function(){
 				'GET http://example.com/document HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				// assert(res.toString().match(/Content-Type: text\/html/));
-				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
-				// assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				// assert.match(res.toString(), /Content-Type: text\/html/);
+				// assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.html/);
+				// assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('text/html preference', function(){
@@ -291,10 +291,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: text/html',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				assert(res.toString().match(/Content-Type: text\/html/));
-				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
-				assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: text\/html/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.html/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('application/xhtml+xml preference', function(){
@@ -303,10 +303,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: application/xhtml+xml',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				assert(res.toString().match(/Content-Type: application\/xhtml\+xml/));
-				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.xhtml/));
-				assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: application\/xhtml\+xml/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.xhtml/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('text/markdown preference', function(){
@@ -315,10 +315,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: text/markdown',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				assert(res.toString().match(/Content-Type: text\/markdown/));
-				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
-				assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: text\/markdown/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.md/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('text/plain (no document)', function(){
@@ -328,10 +328,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: text/plain, text/markdown;q=0.50',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				assert(res.toString().match(/Content-Type: text\/markdown/));
-				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
-				assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: text\/markdown/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.md/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 	});
@@ -359,10 +359,10 @@ describe('Negotiate', function(){
 				'GET http://example.com/document HTTP/1.1',
 				'Host: example.com',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				// assert(res.toString().match(/Content-Type: text\/html/));
-				// assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.html/));
-				// assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				// assert.match(res.toString(), /Content-Type: text\/html/);
+				// assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.html/);
+				// assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('text/markdown preference', function(){
@@ -371,10 +371,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: text/markdown',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				assert(res.toString().match(/Content-Type: text\/markdown/));
-				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.md/));
-				assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: text\/markdown/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.md/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('application/json preference', function(){
@@ -383,10 +383,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: application/json',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				assert(res.toString().match(/Content-Type: application\/json/));
-				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.json/));
-				assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: application\/json/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.json/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('multiple preference', function(){
@@ -396,10 +396,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 				'Accept: text/markdown;q=0.50, application/json',
 			]).then(function(res){
-				assert(res.toString().match(/HTTP\/1.1 200 /));
-				assert(res.toString().match(/Content-Type: application\/json/));
-				assert(res.toString().match(/Content-Location: http:\/\/example.com\/document.json/));
-				assert(res.toString().match(/Vary: Accept/));
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: application\/json/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.json/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 	});
