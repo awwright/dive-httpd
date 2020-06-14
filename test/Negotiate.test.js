@@ -246,7 +246,7 @@ describe('Negotiate', function(){
 	describe('Multiple variants (files)', function(){
 		var server;
 		before(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			var r0 = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.xhtml',
 				contentType: 'application/xhtml+xml',
@@ -338,7 +338,7 @@ describe('Negotiate', function(){
 	describe('Multiple variants (pipeline)', function(){
 		var server;
 		before(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			var r0 = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.md',
 				contentType: 'text/markdown',

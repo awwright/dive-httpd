@@ -12,7 +12,7 @@ describe('RoutePipeline', function(){
 	describe('interface', function(){
 		var server, route;
 		beforeEach(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			var list = [ {user:'root'}, {user:'guest'} ];
 			var gen = lib.Route({
 				uriTemplate: 'http://example.com/~{user}',
@@ -111,7 +111,7 @@ describe('RoutePipeline', function(){
 	});
 	describe('Pipeline variants', function(){
 		it('Baseline', function(){
-			var server = new lib.Application;
+			var server = new lib.Application({debug:true});
 			var route = lib.Route({
 				uriTemplate: 'http://example.com/~{user}',
 				name: 'Route',
@@ -137,7 +137,7 @@ describe('RoutePipeline', function(){
 			});
 		});
 		it('Base file piped through PassThrough works', function(){
-			var server = new lib.Application;
+			var server = new lib.Application({debug:true});
 			var gen = lib.Route({
 				uriTemplate: 'http://example.com/~{user}',
 				name: 'Route',
@@ -170,7 +170,7 @@ describe('RoutePipeline', function(){
 			});
 		});
 		it('Base file piped through ToJSONTransform works', function(){
-			var server = new lib.Application;
+			var server = new lib.Application({debug:true});
 			var gen = lib.Route({
 				uriTemplate: 'http://example.com/~{user}',
 				name: 'Route',
@@ -203,7 +203,7 @@ describe('RoutePipeline', function(){
 			});
 		});
 		it('Two-argument style with PassThrough', function(){
-			var server = new lib.Application;
+			var server = new lib.Application({debug:true});
 			var gen = lib.Route({
 				uriTemplate: 'http://example.com/~{user}',
 				name: 'Route',

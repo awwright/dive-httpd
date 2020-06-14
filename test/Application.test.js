@@ -41,7 +41,7 @@ describe('Application', function(){
 		var app;
 		before(function(){
 			const docroot = __dirname + '/RouteStaticFile-data';
-			app = new lib.Application;
+			app = new lib.Application({debug:true});
 			app.fixedScheme = 'http';
 			app.fixedAuthority = 'localhost';
 			app.relaxedHost = true;
@@ -112,7 +112,7 @@ describe('Application', function(){
 		var app;
 		before(function(){
 			const docroot = __dirname + '/RouteStaticFile-data';
-			app = new lib.Application;
+			app = new lib.Application({debug:true});
 			app.fixedScheme = 'http';
 			app.fixedAuthority = 'localhost';
 			app.relaxedHost = true;

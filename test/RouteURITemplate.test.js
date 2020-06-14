@@ -130,7 +130,7 @@ describe('RouteURITemplate', function(){
 	describe('app', function(){
 		var server, data;
 		before(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			data = {
 				doc: 'foo\r\n',
 			};

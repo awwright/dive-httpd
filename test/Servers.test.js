@@ -20,7 +20,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 	describe('Effective Request URI', function(){
 		describe('no options', function(){
 			it('origin-form', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
 				var server = http.createServer(listener.callback());
@@ -33,7 +33,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('origin-form, no Host', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
 				var server = http.createServer(listener.callback());
@@ -44,7 +44,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('origin-form, multiple Host headers', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
 				var server = http.createServer(listener.callback());
@@ -57,7 +57,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
 				var server = http.createServer(listener.callback());
@@ -70,7 +70,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, no Host', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
 				var server = http.createServer(listener.callback());
@@ -81,7 +81,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, no Host, relaxedHost', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.relaxedHost = true;
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
@@ -94,7 +94,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, multiple Host headers', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
 				var server = http.createServer(listener.callback());
@@ -109,7 +109,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 		});
 		describe('fixed scheme', function(){
 			it('origin-form', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedScheme = 'ftp';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -121,7 +121,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('origin-form, no Host', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedScheme = 'ftp';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -131,7 +131,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('origin-form, multiple Host headers', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedScheme = 'ftp';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -143,7 +143,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedScheme = 'ftp';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -155,7 +155,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, no Host', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedScheme = 'ftp';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -165,7 +165,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, no Host, relaxedHost', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedScheme = 'ftp';
 				app.relaxedHost = true;
 				app.addRoute(new URIReflect('{+uri}'));
@@ -177,7 +177,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, no Host, relaxedHost', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedScheme = 'ftp';
 				app.relaxedHost = true;
 				app.addRoute(new URIReflect('{+uri}'));
@@ -191,7 +191,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 		});
 		describe('fixed authority', function(){
 			it('origin-form', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedAuthority = 'example.com';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -203,7 +203,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('origin-form, no Host', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedAuthority = 'example.com';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -213,7 +213,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('origin-form, multiple Host headers', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedAuthority = 'example.com';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -225,7 +225,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedAuthority = 'example.com';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -237,7 +237,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, no Host', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedAuthority = 'example.com';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [
@@ -247,7 +247,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, no Host, relaxedHost', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedAuthority = 'example.com';
 				app.relaxedHost = true;
 				app.addRoute(new URIReflect('{+uri}'));
@@ -259,7 +259,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				});
 			});
 			it('absolute-form, multiple Host headers', function(){
-				var app = new lib.Application;
+				var app = new lib.Application({debug:true});
 				app.fixedAuthority = 'example.com';
 				app.addRoute(new URIReflect('{+uri}'));
 				return testMessage(app, [

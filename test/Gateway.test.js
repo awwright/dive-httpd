@@ -43,7 +43,7 @@ describe('Gateway', function(){
 			}).listen(0);
 			var originAddress = originServer.address();
 
-			app = new lib.Application;
+			app = new lib.Application({debug:true});
 			app.addRoute(lib.Gateway({
 				uriTemplate: 'http://example.com/{+foo}',
 				remoteHost: originAddress.address,

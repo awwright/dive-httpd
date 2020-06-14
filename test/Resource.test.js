@@ -9,7 +9,7 @@ describe('Resource', function(){
 	describe('app', function(){
 		var app;
 		before(function(){
-			app = new lib.Application;
+			app = new lib.Application({debug:true});
 			app.addRoute(new lib.Route({
 				uriTemplate: 'http://localhost/document',
 				prepare: function(){

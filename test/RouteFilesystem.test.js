@@ -103,7 +103,7 @@ describe('RouteFilesystem', function(){
 	describe('static file', function(){
 		var server;
 		before(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				fileroot: docroot,
@@ -157,7 +157,7 @@ describe('RouteFilesystem', function(){
 	describe('static file (with link to file: URI)', function(){
 		var server;
 		before(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'application/xhtml+xml',
@@ -183,7 +183,7 @@ describe('RouteFilesystem', function(){
 	describe('If-Modified-Since', function(){
 		var server;
 		before(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'application/xhtml+xml',
@@ -224,7 +224,7 @@ describe('RouteFilesystem', function(){
 	describe('If-None-Match', function(){
 		var server;
 		before(function(){
-			server = new lib.Application;
+			server = new lib.Application({debug:true});
 			var route = lib.RouteFilesystem({
 				uriTemplate: 'http://example.com{/path*}.html',
 				contentType: 'application/xhtml+xml',
