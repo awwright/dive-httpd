@@ -159,4 +159,65 @@ describe('Gateway', function(){
 			});
 		});
 	});
+	describe('Max-Forwards', function(){
+		var app, gatewayServer, originServer;
+		before(function(){
+			originServer = http.createServer(function(req, res){
+				// Inject a header to see if we actually hit the origin or not
+				req.rawHeaders.push('Server');
+				req.rawHeaders.push('origin');
+				req.headers['server'] = 'origin';
+				new TraceResource().render(req).pipe(res);
+			}).listen(0);
+			var originAddress = originServer.address();
+
+			var gatewayApp = new lib.Application({debug:true});
+			gatewayApp.addRoute(lib.Gateway({
+				uriTemplate: 'http://example.com/{+foo}',
+				remoteHost: originAddress.address,
+				remotePort: originAddress.port,
+			}));
+			gatewayApp.onError = function handleError(req, err){ throw err; };
+			gatewayServer = http.createServer(new lib.HTTPServer(gatewayApp).callback()).listen(0);
+			var gatewayAddress = gatewayServer.address();
+
+			app = new lib.Application({debug:true});
+			app.addRoute(lib.Gateway({
+				uriTemplate: 'http://example.com/{+foo}',
+				remoteHost: gatewayAddress.address,
+				remotePort: gatewayAddress.port,
+			}));
+			app.onError = function handleError(req, err){
+				throw err;
+			};
+		});
+		after(function(){
+			gatewayServer.close();
+			originServer.close();
+		});
+		it('TRACE Max-Forwards: 2', function(){
+			return testMessage(app, [
+				'TRACE http://example.com/test-path HTTP/1.1',
+				'Host: example.com',
+				'Max-Forwards: 2',
+			]).then(function(res){
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^TRACE http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
+				assert.match(res.toString(), /^Host: example\.com$/im);
+				assert.match(res.toString(), /^Server: origin$/im);
+			});
+		});
+		it('TRACE Max-Forwards: 1', function(){
+			return testMessage(app, [
+				'TRACE http://example.com/test-path HTTP/1.1',
+				'Host: example.com',
+				'Max-Forwards: 1',
+			]).then(function(res){
+				assert.match(res.toString(), /^HTTP\/1.1 200 /);
+				assert.match(res.toString(), /^TRACE http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
+				assert.match(res.toString(), /^Host: example\.com$/im);
+				assert.doesNotMatch(res.toString(), /^Server: origin$/im);
+			});
+		});
+	});
 });
