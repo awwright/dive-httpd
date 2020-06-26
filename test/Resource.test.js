@@ -62,6 +62,7 @@ describe('Resource', function(){
 				'Host: localhost',
 			]).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 500 /);
+				assert.match(res.toString(), /Boom/);
 			});
 		});
 		it('Error handling (emitted)', function(){
@@ -70,6 +71,7 @@ describe('Resource', function(){
 				'Host: localhost',
 			]).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 500 /);
+				assert.match(res.toString(), /Test/);
 			});
 		});
 		it('200 OK', function(){
