@@ -9,11 +9,15 @@ module.exports.First = require('./lib/First.js').First;
 
 module.exports.TemplateRouter = require('uri-template-router');
 
-module.exports.ServerResponseTransform = require('http-transform').ServerResponseTransform;
-module.exports.PassThrough = require('http-transform').PassThrough;
+module.exports.ResponseTransform = require('http-transform').ResponseTransform;
+module.exports.ResponsePassThrough = require('http-transform').ResponsePassThrough;
+// Old forms
+module.exports.ServerResponseTransform = require('http-transform').ResponseTransform;
+module.exports.PassThrough = require('http-transform').ResponsePassThrough;
 
 module.exports.Resource = require('./lib/Resource.js').Resource;
 module.exports.ResponseMessage = require('./lib/ResponseMessage.js').ResponseMessage;
+module.exports.errors = require('./lib/Error.js').errors;
 
 module.exports.Route = require('./lib/Route.js').Route;
 module.exports.RoutePipeline = require('./lib/RoutePipeline.js').RoutePipeline;

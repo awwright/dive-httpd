@@ -89,6 +89,21 @@ Finally, there are combination routes, which defines a set in terms of multiple 
 
 Combination routes do not read parameters from the parsed URI, though they may still have an associated URI Template that's used by transforming routes.
 
+### Error Handling
+
+Errors may be emitted from several sources:
+
+* If no Route claims a URI, this generates a NotFound error.
+* If the Resource cannot handle the requested HTTP method, the default `handle` implementation will generate a MethodNotAllowed error.
+* ECMAScript thrown Errors, rejected Promises, or an "error" event on a stream generates a 500 Internal Server Error
+* User errors that specify 4xx status code, for example, to signal an invalid payload
+
+To handle an error, the following search path is used:
+
+* If the error was emitted by a Resource, it will render a response using Resource#error if it exists. Otherwise, the error will be thrown up to the router.
+* Route#error will be tested.
+* Application#onError is called
+* The error will be dumped as text/plain; stack will be written if Application#debug is true.
 
 ## API
 
@@ -104,6 +119,13 @@ Combination routes do not read parameters from the parsed URI, though they may s
 * lastModified - the Last-Modified date
 * methods - array of custom methods this resource recognizes
 * render(req) - stream the contents of this resource
+* handle(req) - the default implementation calls render/post/del etc. as appropriate.
+* post(req) - process the incoming stream, and generate a response to it
+* del(req) - disassociate the URI from the underlying resource, i.e. delete the resource
+* patch(req) - apply the specified modification to the resource
+* trace(req) - Handle a TRACE request; the default does need to be changed unless the request is being forwarded over the network.
+* custom(req) - called for HTTP methods specified in `methods` not handled by one of the above
+* error(err) - resolves to another Resource object that will handle the given Error `err`. May be left undefined. See "Error Handling" above.
 
 The `req` parameter (used in the render functions) is similar to IncomingMessage, and uses the following properties:
 
