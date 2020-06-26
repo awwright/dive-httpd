@@ -112,7 +112,7 @@ function testMessage(serverOptions, message, body){
 }
 
 exports.ToJSONTransform = ToJSONTransform;
-inherits(ToJSONTransform, lib.ServerResponseTransform);
+inherits(ToJSONTransform, lib.ResponseTransform);
 function ToJSONTransform(){
 	if(!(this instanceof ToJSONTransform)) return new ToJSONTransform();
 	ServerResponseTransform.call(this);

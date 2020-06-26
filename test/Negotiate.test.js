@@ -3,9 +3,9 @@
 var assert = require('assert');
 
 var testMessage = require('./util.js').testMessage;
-var ToJSONTransform = require('./util.js').ToJSONTransform;
 
 var lib = require('../index.js');
+const { ResponsePassThrough } = require('http-transform');
 var docroot = __dirname + '/RouteStaticFile-data';
 
 describe('Negotiate', function(){
@@ -345,10 +345,18 @@ describe('Negotiate', function(){
 				fileroot: docroot,
 				pathTemplate: "{/path*}.md",
 			});
-			var r1 = new lib.RoutePipeline({
+			var r1 = new lib.Route({
 				uriTemplate: 'http://example.com{/path*}.json',
 				contentType: 'application/json',
-				outboundTransform: ToJSONTransform,
+				render: function(resource, req){
+					const res = new ResponsePassThrough;
+					resource.inner.render(req).headersReady.then(function(inner){
+						inner.pipe(res);
+						res.setHeader('Content-Type', resource.contentType);
+						res.flushHeaders(); // Lock the headers
+					});
+					return res.clientReadableSide;
+				},
 				innerRoute: r0,
 			});
 			var route = lib.Negotiate('http://example.com{/path*}', [r0, r1]);
@@ -373,7 +381,7 @@ describe('Negotiate', function(){
 			]).then(function(res){
 				assert.match(res.toString(), /HTTP\/1.1 200 /);
 				assert.match(res.toString(), /Content-Type: text\/markdown/);
-				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.md/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document\.md/);
 				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
@@ -385,11 +393,24 @@ describe('Negotiate', function(){
 			]).then(function(res){
 				assert.match(res.toString(), /HTTP\/1.1 200 /);
 				assert.match(res.toString(), /Content-Type: application\/json/);
-				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.json/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document\.json/);
 				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
-		it('multiple preference', function(){
+		it('text/markdown preference with others', function(){
+			// There's no text/plain variant, so expect something else
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+				'Accept: application/json;q=0.50, text/markdown',
+			]).then(function(res){
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: text\/markdown/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document\.md/);
+				assert.match(res.toString(), /Vary: Accept/);
+			});
+		});
+		it('application/json preference with others', function(){
 			// There's no text/plain variant, so expect something else
 			return testMessage(server, [
 				'GET http://example.com/document HTTP/1.1',
@@ -398,7 +419,7 @@ describe('Negotiate', function(){
 			]).then(function(res){
 				assert.match(res.toString(), /HTTP\/1.1 200 /);
 				assert.match(res.toString(), /Content-Type: application\/json/);
-				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.json/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document\.json/);
 				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
