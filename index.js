@@ -15,7 +15,8 @@ module.exports.ResponsePassThrough = require('http-transform').ResponsePassThrou
 module.exports.ServerResponseTransform = require('http-transform').ResponseTransform;
 module.exports.PassThrough = require('http-transform').ResponsePassThrough;
 
-module.exports.Resource = require('./lib/Resource.js').Resource;
+module.exports.Resource = require('./lib/Route.js').Resource;
+module.exports.TraceResource = require('./lib/Route.js').TraceResource;
 module.exports.ResponseMessage = require('./lib/ResponseMessage.js').ResponseMessage;
 module.exports.errors = require('./lib/Error.js').errors;
 

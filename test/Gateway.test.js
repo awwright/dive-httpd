@@ -5,7 +5,6 @@ var assert = require('assert');
 
 var testMessage = require('../../dive-httpd/test/util.js').testMessage;
 var lib = require('../../dive-httpd/index.js');
-var TraceResource = require('../lib/Resource.js').TraceResource;
 
 describe('Gateway', function(){
 	describe('interface', function(){
@@ -39,7 +38,7 @@ describe('Gateway', function(){
 				req.rawHeaders.push('Server');
 				req.rawHeaders.push('origin');
 				req.headers['server'] = 'origin';
-				new TraceResource().render(req).pipe(res);
+				new lib.TraceResource().render(req).pipe(res);
 			}).listen(0);
 			var originAddress = originServer.address();
 
@@ -167,7 +166,7 @@ describe('Gateway', function(){
 				req.rawHeaders.push('Server');
 				req.rawHeaders.push('origin');
 				req.headers['server'] = 'origin';
-				new TraceResource().render(req).pipe(res);
+				new lib.TraceResource().render(req).pipe(res);
 			}).listen(0);
 			var originAddress = originServer.address();
 
