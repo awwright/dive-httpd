@@ -345,7 +345,7 @@ describe('Negotiate', function(){
 				fileroot: docroot,
 				pathTemplate: "{/path*}.md",
 			});
-			var r1 = new lib.Route({
+			var r1 = new lib.TransformRoute({
 				uriTemplate: 'http://example.com{/path*}.json',
 				contentType: 'application/json',
 				render: function(resource, req){

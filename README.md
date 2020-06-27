@@ -62,6 +62,8 @@ Second are transforming routes, which defines a set of resources in terms of a 1
 
 Transforming routes use the parameters from the parsed URI to fill in the URI template from an underlying set. For example, an HTML template might provide a set of HTML documents at `http://localhost/{file}.html`, the `file` variable will be extracted and filled in to find the equivalent JSON document at `http://localhost/{file}.json`.
 
+Transforming routes are easily created with `new TransformRoute(opts, innerRoute)`.
+
 
 #### Caching routes
 

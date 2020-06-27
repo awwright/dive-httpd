@@ -21,6 +21,8 @@ module.exports.ResponseMessage = require('./lib/ResponseMessage.js').ResponseMes
 module.exports.errors = require('./lib/Error.js').errors;
 
 module.exports.Route = require('./lib/Route.js').Route;
+module.exports.TransformRoute = require('./lib/TransformRoute.js').TransformRoute;
+
 module.exports.RouteFilesystem = require('./lib/RouteFilesystem.js').RouteFilesystem;
 module.exports.RouteStaticFile = require('./lib/RouteFilesystem.js').RouteFilesystem; // old name
 module.exports.RouteLocalReference = require('./lib/RouteLocalReference.js').RouteLocalReference;
