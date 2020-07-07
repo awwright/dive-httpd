@@ -23,13 +23,13 @@
 		"chokidar": "^3.0.1",
 		"commander": "^5.1.0",
 		"dotenv": "^8.0.0",
-		"http-transform": "^0.0.9",
+		"http-transform": "^0.0.10",
 		"toml": "^3.0.0",
 		"uri-template-router": "^0.0.8"
 	},
 	"devDependencies": {
-		"eslint": "^5.16.0",
+		"eslint": "^7.3.1",
 		"mocha": "^8.0.1",
-		"nyc": "^14.1.1"
+		"nyc": "^15.1.0"
 	}
 }

@@ -38,7 +38,7 @@ describe('Gateway', function(){
 				req.rawHeaders.push('Server');
 				req.rawHeaders.push('origin');
 				req.headers['server'] = 'origin';
-				new lib.TraceResource().render(req).pipe(res);
+				new lib.TraceResource().render(req).pipeMessage(res);
 			}).listen(0);
 			var originAddress = originServer.address();
 
@@ -166,7 +166,7 @@ describe('Gateway', function(){
 				req.rawHeaders.push('Server');
 				req.rawHeaders.push('origin');
 				req.headers['server'] = 'origin';
-				new lib.TraceResource().render(req).pipe(res);
+				new lib.TraceResource().render(req).pipeMessage(res);
 			}).listen(0);
 			var originAddress = originServer.address();
 

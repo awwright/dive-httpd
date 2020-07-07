@@ -1,5 +1,4 @@
-
-"use strict"
+"use strict";
 
 const http = require('http');
 const Duplex = require('stream').Duplex;
@@ -20,34 +19,34 @@ function makeDuplexPair() {
 		var callback = clientCallback;
 		clientCallback = null;
 		callback();
-	}
+	};
 	clientSide._write = function _write(chunk, enc, callback){
 		if(serverCallback) throw new Error;
 		if(!chunk.length) return void callback();
 		if(typeof callback==='function') serverCallback = callback;
 		serverSide.push(chunk);
-	}
+	};
 	clientSide._final = function _final(callback){
 		serverSide.on('end', callback);
 		serverSide.push(null);
-	}
+	};
 	const serverSide = new Duplex;
 	serverSide._read = function _read(){
 		if(!serverCallback) return;
 		var callback = serverCallback;
 		serverCallback = null;
 		callback();
-	}
+	};
 	serverSide._write = function _write(chunk, enc, callback){
 		if(clientCallback) throw new Error;
 		if(!chunk.length) return void callback();
 		if(typeof callback==='function') clientCallback = callback;
 		clientSide.push(chunk);
-	}
+	};
 	serverSide._final = function _final(callback){
 		clientSide.on('end', callback);
 		clientSide.push(null);
-	}
+	};
 	return { clientSide, serverSide };
 }
 module.exports.makeDuplexPair = makeDuplexPair;

@@ -351,7 +351,7 @@ describe('Negotiate', function(){
 				render: function(resource, req){
 					const res = new ResponsePassThrough;
 					resource.inner.render(req).headersReady.then(function(inner){
-						inner.pipe(res);
+						inner.pipeMessage(res);
 						res.setHeader('Content-Type', resource.contentType);
 						res.flushHeaders(); // Lock the headers
 					});
