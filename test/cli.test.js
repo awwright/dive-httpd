@@ -1,24 +1,53 @@
 "use strict";
 const assert = require('assert');
+const { doesNotMatch } = require('assert');
 
-const pr = require('util').promisify;
-const fork = pr(require('child_process').execFile);
+// const pr = require('util').promisify;
+const fork = require('child_process').execFile;
 
 describe("dive-httpd CLI", function(){
-	it('no arguments help', async function(){
-		const sub = await fork('node', [__dirname+'/../bin/dive-httpd.js'], {});
-		assert(sub.stdout.toString().match(/Usage:/));
+	it('no arguments help', function(done){
+		const child = fork('node', [__dirname+'/../bin/dive-httpd.js'], {}, ready);
+		function ready(err, stdout, stderr){
+			assert.strictEqual(child.exitCode, 0);
+			assert.match(stdout.toString(), /Usage:/);
+			done();
+		}
 	});
-	it('--help help', async function(){
-		const sub = await fork('node', [__dirname+'/../bin/dive-httpd.js', '--help'], {});
-		assert(sub.stdout.toString().match(/Usage:/));
+	it('--help help', function(done){
+		const child = fork('node', [__dirname+'/../bin/dive-httpd.js', '--help'], {}, ready);
+		function ready(err, stdout, stderr){
+			assert.strictEqual(child.exitCode, 0);
+			assert.match(stdout.toString(), /Usage:/);
+			done();
+		}
 	});
-	it('app.conf', async function(){
-		const sub = await fork('node', [__dirname+'/../bin/dive-httpd.js', __dirname+'/cli-data/app.conf'], {});
-		assert(sub.stdout.toString().match(/^Success$/m));
+	it('app.conf', function(done){
+		const child = fork('node', [__dirname+'/../bin/dive-httpd.js', __dirname+'/cli-data/app.conf'], {}, ready);
+		function ready(err, stdout, stderr){
+			assert(!err);
+			assert.strictEqual(child.exitCode, 0);
+			assert.match(stdout.toString(), /^Success$/m);
+			done();
+		}
 	});
-	it('--list-routes app.conf', async function(){
-		const sub = await fork('node', [__dirname+'/../bin/dive-httpd.js', '--list-routes', __dirname+'/cli-data/app.conf'], {});
-		assert(sub.stdout.toString().match(/digraph/i));
+	it('--list-resources app.conf', function(done){
+		const child = fork('node', [__dirname+'/../bin/dive-httpd.js', '--list-resources', __dirname+'/cli-data/app.conf'], {}, ready);
+		function ready(err, stdout, stderr){
+			console.log(arguments);
+			assert(!err);
+			assert.strictEqual(child.exitCode, 0);
+			assert.match(stdout.toString(), /digraph/i);
+			done();
+		}
+	});
+	it('--list-routes app.conf', function(done){
+		const child = fork('node', [__dirname+'/../bin/dive-httpd.js', '--list-routes', __dirname+'/cli-data/app.conf'], {}, ready);
+		function ready(err, stdout, stderr){
+			assert(!err);
+			assert.strictEqual(child.exitCode, 0);
+			assert.match(stdout.toString(), /digraph/i);
+			done();
+		}
 	});
 });
