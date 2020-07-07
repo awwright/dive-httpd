@@ -30,7 +30,7 @@ describe('Resource', function(){
 				render: function(){
 					var res = new lib.PassThrough;
 					process.nextTick(function(){
-						res.emit('error', new Error('Test'));
+						res.emit('error', new Error('Boom 0'));
 					});
 					return res;
 				},
@@ -41,7 +41,7 @@ describe('Resource', function(){
 					return Promise.resolve(new lib.Resource(this));
 				},
 				render: function(){
-					throw new Error('Boom');
+					throw new Error('Boom 1');
 				},
 			}));
 			app.onError = function(){
@@ -62,7 +62,7 @@ describe('Resource', function(){
 				'Host: localhost',
 			]).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 500 /);
-				assert.match(res.toString(), /Boom/);
+				assert.match(res.toString(), /Boom 1/);
 			});
 		});
 		it('Error handling (emitted)', function(){
@@ -71,7 +71,7 @@ describe('Resource', function(){
 				'Host: localhost',
 			]).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 500 /);
-				assert.match(res.toString(), /Test/);
+				assert.match(res.toString(), /Boom 0/);
 			});
 		});
 		it('200 OK', function(){

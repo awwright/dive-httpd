@@ -34,7 +34,6 @@ describe("dive-httpd CLI", function(){
 	it('--list-resources app.conf', function(done){
 		const child = fork('node', [__dirname+'/../bin/dive-httpd.js', '--list-resources', __dirname+'/cli-data/app.conf'], {}, ready);
 		function ready(err, stdout, stderr){
-			console.log(arguments);
 			assert(!err);
 			assert.strictEqual(child.exitCode, 0);
 			assert.match(stdout.toString(), /digraph/i);
