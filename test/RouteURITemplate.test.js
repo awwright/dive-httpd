@@ -33,6 +33,22 @@ describe('RouteURITemplate', function(){
 		it('RouteURITemplate#listDependents', function(){
 			assert(route.listDependents().length);
 		});
+		it('RouteURITemplate#initialize', function(){
+			const route_name = route.uriTemplateRouter.routes[0].name;
+			assert(route.prepare);
+			route_name.initialize = function(){
+				return new Promise(function(resolve){
+					process.nextTick(function(){
+						route_name.done = true;
+						resolve();
+					});
+				});
+			};
+			assert(!route_name.done);
+			return route.initialize().then(function(){
+				assert(route_name.done);
+			});
+		});
 		// This route doesn't really need an HTTP interface test,
 		// because Application and most of the other tests handle it.
 	});

@@ -36,6 +36,7 @@ describe('Application', function(){
 		// If enabled, print full 500 errors to response
 		// A useful feature for automated testing and development
 		it('Application#debug');
+		it('Application#initialize');
 	});
 	describe('Not Found routing', function(){
 		var app;
