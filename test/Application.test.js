@@ -53,6 +53,9 @@ describe('Application', function(){
 		it('Application#debug');
 		it('Application#initialize');
 	});
+	describe('defaultNotFound', function(){
+		it('defaultNotFound');
+	});
 	describe('Not Found routing', function(){
 		var app;
 		before(function(){
