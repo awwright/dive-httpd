@@ -145,8 +145,7 @@ if(opts.listRoutes){
 if(opts.listResources){
 	app.listing().then(function(list){
 		list.forEach(function(v){
-			if(typeof v==='string') console.log(v);
-			else app.generateUri(v);
+			if(typeof v.uri==='string') console.log(v.uri);
 		});
 	});
 	return;

@@ -36,7 +36,7 @@ describe("dive-httpd CLI", function(){
 		function ready(err, stdout, stderr){
 			assert(!err);
 			assert.strictEqual(child.exitCode, 0);
-			assert.match(stdout.toString(), /digraph/i);
+			assert.match(stdout.toString(), /http:\/\/localhost\/app\.js/i);
 			done();
 		}
 	});
