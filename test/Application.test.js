@@ -15,7 +15,22 @@ describe('Application', function(){
 			route = null;
 		});
 		it('Application#label');
-		it('Application#prepare');
+		describe('Application#prepare', function(){
+			it('argument req.uri is required', function(){
+				const req = {uri:null, headers: {}};
+				const res = new lib.ResponsePassThrough;
+				assert.throws(function(){
+					route.handleRequest(req, res.serverWritableSide);
+				}, /req\.uri/);
+			});
+			it('argument req.headers is required', function(){
+				const req = {uri: 'http://example.com/', headers:null};
+				const res = new lib.ResponsePassThrough;
+				assert.throws(function(){
+					route.handleRequest(req, res.serverWritableSide);
+				}, /req\.headers/);
+			});
+		});
 		it('Application#error');
 		it('Application#watch');
 		it('Application#listing');

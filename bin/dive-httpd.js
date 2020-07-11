@@ -155,7 +155,7 @@ if(opts.listResources){
 app.onError = function handleError(req, res, err){
 	console.error('Internal Server Error: '+req.method+' '+(req.uri||req.url));
 	console.error(err);
-}
+};
 
 if(opts.verbose) console.log('Initializing');
 

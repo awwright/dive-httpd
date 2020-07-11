@@ -24,7 +24,7 @@ describe('Meta: Tests exist', function(){
 					return test.title.substring(0, expectedTestName.length)===expectedTestName;
 				}
 				function testSuite(suite){
-					return suite.tests.some(testTest) || suite.suites.some(testSuite);
+					return suite.tests.some(testTest) || suite.suites.some(testTest) || suite.suites.some(testSuite);
 				}
 				if(!testSuite(root)){
 					throw new Error('Expected test for '+expectedTestName);
