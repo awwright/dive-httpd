@@ -1,6 +1,5 @@
 "use strict";
 const assert = require('assert');
-const { doesNotMatch } = require('assert');
 
 // const pr = require('util').promisify;
 const fork = require('child_process').execFile;
