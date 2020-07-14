@@ -2,8 +2,8 @@
 
 var assert = require('assert');
 
-var testMessage = require('../../dive-httpd/test/util.js').testMessage;
-var lib = require('../../dive-httpd/index.js');
+var testMessage = require('../test/util.js').testMessage;
+var lib = require('../index.js');
 
 describe('Resource', function(){
 	describe('interface', function(){

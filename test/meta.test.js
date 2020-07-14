@@ -1,6 +1,6 @@
 "use strict";
 var assert = require('assert');
-var lib = require('../../dive-httpd/index.js');
+var lib = require('../index.js');
 
 
 describe('Meta: Tests exist', function(){
