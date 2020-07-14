@@ -7,6 +7,47 @@ var lib = require('../../dive-httpd/index.js');
 
 describe('Resource', function(){
 	describe('interface', function(){
+		describe('Resource#render', function(){
+			it('Default function calls route.render', function(){
+				const inner = new lib.Route({
+					uriTemplate: 'http://localhost/~{name}',
+					contentType: 'text/plain',
+					prepareMatch: async function(match){
+						return new lib.Resource(this, {match});
+					},
+					render: function(resource){
+						const out = new lib.ResponsePassThrough();
+						out.setHeader('Content-Type', 'text/plain');
+						out.end(resource.params.name+'\r\n');
+						return out.clientReadableSide;
+					},
+				});
+				return inner.prepare('http://localhost/~root').then(async function(resource){
+					const res = resource.render();
+					var out = '';
+					for await(const chunk of res) out += chunk;
+					assert.strictEqual(out, 'root\r\n');
+					assert.strictEqual(res.headers['content-type'], 'text/plain');
+				});
+			});
+			it('Default function throws if Route#render() does not return a stream', function(){
+				const inner = new lib.Route({
+					uriTemplate: 'http://localhost/~{name}',
+					contentType: 'text/plain',
+					prepare: function(uri){
+						var match = this.matchUri(uri);
+						if(!match) return Promise.resolve();
+						return Promise.resolve(new lib.Resource(this, {match}));
+					},
+					render: function(resource){
+						return function(){};
+					},
+				});
+				return assert.rejects(inner.prepare('http://localhost/~root').then(function(resource){
+					resource.render();
+				}), /did not return a Response/);
+			});
+		});
 		describe('Resource#error', function(){
 			var route;
 			beforeEach(function(){
