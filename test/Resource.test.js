@@ -60,7 +60,7 @@ describe('Resource', function(){
 				const inner = new lib.Route({
 					uriTemplate: 'http://localhost/~{name}',
 					contentType: 'text/plain',
-					prepareMatch: async function(match){
+					prepare_match: async function(match){
 						return new Resource(this, {match});
 					},
 					render: function(resource){

@@ -76,25 +76,25 @@ describe('RouteURITemplate', function(){
 				},
 			}));
 		});
-		it('RouteURITemplate#prepareMatch (found)', function(){
+		it('RouteURITemplate#prepare_match (found)', function(){
 			return route.prepare('http://localhost/foo').then(function(res){
 				assert(res instanceof lib.Resource);
 			});
 		});
-		it('RouteURITemplate#prepareMatch (not found)', function(){
+		it('RouteURITemplate#prepare_match (not found)', function(){
 			return route.prepare('http://localhost/bar').then(function(res){
 				assert(!res);
 			});
 		});
 	});
-	describe('interface (prepareMatch)', function(){
+	describe('interface (prepare_match)', function(){
 		var route;
 		beforeEach(function(){
 			route = lib.RouteURITemplate();
 			route.addRoute(lib.Route({
 				uriTemplate: 'http://localhost/{name}',
 				contentType: 'text/plain',
-				prepareMatch: function(match){
+				prepare_match: function(match){
 					if(match.data['name'] === 'foo'){
 						return Promise.resolve(new lib.Resource(this, {match}));
 					}else{
@@ -109,12 +109,12 @@ describe('RouteURITemplate', function(){
 				},
 			}));
 		});
-		it('RouteURITemplate#prepareMatch (found)', function(){
+		it('RouteURITemplate#prepare_match (found)', function(){
 			return route.prepare('http://localhost/foo').then(function(res){
 				assert(res instanceof lib.Resource);
 			});
 		});
-		it('RouteURITemplate#prepareMatch (not found)', function(){
+		it('RouteURITemplate#prepare_match (not found)', function(){
 			return route.prepare('http://localhost/bar').then(function(res){
 				assert(!res);
 			});

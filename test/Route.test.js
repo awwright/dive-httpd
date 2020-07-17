@@ -33,10 +33,10 @@ describe('Route', function(){
 					new Route({prepare: true});
 				}, /options.prepare must be a function/);
 			});
-			it('options.prepareMatch must be a function', function(){
+			it('options.prepare_match must be a function', function(){
 				assert.throws(function(){
-					new Route({prepareMatch: true});
-				}, /options.prepareMatch must be a function/);
+					new Route({prepare_match: true});
+				}, /options.prepare_match must be a function/);
 			});
 			it('options.innerRoute must be an instanceof Route', function(){
 				assert.throws(function(){
@@ -103,12 +103,12 @@ describe('Route', function(){
 				const route = new Route({prepare});
 				assert.strictEqual(route.prepare, prepare);
 			});
-			it('options.prepareMatch', function(){
-				function prepareMatch(){
+			it('options.prepare_match', function(){
+				function prepare_match(){
 					// TODO
 				}
-				const route = new Route({prepareMatch});
-				assert.strictEqual(route.prepareMatch, prepareMatch);
+				const route = new Route({prepare_match});
+				assert.strictEqual(route.prepare_match, prepare_match);
 			});
 			it('options.innerRoute', function(){
 				const innerRoute = new lib.Route('http://example.com/{foo}');
@@ -163,6 +163,43 @@ describe('Route', function(){
 				}
 				const route = new Route({render});
 				assert.strictEqual(route.render, render);
+			});
+		});
+		describe('Route#prepare_match', async function(){
+			it('Route#prepare calls Route#prepare_match by default (resolve)', async function(){
+				const route = new Route({uriTemplate: 'http://localhost/~{name}'});
+				route.prepare_match = async function prepare_match(match, resolve){
+					if(match.data.name.length > 2) return resolve();
+				};
+				const rsc = await route.prepare('http://localhost/~foo');
+				assert(rsc);
+				assert.strictEqual(rsc.uri, 'http://localhost/~foo');
+				assert.strictEqual(rsc.uriTemplate, 'http://localhost/~{name}');
+				assert.strictEqual(rsc.params.name, 'foo');
+			});
+			it('Route#prepare calls Route#prepare_match by default (not found)', async function(){
+				const route = new Route({uriTemplate: 'http://localhost/~{name}'});
+				route.prepare_match = async function prepare_match(match, resolve){
+					return;
+				};
+				const rsc = await route.prepare('http://localhost/~foo');
+				assert(!rsc);
+			});
+			it('Route#prepare calls Route#prepare_match by default (mismatch)', async function(){
+				const route = new Route({uriTemplate: 'http://localhost/~{name}'});
+				route.prepare_match = async function prepare_match(match, resolve){
+					assert.fail('Must not call');
+				};
+				const rsc = await route.prepare('http://localhost/foo');
+				assert(!rsc);
+			});
+		});
+		describe('Route#allocateMatch', function(){
+			it.skip('Route#allocateMatch', function(){
+				const route = new Route;
+				route.allocateMatch = function allocateMatch(){
+	
+				};
 			});
 		});
 	});
