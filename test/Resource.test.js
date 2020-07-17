@@ -1,19 +1,27 @@
 "use strict";
 
-var assert = require('assert');
+const assert = require('assert');
 
-var testMessage = require('../test/util.js').testMessage;
-var lib = require('../index.js');
+const testMessage = require('../test/util.js').testMessage;
+const lib = require('../index.js');
+const Resource = lib.Resource;
 
 describe('Resource', function(){
 	describe('interface', function(){
+		describe('new Resource(route)', function(){
+			it('route must be a Route', function(){
+				assert.throws(function(){
+					new Resource(function(){});
+				});
+			});
+		});
 		describe('Resource#render', function(){
 			it('Default function calls route.render', function(){
 				const inner = new lib.Route({
 					uriTemplate: 'http://localhost/~{name}',
 					contentType: 'text/plain',
 					prepareMatch: async function(match){
-						return new lib.Resource(this, {match});
+						return new Resource(this, {match});
 					},
 					render: function(resource){
 						const out = new lib.ResponsePassThrough();
@@ -37,7 +45,7 @@ describe('Resource', function(){
 					prepare: function(uri){
 						var match = this.matchUri(uri);
 						if(!match) return Promise.resolve();
-						return Promise.resolve(new lib.Resource(this, {match}));
+						return Promise.resolve(new Resource(this, {match}));
 					},
 					render: function(resource){
 						return function(){};
@@ -55,7 +63,7 @@ describe('Resource', function(){
 					uriTemplate: 'http://localhost/document',
 					methods: ['GET', 'HEAD', 'OPTIONS'],
 					prepare: function(){
-						return Promise.resolve(new lib.Resource(this));
+						return Promise.resolve(new Resource(this));
 					},
 					render: function(){
 						var res = new lib.ResponsePassThrough;
@@ -64,7 +72,7 @@ describe('Resource', function(){
 						return res;
 					},
 					error: async function(uri, err){
-						return new lib.Resource(this, {
+						return new Resource(this, {
 							render() {
 								var res = new lib.ResponsePassThrough;
 								if(err.statusCode) res.statusCode = err.statusCode;
@@ -106,7 +114,7 @@ describe('Resource', function(){
 			app.addRoute(new lib.Route({
 				uriTemplate: 'http://localhost/document',
 				prepare: function(){
-					return Promise.resolve(new lib.Resource(this));
+					return Promise.resolve(new Resource(this));
 				},
 				render: function(){
 					var res = new lib.PassThrough;
@@ -118,7 +126,7 @@ describe('Resource', function(){
 			app.addRoute(new lib.Route({
 				uriTemplate: 'http://localhost/crash/emit',
 				prepare: function(){
-					return Promise.resolve(new lib.Resource(this));
+					return Promise.resolve(new Resource(this));
 				},
 				render: function(){
 					var res = new lib.PassThrough;
@@ -131,7 +139,7 @@ describe('Resource', function(){
 			app.addRoute(new lib.Route({
 				uriTemplate: 'http://localhost/crash/throw',
 				prepare: function(){
-					return Promise.resolve(new lib.Resource(this));
+					return Promise.resolve(new Resource(this));
 				},
 				render: function(){
 					throw new Error('Boom 1');
@@ -141,7 +149,7 @@ describe('Resource', function(){
 				uriTemplate: 'http://localhost/error/405',
 				methods: ['GET', 'HEAD', 'OPTIONS'],
 				prepare: function(){
-					return Promise.resolve(new lib.Resource(this));
+					return Promise.resolve(new Resource(this));
 				},
 				render: function(){
 					var res = new lib.ResponsePassThrough;
@@ -150,7 +158,7 @@ describe('Resource', function(){
 					return res;
 				},
 				error: async function(uri, err){
-					return new lib.Resource(this, {
+					return new Resource(this, {
 						render() {
 							var res = new lib.ResponsePassThrough;
 							if(err.statusCode) res.statusCode = err.statusCode;

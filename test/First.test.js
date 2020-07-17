@@ -34,23 +34,25 @@ describe('First', function(){
 		it('First#label', function(){
 			assert.strictEqual(route.label, 'First(3)');
 		});
-		it('First#prepare (200, data-table.html)', function(){
-			return route.prepare('http://example.com/data-table.html').then(function(res){
-				assert(res instanceof lib.Resource);
-				assert.equal(res.uri, 'http://example.com/data-table.html');
-				assert.equal(res.contentType, 'text/html');
+		describe('First#prepare', function(){
+			it('First#prepare (200, data-table.html)', function(){
+				return route.prepare('http://example.com/data-table.html').then(function(res){
+					assert(res instanceof lib.Resource);
+					assert.equal(res.uri, 'http://example.com/data-table.html');
+					assert.equal(res.contentType, 'text/html');
+				});
 			});
-		});
-		it('First#prepare (200, document.xhtml)', function(){
-			return route.prepare('http://example.com/document.xhtml').then(function(res){
-				assert(res instanceof lib.Resource);
-				assert.equal(res.uri, 'http://example.com/document.xhtml');
-				assert.equal(res.contentType, 'application/xhtml+xml');
+			it('First#prepare (200, document.xhtml)', function(){
+				return route.prepare('http://example.com/document.xhtml').then(function(res){
+					assert(res instanceof lib.Resource);
+					assert.equal(res.uri, 'http://example.com/document.xhtml');
+					assert.equal(res.contentType, 'application/xhtml+xml');
+				});
 			});
-		});
-		it('First#prepare (404)', function(){
-			return route.prepare('http://example.com/data-table.txt').then(function(res){
-				assert(!res);
+			it('First#prepare (404)', function(){
+				return route.prepare('http://example.com/data-table.txt').then(function(res){
+					assert(!res);
+				});
 			});
 		});
 		it('First#prepare uri', function(){

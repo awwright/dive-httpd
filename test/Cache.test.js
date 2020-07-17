@@ -36,8 +36,10 @@ describe('Cache', function(){
 		it('Cache#label', function(){
 			assert.strictEqual(route.label, 'Cache');
 		});
-		it('Cache#prepare (200)');
-		it('Cache#prepare (404)');
+		describe('Cache#prepare', function(){
+			it('Cache#prepare (200)');
+			it('Cache#prepare (404)');
+		});
 		it('Cache#error');
 		it('Cache#watch');
 		it('Cache#listing');

@@ -208,16 +208,18 @@ describe('Negotiate', function(){
 		it('Negotiate#label', function(){
 			assert.strictEqual(route.label, 'Negotiate(2)');
 		});
-		it('Negotiate#prepare (200)', function(){
-			return route.prepare('http://example.com/~root').then(function(res){
-				assert(res instanceof lib.Resource);
-				// I don't actually know if this should be the URI of the negotiating resource or the selected resource
-				// assert.equal(res.uri, 'http://example.com/~root');
+		describe('Negotiate#prepare', function(){
+			it('Negotiate#prepare (200)', function(){
+				return route.prepare('http://example.com/~root').then(function(res){
+					assert(res instanceof lib.Resource);
+					// I don't actually know if this should be the URI of the negotiating resource or the selected resource
+					// assert.equal(res.uri, 'http://example.com/~root');
+				});
 			});
-		});
-		it('Negotiate#prepare (404)', function(){
-			return route.prepare('http://example.com/~foo').then(function(rsc){
-				assert(!rsc);
+			it('Negotiate#prepare (404)', function(){
+				return route.prepare('http://example.com/~foo').then(function(rsc){
+					assert(!rsc);
+				});
 			});
 		});
 		it('Negotiate#error');

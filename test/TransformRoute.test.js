@@ -38,34 +38,36 @@ describe('TransformRoute', function(){
 		it('TransformRoute#label', function(){
 			assert.strictEqual(route.label, 'TransformRoute');
 		});
-		it('TransformRoute#prepare (200)', function(){
-			return route.prepare('http://localhost/~root').then(function(res){
-				assert(res instanceof lib.Resource);
-				assert.equal(res.uri, 'http://localhost/~root');
+		describe('TransformRoute#prepare', function(){
+			it('TransformRoute#prepare (200)', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					assert(res instanceof lib.Resource);
+					assert.equal(res.uri, 'http://localhost/~root');
+				});
 			});
-		});
-		it('TransformRoute#prepare (404)', function(){
-			return route.prepare('http://localhost/user/foo').then(function(res){
-				assert(!res);
+			it('TransformRoute#prepare (404)', function(){
+				return route.prepare('http://localhost/user/foo').then(function(res){
+					assert(!res);
+				});
 			});
-		});
-		it('TransformRoute#prepare uri', function(){
-			return route.prepare('http://localhost/~root').then(function(res){
-				assert.strictEqual(res.uri, 'http://localhost/~root');
+			it('TransformRoute#prepare uri', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					assert.strictEqual(res.uri, 'http://localhost/~root');
+				});
 			});
-		});
-		it('TransformRoute#prepare route', function(){
-			return route.prepare('http://localhost/~root').then(function(res){
-				assert.strictEqual(res.route, route);
+			it('TransformRoute#prepare route', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					assert.strictEqual(res.route, route);
+				});
 			});
-		});
-		it('TransformRoute#prepare render', function(){
-			return route.prepare('http://localhost/~root').then(function(res){
-				var stream = res.render();
-				assert(stream.pipe);
-				return stream.headersReady.then(function(){ return stream; });
-			}).then(function(buf){
-				assert(buf.statusCode===200 || buf.statusCode===null);
+			it('TransformRoute#prepare render', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					var stream = res.render();
+					assert(stream.pipe);
+					return stream.headersReady.then(function(){ return stream; });
+				}).then(function(buf){
+					assert(buf.statusCode===200 || buf.statusCode===null);
+				});
 			});
 		});
 		it('TransformRoute#error');
