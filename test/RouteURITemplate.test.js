@@ -6,7 +6,23 @@ var testMessage = require('./util.js').testMessage;
 var URIReflect = require('./util.js').URIReflect;
 
 describe('RouteURITemplate', function(){
-	describe('interface', function(){
+	describe('domain', function(){
+		it('RouteURITemplate#addRoute expects a Route', function(){
+			const route = lib.RouteURITemplate();
+			assert.throws(function(){
+				route.addRoute(function(){});
+			}, /Expected route to be an instanceof Route/);
+			assert.strictEqual(route.routes.length, 0);
+		});
+	});
+	describe('RouteURITemplate', function(){
+		it('routes', function(){
+			const route = lib.RouteURITemplate();
+			route.addRoute(new URIReflect('http://localhost/{name}', ['http://localhost/foo']));
+			assert.strictEqual(route.routes.length, 1);
+		});
+	});
+	describe('interface (Route)', function(){
 		var route;
 		beforeEach(function(){
 			route = lib.RouteURITemplate();
