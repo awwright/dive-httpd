@@ -11,8 +11,14 @@ describe('TransformRoute', function(){
 				new lib.TransformRoute({}, true);
 			}, /must be a Route/);
 		});
+		it('options.renderTransform must be a function', function(){
+			const innerRoute = new lib.Route({uriTemplate: 'http://localhost/{id}'});
+			assert.throws(function(){
+				new lib.TransformRoute({innerRoute, renderTransform: true});
+			}, /renderTransform must be a function/);
+		});
 	});
-	describe('interface', function(){
+	describe('interface (render)', function(){
 		var route;
 		beforeEach(function(){
 			const inner = new lib.Route({
@@ -41,6 +47,76 @@ describe('TransformRoute', function(){
 					return output.clientReadableSide;
 				},
 			}, inner);
+		});
+		it('TransformRoute#label', function(){
+			assert.strictEqual(route.label, 'TransformRoute');
+		});
+		describe('TransformRoute#prepare', function(){
+			it('TransformRoute#prepare (200)', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					assert(res instanceof lib.Resource);
+					assert.equal(res.uri, 'http://localhost/~root');
+				});
+			});
+			it('TransformRoute#prepare (404)', function(){
+				return route.prepare('http://localhost/user/foo').then(function(res){
+					assert(!res);
+				});
+			});
+			it('TransformRoute#prepare uri', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					assert.strictEqual(res.uri, 'http://localhost/~root');
+				});
+			});
+			it('TransformRoute#prepare route', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					assert.strictEqual(res.route, route);
+				});
+			});
+			it('TransformRoute#prepare render', function(){
+				return route.prepare('http://localhost/~root').then(function(res){
+					var stream = res.render();
+					assert(stream.pipe);
+					return stream.headersReady.then(function(){ return stream; });
+				}).then(function(buf){
+					assert(buf.statusCode===200 || buf.statusCode===null);
+				});
+			});
+		});
+		it('TransformRoute#error');
+		it('TransformRoute#watch');
+		it('TransformRoute#listing');
+		it('TransformRoute#store');
+		it('TransformRoute#listDependents');
+	});
+	describe('interface (renderTransform)', function(){
+		var route;
+		beforeEach(function(){
+			const innerRoute = new lib.Route({
+				uriTemplate: 'http://localhost/~{name}',
+				contentType: 'text/plain',
+				prepare: function(uri){
+					var match = this.matchUri(uri);
+					if(!match) return Promise.resolve();
+					return Promise.resolve(new lib.Resource(this, {match}));
+				},
+				render: function(resource){
+					var res = new lib.ResponsePassThrough;
+					res.setHeader('Content-Type', resource.contentType);
+					res.end(resource.params.name + '\r\n');
+					return res.clientReadableSide;
+				},
+			});
+			route = new lib.TransformRoute({
+				innerRoute,
+				renderTransform: async function(resource, req, input, output){
+					input.pipeHeaders(output);
+					for await(var chunk of input){
+						output.write(chunk.toString().toUpperCase());
+					}
+					output.end();
+				},
+			});
 		});
 		it('TransformRoute#label', function(){
 			assert.strictEqual(route.label, 'TransformRoute');
