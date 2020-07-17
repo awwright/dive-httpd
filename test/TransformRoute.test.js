@@ -52,35 +52,21 @@ describe('TransformRoute', function(){
 			assert.strictEqual(route.label, 'TransformRoute');
 		});
 		describe('TransformRoute#prepare', function(){
-			it('TransformRoute#prepare (200)', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					assert(res instanceof lib.Resource);
-					assert.equal(res.uri, 'http://localhost/~root');
-				});
-			});
 			it('TransformRoute#prepare (404)', function(){
 				return route.prepare('http://localhost/user/foo').then(function(res){
 					assert(!res);
 				});
 			});
-			it('TransformRoute#prepare uri', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					assert.strictEqual(res.uri, 'http://localhost/~root');
-				});
-			});
-			it('TransformRoute#prepare route', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					assert.strictEqual(res.route, route);
-				});
-			});
-			it('TransformRoute#prepare render', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					var stream = res.render();
-					assert(stream.pipe);
-					return stream.headersReady.then(function(){ return stream; });
-				}).then(function(buf){
-					assert(buf.statusCode===200 || buf.statusCode===null);
-				});
+			it('TransformRoute#prepare (200)', async function(){
+				const rsc = await route.prepare('http://localhost/~root');
+				assert(rsc instanceof lib.Resource);
+				assert.strictEqual(rsc.uri, 'http://localhost/~root');
+				assert.strictEqual(rsc.route, route);
+				const res = rsc.render();
+				assert(res.pipe);
+				const msg = await lib.ResponseMessage.fromStream(res);
+				assert(msg.statusCode===200 || msg.statusCode===null);
+				assert.match(msg.body.toString(), /ROOT/);
 			});
 		});
 		it('TransformRoute#error');
@@ -122,35 +108,21 @@ describe('TransformRoute', function(){
 			assert.strictEqual(route.label, 'TransformRoute');
 		});
 		describe('TransformRoute#prepare', function(){
-			it('TransformRoute#prepare (200)', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					assert(res instanceof lib.Resource);
-					assert.equal(res.uri, 'http://localhost/~root');
-				});
-			});
 			it('TransformRoute#prepare (404)', function(){
 				return route.prepare('http://localhost/user/foo').then(function(res){
 					assert(!res);
 				});
 			});
-			it('TransformRoute#prepare uri', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					assert.strictEqual(res.uri, 'http://localhost/~root');
-				});
-			});
-			it('TransformRoute#prepare route', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					assert.strictEqual(res.route, route);
-				});
-			});
-			it('TransformRoute#prepare render', function(){
-				return route.prepare('http://localhost/~root').then(function(res){
-					var stream = res.render();
-					assert(stream.pipe);
-					return stream.headersReady.then(function(){ return stream; });
-				}).then(function(buf){
-					assert(buf.statusCode===200 || buf.statusCode===null);
-				});
+			it('TransformRoute#prepare (200)', async function(){
+				const rsc = await route.prepare('http://localhost/~root');
+				assert(rsc instanceof lib.Resource);
+				assert.strictEqual(rsc.uri, 'http://localhost/~root');
+				assert.strictEqual(rsc.route, route);
+				const res = rsc.render();
+				assert(res.pipe);
+				const msg = await lib.ResponseMessage.fromStream(res);
+				assert(msg.statusCode===200 || msg.statusCode===null);
+				assert.match(msg.body.toString(), /ROOT/);
 			});
 		});
 		it('TransformRoute#error');
