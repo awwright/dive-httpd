@@ -5,6 +5,13 @@ var testMessage = require('./util.js').testMessage;
 var lib = require('../index.js');
 
 describe('TransformRoute', function(){
+	describe('required arguments', function(){
+		it('innerRoute is required', function(){
+			assert.throws(function(){
+				new lib.TransformRoute({}, true);
+			}, /must be a Route/);
+		});
+	});
 	describe('interface', function(){
 		var route;
 		beforeEach(function(){
