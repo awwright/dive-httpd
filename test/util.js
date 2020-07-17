@@ -158,3 +158,6 @@ URIReflect.prototype.render = function(resource){
 	res.end(resource.uri+'\r\n');
 	return res;
 };
+URIReflect.prototype.listing = async function(){
+	return this.resourceList.map( (uri)=>this.prepare(uri) );
+};

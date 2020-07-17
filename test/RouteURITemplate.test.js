@@ -43,8 +43,21 @@ describe('RouteURITemplate', function(){
 		});
 		it('RouteURITemplate#error');
 		it('RouteURITemplate#watch');
-		it('RouteURITemplate#listing');
-		it('RouteURITemplate#listing render');
+		describe('RouteURITemplate#listing', function(){
+			it('RouteURITemplate#listing calls each inner', async function(){
+				route.addRoute(new lib.RouteFilesystem({
+					uriTemplate: 'http://example.com{/path*}.html',
+					fileroot: __dirname+'/RouteStaticFile-data',
+					pathTemplate: "{/path*}.html",
+					contentType: 'application/xhtml+xml',
+				}));
+				const list = await route.listing();
+				// 3 from RouteFilesystem
+				// 1 from URIReflect
+				assert.strictEqual(list.length, 4);
+			});
+			it('RouteURITemplate#listing render');
+		});
 		it('RouteURITemplate#store');
 		it('RouteURITemplate#listDependents', function(){
 			assert(route.listDependents().length);
