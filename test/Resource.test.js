@@ -8,11 +8,51 @@ const Resource = lib.Resource;
 
 describe('Resource', function(){
 	describe('interface', function(){
-		describe('new Resource(route)', function(){
+		describe('new Resource(route, opts)', function(){
 			it('route must be a Route', function(){
 				assert.throws(function(){
 					new Resource(function(){});
-				});
+				}, /Expected Route/);
+			});
+			it('options.match must be a URI Template match result (uriTemplate)', function(){
+				const route = new lib.Route('http://example.com/{foo}');
+				const match = {
+					// uriTemplate: 'http://example.com/{foo}',
+					uri: 'http://example.com/bar',
+				};
+				assert.throws(function(){
+					const rc = new Resource(route, {match});
+				}, /Expected opts\.match\.uriTemplate to be a string/);
+			});
+			it('options.match must be a URI Template match result (uri)', function(){
+				const route = new lib.Route('http://example.com/{foo}');
+				const match = {
+					uriTemplate: 'http://example.com/{foo}',
+					// uri: 'http://example.com/bar',
+				};
+				assert.throws(function(){
+					const rc = new Resource(route, {match});
+				}, /Expected opts\.match\.uri to be a string/);
+			});
+			it('options.match populates Route#uri', function(){
+				const route = new lib.Route('http://example.com/{foo}');
+				const match = {
+					uriTemplate: 'http://example.com/{foo}',
+					uri: 'http://example.com/bar',
+				};
+				const rc = new Resource(route, {match});
+				assert.strictEqual(rc.uri, 'http://example.com/bar');
+			});
+			it('options.uri must be a string', function(){
+				const route = new lib.Route('http://example.com/{foo}');
+				assert.throws(function(){
+					const rc = new Resource(route, {uri: function(){}});
+				}, /Expected opts\.uri to be a string/);
+			});
+			it('options.uri populates Route#uri', function(){
+				const route = new lib.Route('http://example.com/{foo}');
+				const rc = new Resource(route, {uri: 'http://example.com/bar'});
+				assert.strictEqual(rc.uri, 'http://example.com/bar');
 			});
 		});
 		describe('Resource#render', function(){
