@@ -11,11 +11,11 @@ describe('TransformRoute', function(){
 				new lib.TransformRoute({}, true);
 			}, /must be a Route/);
 		});
-		it('options.renderTransform must be a function', function(){
+		it('options.render_transform must be a function', function(){
 			const innerRoute = new lib.Route({uriTemplate: 'http://localhost/{id}'});
 			assert.throws(function(){
-				new lib.TransformRoute({innerRoute, renderTransform: true});
-			}, /renderTransform must be a function/);
+				new lib.TransformRoute({innerRoute, render_transform: true});
+			}, /render_transform must be a function/);
 		});
 	});
 	describe('interface (render)', function(){
@@ -75,7 +75,7 @@ describe('TransformRoute', function(){
 		it('TransformRoute#store');
 		it('TransformRoute#listDependents');
 	});
-	describe('interface (renderTransform)', function(){
+	describe('interface (render_transform)', function(){
 		var route;
 		beforeEach(function(){
 			const innerRoute = new lib.Route({
@@ -95,7 +95,7 @@ describe('TransformRoute', function(){
 			});
 			route = new lib.TransformRoute({
 				innerRoute,
-				renderTransform: async function(resource, req, input, output){
+				render_transform: async function(resource, req, input, output){
 					input.pipeHeaders(output);
 					for await(var chunk of input){
 						output.write(chunk.toString().toUpperCase());
