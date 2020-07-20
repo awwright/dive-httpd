@@ -176,6 +176,10 @@ Object.keys(serverObject).forEach(function(name){
 	});
 });
 
+app.onError = function(req, res, err){
+	console.error('Uncaught error:', err);
+};
+
 app.initialize().then(function(){
 	if(opts.verbose) console.log('App initialized');
 });

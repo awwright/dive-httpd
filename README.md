@@ -93,19 +93,24 @@ Combination routes do not read parameters from the parsed URI, though they may s
 
 ### Error Handling
 
-Errors may be emitted from several sources:
+All errors in the course of processing a request are caught and rendered into error responses, if a response has not already been written.
 
-* If no Route claims a URI, this generates a NotFound error.
-* If the Resource cannot handle the requested HTTP method, the default `handle` implementation will generate a MethodNotAllowed error.
-* ECMAScript thrown Errors, rejected Promises, or an "error" event on a stream generates a 500 Internal Server Error
+If the request has a URI, the error response is routed to a handler in a similar fashion to a request handler.
+
+* If no Route claims a URI, this generates a NotFound error
+* If the Resource cannot handle the requested HTTP method, the default `handle` implementation, which generate a MethodNotAllowed error.
 * User errors that specify 4xx status code, for example, to signal an invalid payload
+* Uncaught errors, "error" events on a Readable stream, or rejected Promises, which are given a 500 status code.
 
-To handle an error, the following search path is used:
+Errors always flow into a Writable side and out of a Readable side. Errors in streams are caught by the HTTP server. If a response has not already been written, one is generated from the error by calling the following functions to see which can generate one:
 
-* If the error was emitted by a Resource, it will render a response using Resource#error if it exists. Otherwise, the error will be thrown up to the router.
-* Route#error will be tested.
-* Application#onError is called
-* The error will be dumped as text/plain; stack will be written if Application#debug is true.
+* If the error was received from a Resource, the  will first call `Resource#error` if it exists.
+* `Application#error` is called, which in turn consults the URI router and child routes to determine who has a `Route#error` willing to handle the error.
+* If the error is a NotFound error, `Application#defaultNotFound` may generate a generic "Page Not Found" error. This is primarily used for generating static websites.
+* Finally, `Application#onError` writes a test/plain response; additionally, the stack will be written if `Application#debug` is true.
+
+Additionally, if the error was a 500 class error, it will be logged (by default, printed to stderr).
+If `Application#debug` is true, all errors are logged.
 
 ## API
 
