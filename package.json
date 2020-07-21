@@ -28,6 +28,10 @@
 		"uri-template-router": "^0.0.8"
 	},
 	"devDependencies": {
+		"@stryker-mutator/core": "^3.3.1",
+		"@stryker-mutator/javascript-mutator": "^3.3.1",
+		"@stryker-mutator/mocha-framework": "^3.3.1",
+		"@stryker-mutator/mocha-runner": "^3.3.1",
 		"eslint": "^7.4.0",
 		"mocha": "^8.0.1",
 		"nyc": "^15.1.0"
