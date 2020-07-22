@@ -8,6 +8,21 @@ const lib = require('../index.js');
 const unit = require('../lib/Cache.js');
 
 describe('Cache', function(){
+	describe('unit: parseCacheControl', function(){
+		it('public, max-age=31104000, quoted="\\"\\\\123\\\\\\""', function(){
+			const val = unit.parseCacheControl('public, max-age=31104000, quoted="\\"\\\\123\\\\\\""');
+			assert.strictEqual(val.size, 3);
+			assert.strictEqual(val.get('public'), true);
+			assert.strictEqual(val.get('max-age'), '31104000');
+			// The fully unquoted value is: "\123\"
+			// dquote backslash one two three backslash dquoote
+			assert.strictEqual(val.get('quoted'), '\"\\123\\\"');
+		});
+		it('(empty)', function(){
+			const val = unit.parseCacheControl('');
+			assert.strictEqual(val.size, 0);
+		});
+	});
 	describe('interface', function(){
 		var route;
 		before(function(){
