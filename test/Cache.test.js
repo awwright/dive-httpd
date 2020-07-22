@@ -48,4 +48,65 @@ describe('Cache', function(){
 			assert(route.listDependents().length);
 		});
 	});
+	describe('app', function(){
+		var app, cache, calls=0;
+		const cachepath = __dirname + '/.cache.tmp';
+		before(async function(){
+			const docroot = __dirname + '/RouteStaticFile-data';
+
+			app = new lib.Application({debug:true});
+			app.fixedScheme = 'http';
+			app.fixedAuthority = 'localhost';
+			app.relaxedHost = true;
+
+			const r0 = new lib.RouteFilesystem({
+				uriTemplate: 'http://localhost{/path*}.html',
+				contentType: 'text/html',
+				fileroot: docroot,
+				pathTemplate: "{/path*}.html",
+			});
+
+			const r1 = new lib.TransformRoute({
+				innerRoute: r0,
+				render_transform: async function(resource, req, input, output){
+					calls++;
+					input.pipeHeaders(output);
+					for await(var chunk of input){
+						output.write(chunk.toString().toUpperCase());
+					}
+					output.end();
+				},
+			});
+
+			cache = new lib.Cache({
+				cacheFilepath: cachepath,
+			}, r1);
+			app.addRoute(cache);
+
+			// Clear out files
+			await cache.storageClear();
+		});
+		after(async function(){
+			await cache.storageClear();
+		});
+		it('First response is fresh, second comes from cache', async function(){
+			assert.strictEqual(calls, 0);
+
+			const res0 = await testMessage(app, [
+				'GET /document.html HTTP/1.1',
+				'Host: localhost',
+			]);
+			assert.match(res0.toString(), /^HTTP\/1.1 200 /);
+			assert.match(res0.toString(), /A DOCUMENT/);
+			assert.strictEqual(calls, 1);
+
+			const res1 = await testMessage(app, [
+				'GET /document.html HTTP/1.1',
+				'Host: localhost',
+			]);
+			assert.match(res1.toString(), /^HTTP\/1.1 200 /);
+			assert.match(res1.toString(), /A DOCUMENT/);
+			assert.strictEqual(calls, 1);
+		});
+	});
 });

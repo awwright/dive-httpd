@@ -171,7 +171,7 @@ describe('Resource', function(){
 				render: function(){
 					var res = new lib.PassThrough;
 					process.nextTick(function(){
-						res.emit('error', new Error('Boom 0'));
+						res.destroy(new Error('Boom 0'));
 					});
 					return res;
 				},
