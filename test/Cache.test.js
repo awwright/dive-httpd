@@ -1,8 +1,12 @@
 "use strict";
 
 var assert = require('assert');
+var fs = require('fs');
+var { Readable, PassThrough } = require('stream');
+const { testMessage } = require('./util.js');
 
-var lib = require('../index.js');
+const lib = require('../index.js');
+const unit = require('../lib/Cache.js');
 
 describe('Cache', function(){
 	describe('interface', function(){
