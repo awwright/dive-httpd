@@ -1,7 +1,6 @@
 "use strict";
 
 var assert = require('assert');
-var fs = require('fs');
 var { Readable, PassThrough } = require('stream');
 const { testMessage } = require('./util.js');
 
