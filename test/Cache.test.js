@@ -89,6 +89,7 @@ describe('Cache', function(){
 				render_transform: async function(resource, req, input, output){
 					calls++;
 					input.pipeHeaders(output);
+					output.addHeader('Cache-Control', 'max-age=3600');
 					for await(var chunk of input){
 						output.write(chunk.toString().toUpperCase());
 					}
