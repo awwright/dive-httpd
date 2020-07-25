@@ -38,7 +38,11 @@ describe('Gateway', function(){
 				req.rawHeaders.push('Server');
 				req.rawHeaders.push('origin');
 				req.headers['server'] = 'origin';
-				new lib.TraceResource().render(req).pipeMessage(res);
+				if(req.url.match(/\/error\/disconnect/)){
+					res.socket.destroy();
+				}else{
+					new lib.TraceResource().render(req).pipeMessage(res);
+				}
 			}).listen(0);
 			var originAddress = originServer.address();
 
@@ -155,6 +159,14 @@ describe('Gateway', function(){
 			], "Body\r\n").then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 200 /);
 				assert.match(res.toString(), /^LOCK http:\/\/example\.com\/test-path HTTP\/1\.1$/m);
+			});
+		});
+		it('disconnection causes 502', function(){
+			return testMessage(app, [
+				'GET /error/disconnect HTTP/1.1',
+				'Host: example.com',
+			]).then(function(res){
+				assert.match(res.toString(), /^HTTP\/1.1 502 /);
 			});
 		});
 	});
