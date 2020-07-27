@@ -186,7 +186,7 @@ describe('Application', function(){
 					'TRACE /some-path-that-does-not-exist HTTP/1.1',
 					'Host: localhost',
 				]).then(function(res){
-					assert.match(res.toString(), /^HTTP\/1.1 404 /);
+					assert.match(res.toString(), /^HTTP\/1.1 501 /);
 				});
 			});
 		});
