@@ -168,8 +168,8 @@ describe('Route', function(){
 		describe('Route#prepare_match', async function(){
 			it('Route#prepare calls Route#prepare_match by default (resolve)', async function(){
 				const route = new Route({uriTemplate: 'http://localhost/~{name}'});
-				route.prepare_match = async function prepare_match(match, resolve){
-					if(match.data.name.length > 2) return resolve();
+				route.prepare_match = async function prepare_match(match){
+					return (match.data.name.length > 2);
 				};
 				const rsc = await route.prepare('http://localhost/~foo');
 				assert(rsc);
@@ -179,11 +179,14 @@ describe('Route', function(){
 			});
 			it('Route#prepare calls Route#prepare_match by default (not found)', async function(){
 				const route = new Route({uriTemplate: 'http://localhost/~{name}'});
-				route.prepare_match = async function prepare_match(match, resolve){
+				var called = false;
+				route.prepare_match = async function prepare_match(match){
+					called = true;
 					return;
 				};
 				const rsc = await route.prepare('http://localhost/~foo');
 				assert(!rsc);
+				assert(called);
 			});
 			it('Route#prepare calls Route#prepare_match by default (mismatch)', async function(){
 				const route = new Route({uriTemplate: 'http://localhost/~{name}'});
