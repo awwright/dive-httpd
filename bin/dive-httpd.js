@@ -136,7 +136,7 @@ if(opts.listRoutes){
 	}
 	// console.log('Defined routes:');
 	// router.routes.forEach(function(route){
-	// 	console.log(route.template + '\t' + route.name.name);
+	// 	console.log(route.template + '\t' + route.matchValue.name);
 	// });
 	console.log('}');
 	// FIXME: Don't open hooks in the first place and let the process end by itself, instead of using process.exit

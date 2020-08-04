@@ -91,7 +91,7 @@ describe('RouteURITemplate', function(){
 				prepare: function(uri){
 					var match = this.matchUri(uri);
 					if(!match) return Promise.resolve();
-					if(match.data['name'] === 'foo'){
+					if(match.params['name'] === 'foo'){
 						return Promise.resolve(new lib.Resource(this, {match}));
 					}else{
 						return Promise.resolve();
@@ -124,7 +124,7 @@ describe('RouteURITemplate', function(){
 				uriTemplate: 'http://localhost/{name}',
 				contentType: 'text/plain',
 				prepare_match: function(match){
-					if(match.data['name'] === 'foo'){
+					if(match.params['name'] === 'foo'){
 						return Promise.resolve(new lib.Resource(this, {match}));
 					}else{
 						return Promise.resolve();
@@ -214,7 +214,7 @@ describe('RouteURITemplate', function(){
 				prepare: function(uri){
 					var match = this.matchUri(uri);
 					if(!match) return Promise.resolve();
-					if(typeof data[match.data['name']] !== 'string') return Promise.resolve();
+					if(typeof data[match.params['name']] !== 'string') return Promise.resolve();
 					return Promise.resolve(new lib.Resource(this, {match}));
 				},
 				render: function(resource){
@@ -230,7 +230,7 @@ describe('RouteURITemplate', function(){
 				prepare: function(uri){
 					var match = this.matchUri(uri);
 					if(!match) return Promise.resolve();
-					if(typeof data[match.data['name']] !== 'string') return Promise.resolve();
+					if(typeof data[match.params['name']] !== 'string') return Promise.resolve();
 					return Promise.resolve(new lib.Resource(this, {match}));
 				},
 				render: function(resource){

@@ -22,10 +22,10 @@ describe('Negotiate', function(){
 					assert(match.uri.indexOf('.json') >= 0);
 					assert(match.uri.indexOf('.txt') < 0);
 					assert(match.uri.indexOf('.html') < 0);
-					assert(match.data.user.indexOf('.json') < 0);
-					assert(match.data.user.indexOf('.txt') < 0);
-					assert(match.data.user.indexOf('.html') < 0);
-					if(match && match.data.user && match.data.user.length>=4){
+					assert(match.params.user.indexOf('.json') < 0);
+					assert(match.params.user.indexOf('.txt') < 0);
+					assert(match.params.user.indexOf('.html') < 0);
+					if(match && match.params.user && match.params.user.length>=4){
 						return Promise.resolve(new lib.Resource(this, {match}));
 					}else{
 						return Promise.resolve();
@@ -77,9 +77,9 @@ describe('Negotiate', function(){
 					assert(match.uri.indexOf('.json') < 0);
 					assert(match.uri.indexOf('.txt') >= 0);
 					assert(match.uri.indexOf('.html') < 0);
-					assert(match.data.user.indexOf('.json') < 0);
-					assert(match.data.user.indexOf('.txt') < 0);
-					assert(match.data.user.indexOf('.html') < 0);
+					assert(match.params.user.indexOf('.json') < 0);
+					assert(match.params.user.indexOf('.txt') < 0);
+					assert(match.params.user.indexOf('.html') < 0);
 					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
 						if(!inner) return;
 						return new lib.Resource(self, {match, inner});
@@ -104,9 +104,9 @@ describe('Negotiate', function(){
 						assert(match.uri.indexOf('.json') < 0);
 						assert(match.uri.indexOf('.txt') >= 0);
 						assert(match.uri.indexOf('.html') < 0);
-						assert(match.data.user.indexOf('.json') < 0);
-						assert(match.data.user.indexOf('.txt') < 0);
-						assert(match.data.user.indexOf('.html') < 0);
+						assert(match.params.user.indexOf('.json') < 0);
+						assert(match.params.user.indexOf('.txt') < 0);
+						assert(match.params.user.indexOf('.html') < 0);
 						var rsc = new lib.Resource(self, {match, inner});
 						cb(rsc, ancestor);
 					});
@@ -125,9 +125,9 @@ describe('Negotiate', function(){
 							assert(match.uri.indexOf('.json') < 0);
 							assert(match.uri.indexOf('.txt') >= 0);
 							assert(match.uri.indexOf('.html') < 0);
-							assert(match.data.user.indexOf('.json') < 0);
-							assert(match.data.user.indexOf('.txt') < 0);
-							assert(match.data.user.indexOf('.html') < 0);
+							assert(match.params.user.indexOf('.json') < 0);
+							assert(match.params.user.indexOf('.txt') < 0);
+							assert(match.params.user.indexOf('.html') < 0);
 							return new lib.Resource(self, {match, inner});
 						}));
 					});
@@ -144,9 +144,9 @@ describe('Negotiate', function(){
 					assert(match.uri.indexOf('.json') < 0);
 					assert(match.uri.indexOf('.txt') < 0);
 					assert(match.uri.indexOf('.html') >= 0);
-					assert(match.data.user.indexOf('.json') < 0);
-					assert(match.data.user.indexOf('.txt') < 0);
-					assert(match.data.user.indexOf('.html') < 0);
+					assert(match.params.user.indexOf('.json') < 0);
+					assert(match.params.user.indexOf('.txt') < 0);
+					assert(match.params.user.indexOf('.html') < 0);
 					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
 						if(!inner) return;
 						return new lib.Resource(self, {match, inner});
@@ -171,9 +171,9 @@ describe('Negotiate', function(){
 						assert(match.uri.indexOf('.json') < 0);
 						assert(match.uri.indexOf('.txt') < 0);
 						assert(match.uri.indexOf('.html') >= 0);
-						assert(match.data.user.indexOf('.json') < 0);
-						assert(match.data.user.indexOf('.txt') < 0);
-						assert(match.data.user.indexOf('.html') < 0);
+						assert(match.params.user.indexOf('.json') < 0);
+						assert(match.params.user.indexOf('.txt') < 0);
+						assert(match.params.user.indexOf('.html') < 0);
 						var rsc = new lib.Resource(self, {match, inner});
 						cb(rsc, ancestor);
 					});
@@ -192,9 +192,9 @@ describe('Negotiate', function(){
 							assert(match.uri.indexOf('.json') < 0);
 							assert(match.uri.indexOf('.txt') < 0);
 							assert(match.uri.indexOf('.html') >= 0);
-							assert(match.data.user.indexOf('.json') < 0);
-							assert(match.data.user.indexOf('.txt') < 0);
-							assert(match.data.user.indexOf('.html') < 0);
+							assert(match.params.user.indexOf('.json') < 0);
+							assert(match.params.user.indexOf('.txt') < 0);
+							assert(match.params.user.indexOf('.html') < 0);
 							return new lib.Resource(self, {match, inner});
 						}));
 					});

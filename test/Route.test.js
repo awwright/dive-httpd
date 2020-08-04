@@ -169,7 +169,7 @@ describe('Route', function(){
 			it('Route#prepare calls Route#prepare_match by default (resolve)', async function(){
 				const route = new Route({uriTemplate: 'http://localhost/~{name}'});
 				route.prepare_match = async function prepare_match(match){
-					return (match.data.name.length > 2);
+					return (match.params.name.length > 2);
 				};
 				const rsc = await route.prepare('http://localhost/~foo');
 				assert(rsc);
