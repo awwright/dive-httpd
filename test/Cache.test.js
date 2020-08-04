@@ -32,7 +32,7 @@ describe('Cache', function(){
 				contentType: 'text/plain',
 				prepare: function(uri){
 					var match = this.matchUri(uri);
-					if(!match.data.user || match.data.user.length < 4){
+					if(!match.params.user || match.params.user.length < 4){
 						return Promise.resolve();
 					}
 					return Promise.resolve(new lib.Resource(this, {
