@@ -14,6 +14,7 @@ opts.option('--http-addr <iface>', 'Override address to listen to');
 opts.option('--list-resources', 'Enumerate all of the defined routes and exit');
 opts.option('--list-routes', 'Enumerate all of the resources that can be served and exit');
 opts.option('--verbose', 'Output a lot of logs');
+opts.option('--debug', 'Log all errors to the console and response');
 opts.option('--pretend', 'Only show operations, stop short of writing or making modifications');
 opts.parse(process.argv);
 
@@ -108,7 +109,7 @@ packagesList.forEach(function(name){
 });
 
 const appValue = opts.app || path.resolve(path.dirname(configFilepath), configData.app);
-const app = require(path.resolve(appValue), 'UTF-8');
+const app = require(path.resolve(appValue));
 
 if(opts.listRoutes){
 	var list = [app];
@@ -172,13 +173,17 @@ Object.keys(serverObject).forEach(function(name){
 	if(!(type in serverTypes)) throw new Error('Unknown server type: '+name);
 	listeners[name] = new serverTypes[type](app, opts, configData.server[name]);
 	listeners[name].open().then(function(){
-		if(opts.verbose) console.log('Initialized');
+		if(opts.verbose) console.log('Listening on port '+listeners[name].address().port);
 	});
 });
 
 app.onError = function(req, res, err){
 	console.error('Uncaught error:', err);
 };
+
+if(opts.debug){
+	app.debug = true;
+}
 
 app.initialize().then(function(){
 	if(opts.verbose) console.log('App initialized');
