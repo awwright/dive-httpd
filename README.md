@@ -132,7 +132,7 @@ If `Application#debug` is true, all errors are logged.
 * patch(req) - apply the specified modification to the resource
 * trace(req) - Handle a TRACE request; the default does need to be changed unless the request is being forwarded over the network.
 * custom(req) - called for HTTP methods specified in `methods` not handled by one of the above
-* error(err) - resolves to another Resource object that will handle the given Error `err`. May be left undefined. See "Error Handling" above.
+* error(err) - resolves to another Resource object that will handle the given Error `err`. May be left undefined, in which case, the route will search elsewhere for a function that can handle the error (see "Error Handling" above).
 
 The `req` parameter (used in the render functions) is similar to IncomingMessage, and uses the following properties:
 

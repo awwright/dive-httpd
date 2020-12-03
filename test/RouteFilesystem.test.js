@@ -55,7 +55,14 @@ describe('RouteFilesystem', function(){
 				assert.strictEqual(res.route, route);
 			});
 		});
-		it('RouteFilesystem#error');
+		it('RouteFilesystem#error', async function(){
+			if(route.error){
+				const err = await route.error({statusCode: 404});
+				assert(!err);
+			}else{
+				assert(!route.error);
+			}
+		});
 		it('RouteFilesystem#watch', function(){
 			var count = 0;
 			var filePaths = {};
