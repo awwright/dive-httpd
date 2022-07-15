@@ -41,6 +41,12 @@ describe('RouteLocalReference', function(){
 		it('RouteLocalReference#listDependents', function(){
 			assert(route.listDependents().length);
 		});
+		it('RouteLocalReference#uriTemplate', function(){
+			assert.strictEqual(route.uriTemplate, 'http://localhost{/path*}/');
+		});
+		it('RouteLocalReference#uriTemplateRoute', function(){
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		});
 	});
 	describe('interface (series)', function(){
 		var route;

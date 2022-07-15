@@ -29,6 +29,8 @@ describe('Gateway', function(){
 		it('Gateway#listDependents', function(){
 			assert(route.listDependents().length);
 		});
+		it('Gateway#uriTemplate');
+		it('Gateway#uriTemplateRoute');
 	});
 	describe('app', function(){
 		var app, originServer;

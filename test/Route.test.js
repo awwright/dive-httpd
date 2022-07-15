@@ -87,6 +87,7 @@ describe('Route', function(){
 			it('options.uriTemplate', function(){
 				const route = new Route({uriTemplate: 'http://localhost/{id}'});
 				assert(route.uriTemplate);
+				assert(route.uriTemplateRoute);
 			});
 			it('options.contentType', function(){
 				const route = new Route({contentType: 'text/plain'});

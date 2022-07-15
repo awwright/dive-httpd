@@ -48,6 +48,12 @@ describe('RouteRedirect', function(){
 		it('RouteRedirect#listing');
 		it('RouteRedirect#store');
 		it('RouteRedirect#listDependents');
+		it('RouteRedirect#uriTemplate', function(){
+			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
+		});
+		it('RouteRedirect#uriTemplateRoute', function(){
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		});
 	});
 	describe('HTTP tests', function(){
 		var server;
@@ -120,6 +126,12 @@ describe('RouteSeeOther', function(){
 		it('RouteSeeOther#listing');
 		it('RouteSeeOther#store');
 		it('RouteSeeOther#listDependents');
+		it('RouteSeeOther#uriTemplate', function(){
+			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
+		});
+		it('RouteSeeOther#uriTemplateRoute', function(){
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		});
 	});
 	describe('HTTP tests', function(){
 		var server;
@@ -192,6 +204,12 @@ describe('RouteTemporaryRedirect', function(){
 		it('RouteTemporaryRedirect#listing');
 		it('RouteTemporaryRedirect#store');
 		it('RouteTemporaryRedirect#listDependents');
+		it('RouteTemporaryRedirect#uriTemplate', function(){
+			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
+		});
+		it('RouteTemporaryRedirect#uriTemplateRoute', function(){
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		});
 	});
 	describe('HTTP tests', function(){
 		var server;
@@ -264,6 +282,12 @@ describe('RoutePermanentRedirect', function(){
 		it('RoutePermanentRedirect#listing');
 		it('RoutePermanentRedirect#store');
 		it('RoutePermanentRedirect#listDependents');
+		it('RoutePermanentRedirect#uriTemplate', function(){
+			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
+		});
+		it('RoutePermanentRedirect#uriTemplateRoute', function(){
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		});
 	});
 	describe('HTTP tests', function(){
 		var server;

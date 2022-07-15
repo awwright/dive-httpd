@@ -8,6 +8,7 @@ var ServerResponseTransform = require('http-transform').ServerResponseTransform;
 var PassThrough = require('http-transform').PassThrough;
 
 var lib = require('../index.js');
+const { Route } = lib;
 
 // Make a pair of Duplex streams
 // what's written to clientSide is readable from serverSide and vice-versa
@@ -134,10 +135,11 @@ ToJSONTransform.prototype._flush = function (callback){
 };
 
 module.exports.URIReflect = URIReflect;
-inherits(URIReflect, lib.Route);
+inherits(URIReflect, Route);
 function URIReflect(uriTemplate, resourceList){
 	this.uriTemplate = uriTemplate;
 	this.resourceList = resourceList;
+	Route.call(this);
 }
 URIReflect.prototype.prepare = function prepare(uri){
 	// If uriTemplate is defined, then only return resources matching that template

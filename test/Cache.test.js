@@ -65,6 +65,8 @@ describe('Cache', function(){
 		it('Cache#listDependents', function(){
 			assert(route.listDependents().length);
 		});
+		it('Cache#uriTemplate');
+		it('Cache#uriTemplateRoute');
 	});
 	describe('app', function(){
 		var app, cache, calls=0;

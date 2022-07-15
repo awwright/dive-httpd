@@ -1,6 +1,6 @@
 "use strict";
 
-var assert = require('assert');
+var assert = require('assert').strict;
 var testMessage = require('./util.js').testMessage;
 var lib = require('../index.js');
 var docroot = __dirname + '/RouteStaticFile-data';
@@ -105,6 +105,13 @@ describe('RouteFilesystem', function(){
 		});
 		it('RouteFilesystem#onReady', function(){
 			return route.onReady;
+		});
+		it('RouteFilesystem#uriTemplate', function(){
+			assert(route.uriTemplate);
+		});
+		it('RouteFilesystem#uriTemplateRoute', function(){
+			assert(route.uriTemplateRoute);
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('static file', function(){

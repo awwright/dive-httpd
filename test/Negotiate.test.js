@@ -80,7 +80,7 @@ describe('Negotiate', function(){
 					assert(match.params.user.indexOf('.json') < 0);
 					assert(match.params.user.indexOf('.txt') < 0);
 					assert(match.params.user.indexOf('.html') < 0);
-					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
+					return v_base.prepare(match.rewrite(v_base.uriTemplateRoute)).then(function(inner){
 						if(!inner) return;
 						return new lib.Resource(self, {match, inner});
 					});
@@ -100,7 +100,7 @@ describe('Negotiate', function(){
 						assert(inner.params.user.indexOf('.json') < 0);
 						assert(inner.params.user.indexOf('.txt') < 0);
 						assert(inner.params.user.indexOf('.html') < 0);
-						var match = inner.match.rewrite(self.uriTemplate);
+						var match = inner.match.rewrite(self.uriTemplateRoute);
 						assert(match.uri.indexOf('.json') < 0);
 						assert(match.uri.indexOf('.txt') >= 0);
 						assert(match.uri.indexOf('.html') < 0);
@@ -121,7 +121,7 @@ describe('Negotiate', function(){
 							assert(inner.params.user.indexOf('.json') < 0);
 							assert(inner.params.user.indexOf('.txt') < 0);
 							assert(inner.params.user.indexOf('.html') < 0);
-							var match = inner.match.rewrite(self.uriTemplate);
+							var match = inner.match.rewrite(self.uriTemplateRoute);
 							assert(match.uri.indexOf('.json') < 0);
 							assert(match.uri.indexOf('.txt') >= 0);
 							assert(match.uri.indexOf('.html') < 0);
@@ -147,7 +147,7 @@ describe('Negotiate', function(){
 					assert(match.params.user.indexOf('.json') < 0);
 					assert(match.params.user.indexOf('.txt') < 0);
 					assert(match.params.user.indexOf('.html') < 0);
-					return v_base.prepare(match.rewrite(v_base.uriTemplate)).then(function(inner){
+					return v_base.prepare(match.rewrite(v_base.uriTemplateRoute)).then(function(inner){
 						if(!inner) return;
 						return new lib.Resource(self, {match, inner});
 					});
@@ -167,7 +167,7 @@ describe('Negotiate', function(){
 						assert(inner.params.user.indexOf('.json') < 0);
 						assert(inner.params.user.indexOf('.txt') < 0);
 						assert(inner.params.user.indexOf('.html') < 0);
-						var match = inner.match.rewrite(self.uriTemplate);
+						var match = inner.match.rewrite(self.uriTemplateRoute);
 						assert(match.uri.indexOf('.json') < 0);
 						assert(match.uri.indexOf('.txt') < 0);
 						assert(match.uri.indexOf('.html') >= 0);
@@ -188,7 +188,7 @@ describe('Negotiate', function(){
 							assert(inner.params.user.indexOf('.json') < 0);
 							assert(inner.params.user.indexOf('.txt') < 0);
 							assert(inner.params.user.indexOf('.html') < 0);
-							var match = inner.match.rewrite(self.uriTemplate);
+							var match = inner.match.rewrite(self.uriTemplateRoute);
 							assert(match.uri.indexOf('.json') < 0);
 							assert(match.uri.indexOf('.txt') < 0);
 							assert(match.uri.indexOf('.html') >= 0);
@@ -223,14 +223,13 @@ describe('Negotiate', function(){
 			});
 		});
 		it('Negotiate#error');
-		it('Negotiate#watch', function(){
+		it('Negotiate#watch', async function(){
 			var filePaths = {};
 			function handleEvent(resource){
 				filePaths[resource.uri] = null;
 			}
-			return route.watch(handleEvent).then(function(){
-				assert.equal(Object.keys(filePaths).length, 2);
-			});
+			await route.watch(handleEvent);
+			assert.equal(Object.keys(filePaths).length, 2);
 		});
 		it('Negotiate#listing', function(){
 			return route.listing().then(function(list){
@@ -243,6 +242,12 @@ describe('Negotiate', function(){
 		it('Negotiate#store');
 		it('Negotiate#listDependents', function(){
 			assert(route.listDependents().length);
+		});
+		it('Negotiate#uriTemplate', function(){
+			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
+		});
+		it('Negotiate#uriTemplateRoute', function(){
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('Multiple variants (files)', function(){

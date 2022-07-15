@@ -171,6 +171,8 @@ describe('RouteURITemplate', function(){
 		it('RouteURITemplate#listDependents', function(){
 			assert.equal(route.listDependents().length, 0);
 		});
+		it('RouteURITemplate#uriTemplate');
+		it('RouteURITemplate#uriTemplateRoute');
 		// This route doesn't really need an HTTP interface test,
 		// because Application and most of the other tests handle it.
 	});
@@ -197,7 +199,7 @@ describe('RouteURITemplate', function(){
 				},
 			}));
 			server.addRoute(lib.Route({
-				uriTemplate: 'http://localhost/prefix-{name}',
+				uriTemplate: 'http://localhost/prefix-{name}.json',
 				prepare: function(uri){
 					return Promise.resolve();
 				},
@@ -261,27 +263,9 @@ describe('RouteURITemplate', function(){
 				assert.match(res.toString(), /^Error: 404$/m);
 			});
 		});
-		it('404 Not Found - GET </prefix-dne>', function(){
-			return testMessage(server, [
-				'GET /prefix-dne HTTP/1.1',
-				'Host: localhost',
-			]).then(function(res){
-				assert.match(res.toString(), /^HTTP\/1.1 404 /);
-				assert.match(res.toString(), /^Error special case: 404$/m);
-			});
-		});
-		it('404 Not Found - GET </dne.json>', function(){
+		it('404 Not Found - GET </prefix-dne.json>', function(){
 			return testMessage(server, [
 				'GET /dne.json HTTP/1.1',
-				'Host: localhost',
-			]).then(function(res){
-				assert.match(res.toString(), /^HTTP\/1.1 404 /);
-				assert.match(res.toString(), /^Error: 404$/m);
-			});
-		});
-		it('404 Not Found - GET </dne.txt>', function(){
-			return testMessage(server, [
-				'GET /dne.txt HTTP/1.1',
 				'Host: localhost',
 			]).then(function(res){
 				assert.match(res.toString(), /^HTTP\/1.1 404 /);

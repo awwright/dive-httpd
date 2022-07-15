@@ -52,6 +52,8 @@ describe('Application', function(){
 		// A useful feature for automated testing and development
 		it('Application#debug');
 		it('Application#initialize');
+		it('Application#uriTemplate');
+		it('Application#uriTemplateRoute');
 	});
 	describe('defaultNotFound', function(){
 		it('defaultNotFound');

@@ -172,8 +172,10 @@ Object.keys(serverObject).forEach(function(name){
 	if(opts.verbose) console.log('Initializing '+name);
 	if(!(type in serverTypes)) throw new Error('Unknown server type: '+name);
 	listeners[name] = new serverTypes[type](app, opts, configData.server[name]);
-	listeners[name].open().then(function(){
-		if(opts.verbose) console.log('Listening on port '+listeners[name].address().port);
+	listeners[name].open().then(function(sock){
+		if(opts.verbose){
+			console.log('Listening on '+sock.address().address+':'+sock.address().port);
+		}
 	});
 });
 

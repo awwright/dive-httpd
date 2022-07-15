@@ -102,5 +102,11 @@ describe('First', function(){
 		it('First#listDependents', function(){
 			assert(route.listDependents().length);
 		});
+		it.skip('First#uriTemplate', function(){
+			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
+		});
+		it.skip('First#uriTemplateRoute', function(){
+			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		});
 	});
 });
