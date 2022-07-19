@@ -16,7 +16,7 @@ describe('Cache', function(){
 			assert.strictEqual(val.get('max-age'), '31104000');
 			// The fully unquoted value is: "\123\"
 			// dquote backslash one two three backslash dquoote
-			assert.strictEqual(val.get('quoted'), '\"\\123\\\"');
+			assert.strictEqual(val.get('quoted'), '"\\123\\"');
 		});
 		it('(empty)', function(){
 			const val = unit.parseCacheControl('');

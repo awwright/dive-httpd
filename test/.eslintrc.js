@@ -1,3 +1,4 @@
+"use strict";
 module.exports = {
 	"env": {
 		"mocha": true,
@@ -5,7 +6,7 @@ module.exports = {
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {
-		"ecmaVersion": 8,
+		"ecmaVersion": 11,
 	},
 	"rules": {
 		"indent": [ "error", "tab", { SwitchCase: 1 } ],
@@ -17,5 +18,5 @@ module.exports = {
 		"no-extra-semi": [ "error" ],
 		"comma-dangle": [ "error", "always-multiline" ],
 		"no-console": [ "warn" ],
-	}
+	},
 };
