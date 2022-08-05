@@ -53,7 +53,7 @@ describe('Application', function(){
 		it('Application#debug');
 		it('Application#initialize');
 		it('Application#uriTemplate');
-		it('Application#uriTemplateRoute');
+		it('Application#uriRoute');
 	});
 	describe('defaultNotFound', function(){
 		it('defaultNotFound');

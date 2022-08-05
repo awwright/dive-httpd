@@ -77,9 +77,9 @@ describe('TransformRoute', function(){
 		it('TransformRoute#uriTemplate', function(){
 			assert(route.uriTemplate);
 		});
-		it('TransformRoute#uriTemplateRoute', function(){
-			assert(route.uriTemplateRoute);
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it('TransformRoute#uriRoute', function(){
+			assert(route.uriRoute);
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('interface (render_transform)', function(){

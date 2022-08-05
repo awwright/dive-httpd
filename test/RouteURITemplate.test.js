@@ -11,7 +11,7 @@ describe('RouteURITemplate', function(){
 			const route = lib.RouteURITemplate();
 			assert.throws(function(){
 				route.addRoute(function(){});
-			}, /Expected route to be an instanceof Route/);
+			}, /Expected route.uriRoute to be an instanceof Route/);
 			assert.strictEqual(route.routes.length, 0);
 		});
 	});
@@ -23,21 +23,22 @@ describe('RouteURITemplate', function(){
 		});
 	});
 	describe('interface (Route)', function(){
-		var route;
+		var router, route0;
 		beforeEach(function(){
-			route = lib.RouteURITemplate();
-			route.addRoute(new URIReflect('http://localhost/{name}', ['http://localhost/foo']));
+			router = lib.RouteURITemplate();
+			route0 = new URIReflect('http://localhost/{name}', ['http://localhost/foo']);
+			router.addRoute(route0);
 		});
 		it('RouteURITemplate#label', function(){
-			assert.strictEqual(route.label, 'RouteURITemplate(1)');
+			assert.strictEqual(router.label, 'RouteURITemplate(1)');
 		});
 		it('RouteURITemplate#prepare (found)', function(){
-			return route.prepare('http://localhost/foo').then(function(res){
+			return router.prepare('http://localhost/foo').then(function(res){
 				assert(res instanceof lib.Resource);
 			});
 		});
 		it('RouteURITemplate#prepare (not found)', function(){
-			return route.prepare('http://localhost/bar').then(function(res){
+			return router.prepare('http://localhost/bar').then(function(res){
 				assert(!res);
 			});
 		});
@@ -45,13 +46,13 @@ describe('RouteURITemplate', function(){
 		it('RouteURITemplate#watch');
 		describe('RouteURITemplate#listing', function(){
 			it('RouteURITemplate#listing calls each inner', async function(){
-				route.addRoute(new lib.RouteFilesystem({
+				router.addRoute(new lib.RouteFilesystem({
 					uriTemplate: 'http://example.com{/path*}.html',
 					fileroot: __dirname+'/RouteStaticFile-data',
 					pathTemplate: "{/path*}.html",
 					contentType: 'application/xhtml+xml',
 				}));
-				const list = await route.listing();
+				const list = await router.listing();
 				// 3 from RouteFilesystem
 				// 1 from URIReflect
 				assert.strictEqual(list.length, 4);
@@ -60,14 +61,13 @@ describe('RouteURITemplate', function(){
 		});
 		it('RouteURITemplate#store');
 		it('RouteURITemplate#listDependents', function(){
-			assert(route.listDependents().length);
+			assert(router.listDependents().length);
 		});
 		it('RouteURITemplate#initialize', function(){
-			const route_name = route.uriTemplateRouter.routes[0].matchValue;
 			var done = false;
-			assert(route_name);
-			assert(route_name.prepare);
-			route_name.initialize = function(){
+			assert(route0);
+			assert(route0.prepare);
+			route0.initialize = function(){
 				return new Promise(function(resolve){
 					process.nextTick(function(){
 						done = true;
@@ -76,7 +76,7 @@ describe('RouteURITemplate', function(){
 				});
 			};
 			assert(!done);
-			return route.initialize().then(function(){
+			return router.initialize().then(function(){
 				assert(done);
 			});
 		});
@@ -172,7 +172,7 @@ describe('RouteURITemplate', function(){
 			assert.equal(route.listDependents().length, 0);
 		});
 		it('RouteURITemplate#uriTemplate');
-		it('RouteURITemplate#uriTemplateRoute');
+		it('RouteURITemplate#uriRoute');
 		// This route doesn't really need an HTTP interface test,
 		// because Application and most of the other tests handle it.
 	});

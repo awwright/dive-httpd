@@ -30,7 +30,7 @@ describe('Gateway', function(){
 			assert(route.listDependents().length);
 		});
 		it('Gateway#uriTemplate');
-		it('Gateway#uriTemplateRoute');
+		it('Gateway#uriRoute');
 	});
 	describe('app', function(){
 		var app, originServer;

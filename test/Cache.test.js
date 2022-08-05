@@ -2,7 +2,7 @@
 
 var assert = require('assert');
 var { Readable, PassThrough } = require('stream');
-const { testMessage } = require('./util.js');
+const { testMessage, URIReflect } = require('./util.js');
 
 const lib = require('../index.js');
 const unit = require('../lib/Cache.js');
@@ -66,7 +66,7 @@ describe('Cache', function(){
 			assert(route.listDependents().length);
 		});
 		it('Cache#uriTemplate');
-		it('Cache#uriTemplateRoute');
+		it('Cache#uriRoute');
 	});
 	describe('app', function(){
 		var app, cache, calls=0;
@@ -79,15 +79,8 @@ describe('Cache', function(){
 			app.fixedAuthority = 'localhost';
 			app.relaxedHost = true;
 
-			const r0 = new lib.RouteFilesystem({
-				uriTemplate: 'http://localhost{/path*}.html',
-				contentType: 'text/html',
-				fileroot: docroot,
-				pathTemplate: "{/path*}.html",
-			});
-
 			const r1 = new lib.TransformRoute({
-				innerRoute: r0,
+				innerRoute: new URIReflect('{+any}'),
 				render_transform: async function(resource, req, input, output){
 					calls++;
 					input.pipeHeaders(output);
@@ -118,7 +111,7 @@ describe('Cache', function(){
 				'Host: localhost',
 			]);
 			assert.match(res0.toString(), /^HTTP\/1.1 200 /);
-			assert.match(res0.toString(), /A DOCUMENT/);
+			assert.match(res0.toString(), /DOCUMENT\.HTML/);
 			assert.strictEqual(calls, 1);
 
 			const res1 = await testMessage(app, [
@@ -126,7 +119,7 @@ describe('Cache', function(){
 				'Host: localhost',
 			]);
 			assert.match(res1.toString(), /^HTTP\/1.1 200 /);
-			assert.match(res1.toString(), /A DOCUMENT/);
+			assert.match(res1.toString(), /DOCUMENT\.HTML/);
 			assert.strictEqual(calls, 1);
 		});
 	});

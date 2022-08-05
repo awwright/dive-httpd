@@ -44,8 +44,8 @@ describe('RouteLocalReference', function(){
 		it('RouteLocalReference#uriTemplate', function(){
 			assert.strictEqual(route.uriTemplate, 'http://localhost{/path*}/');
 		});
-		it('RouteLocalReference#uriTemplateRoute', function(){
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it('RouteLocalReference#uriRoute', function(){
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('interface (series)', function(){

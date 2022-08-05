@@ -109,9 +109,9 @@ describe('RouteFilesystem', function(){
 		it('RouteFilesystem#uriTemplate', function(){
 			assert(route.uriTemplate);
 		});
-		it('RouteFilesystem#uriTemplateRoute', function(){
-			assert(route.uriTemplateRoute);
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it('RouteFilesystem#uriRoute', function(){
+			assert(route.uriRoute);
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('static file', function(){

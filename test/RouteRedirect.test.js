@@ -51,8 +51,8 @@ describe('RouteRedirect', function(){
 		it('RouteRedirect#uriTemplate', function(){
 			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
 		});
-		it('RouteRedirect#uriTemplateRoute', function(){
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it('RouteRedirect#uriRoute', function(){
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('HTTP tests', function(){
@@ -129,8 +129,8 @@ describe('RouteSeeOther', function(){
 		it('RouteSeeOther#uriTemplate', function(){
 			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
 		});
-		it('RouteSeeOther#uriTemplateRoute', function(){
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it('RouteSeeOther#uriRoute', function(){
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('HTTP tests', function(){
@@ -207,8 +207,8 @@ describe('RouteTemporaryRedirect', function(){
 		it('RouteTemporaryRedirect#uriTemplate', function(){
 			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
 		});
-		it('RouteTemporaryRedirect#uriTemplateRoute', function(){
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it('RouteTemporaryRedirect#uriRoute', function(){
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('HTTP tests', function(){
@@ -285,8 +285,8 @@ describe('RoutePermanentRedirect', function(){
 		it('RoutePermanentRedirect#uriTemplate', function(){
 			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
 		});
-		it('RoutePermanentRedirect#uriTemplateRoute', function(){
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it('RoutePermanentRedirect#uriRoute', function(){
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 	describe('HTTP tests', function(){

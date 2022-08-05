@@ -105,8 +105,8 @@ describe('First', function(){
 		it.skip('First#uriTemplate', function(){
 			assert.strictEqual(route.uriTemplate, 'http://example.com/~{user}');
 		});
-		it.skip('First#uriTemplateRoute', function(){
-			assert.strictEqual(route.uriTemplateRoute.uriTemplate, route.uriTemplate);
+		it.skip('First#uriRoute', function(){
+			assert.strictEqual(route.uriRoute.uriTemplate, route.uriTemplate);
 		});
 	});
 });
