@@ -287,9 +287,10 @@ describe('Negotiate', function(){
 				'Host: example.com',
 			]).then(function(res){
 				assert.match(res.toString(), /HTTP\/1.1 200 /);
-				// assert.match(res.toString(), /Content-Type: text\/html/);
-				// assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.html/);
-				// assert.match(res.toString(), /Vary: Accept/);
+				// the text/plain document doesn't exist, so expect text/markdown
+				assert.match(res.toString(), /Content-Type: text\/markdown/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.md/);
+				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
 		it('text/html preference', function(){
