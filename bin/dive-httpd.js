@@ -2,23 +2,25 @@
 
 const fs = require('fs');
 const path = require('path');
-const opts = require('commander');
+const commander = require('commander');
 const tomlparse = require('toml');
 const dotenv = require('dotenv');
 
-opts.usage('[options] <app.conf>', 'Run an HTTP server with configuration file <app.conf>');
-opts.option('--app <app.js>', 'Import from listed app.js file');
-opts.option('--env <file.env>', 'Import environment variables from <file.env> instead of .env');
-opts.option('--http-port <int>', 'Override port number');
-opts.option('--http-addr <iface>', 'Override address to listen to');
-opts.option('--list-resources', 'Enumerate all of the defined routes and exit');
-opts.option('--list-routes', 'Enumerate all of the resources that can be served and exit');
-opts.option('--verbose', 'Output a lot of logs');
-opts.option('--debug', 'Log all errors to the console and response');
-opts.option('--pretend', 'Only show operations, stop short of writing or making modifications');
-opts.parse(process.argv);
+commander.usage('[options] <app.conf>', 'Run an HTTP server with configuration file <app.conf>');
+commander.option('--app <app.js>', 'Import from listed app.js file');
+commander.option('--env <file.env>', 'Import environment variables from <file.env> instead of .env');
+commander.option('--http-port <int>', 'Override port number');
+commander.option('--http-addr <iface>', 'Override address to listen to');
+commander.option('--list-resources', 'Enumerate all of the defined routes and exit');
+commander.option('--list-routes', 'Enumerate all of the resources that can be served and exit');
+commander.option('--verbose', 'Output a lot of logs');
+commander.option('--debug', 'Log all errors to the console and response');
+commander.option('--pretend', 'Only show operations, stop short of writing or making modifications');
+commander.parse(process.argv);
 
-if(!opts.app && opts.args.length !== 1) return void opts.help();
+const args = commander.args;
+const opts = commander.opts();
+if(!opts.app && args.length !== 1) return void commander.help();
 
 /*
 # an app.conf file looks a little something like this:
@@ -53,8 +55,8 @@ fixedHost = "example.com"
 
 */
 
-if(opts.args[0]){
-	var configFilepath = path.resolve(opts.args[0]);
+if(args[0]){
+	var configFilepath = path.resolve(args[0]);
 	var configDirpath = path.dirname(configFilepath);
 	var configContent = fs.readFileSync(configFilepath, 'UTF-8');
 	var configData = tomlparse.parse(configContent);
