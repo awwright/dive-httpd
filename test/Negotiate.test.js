@@ -334,8 +334,21 @@ describe('Negotiate', function(){
 			return testMessage(server, [
 				'GET http://example.com/document HTTP/1.1',
 				'Host: example.com',
-				'Accept: text/plain, text/markdown;q=0.50',
+				'Accept: text/plain, application/xhtml+xml;q=0.50',
 			]).then(function(res){
+				assert.match(res.toString(), /HTTP\/1.1 200 /);
+				assert.match(res.toString(), /Content-Type: application\/xhtml+xml/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.xhtml/);
+				assert.match(res.toString(), /Vary: Accept/);
+			});
+		});
+		it('text/plain (only)', function(){
+			return testMessage(server, [
+				'GET http://example.com/document HTTP/1.1',
+				'Host: example.com',
+				'Accept: text/plain',
+			]).then(function(res){
+				// there is no document.txt so it should pick something else
 				assert.match(res.toString(), /HTTP\/1.1 200 /);
 				assert.match(res.toString(), /Content-Type: text\/markdown/);
 				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.md/);
