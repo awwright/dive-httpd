@@ -1,7 +1,8 @@
+"use strict";
 module.exports = {
 	"env": {
-		  "mocha": true,
-		  "es6": true,
+		"mocha": true,
+		"es6": true,
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {
@@ -15,5 +16,5 @@ module.exports = {
 		//"semi": [ "error", "always" ],
 		"comma-dangle": [ "error", "always-multiline" ],
 		"no-console": 0,
-	}
+	},
 };

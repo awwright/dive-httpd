@@ -1,5 +1,6 @@
 "use strict";
 module.exports = {
+	"ignorePatterns": ["reports", "vendor"],
 	"env": {
 		"node": true,
 		"es6": true,

@@ -6,7 +6,7 @@ var testMessage = require('./util.js').testMessage;
 
 var lib = require('../index.js');
 const { ResponsePassThrough } = require('http-transform');
-var docroot = __dirname + '/RouteStaticFile-data';
+const docroot = __dirname + '/RouteStaticFile-data';
 
 describe('Negotiate', function(){
 	describe('interface', function(){

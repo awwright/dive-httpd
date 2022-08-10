@@ -134,7 +134,7 @@ app.initialize().then(function(){
 					var stream = new PassThrough;
 					stream.resume();
 				}else{
-					var stream = fs.createWriteStream(relpath, {});
+					stream = fs.createWriteStream(relpath, {});
 				}
 				// TODO: ensure that the listed content-type is valid for the given file extension, if desired
 				if(!response.hasHeader('Content-Type')){

@@ -61,7 +61,7 @@ if(args[0]){
 	var configContent = fs.readFileSync(configFilepath, 'UTF-8');
 	var configData = tomlparse.parse(configContent);
 }else{
-	var configData = {
+	configData = {
 		app: opts.app,
 		server: {
 			http: {

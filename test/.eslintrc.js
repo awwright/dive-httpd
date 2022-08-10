@@ -1,5 +1,6 @@
 "use strict";
 module.exports = {
+	"ignorePatterns": ["reports", "vendor"],
 	"env": {
 		"mocha": true,
 		"es6": true,
