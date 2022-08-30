@@ -337,8 +337,8 @@ describe('Negotiate', function(){
 				'Accept: text/plain, application/xhtml+xml;q=0.50',
 			]).then(function(res){
 				assert.match(res.toString(), /HTTP\/1.1 200 /);
-				assert.match(res.toString(), /Content-Type: application\/xhtml+xml/);
-				assert.match(res.toString(), /Content-Location: http:\/\/example.com\/document.xhtml/);
+				assert.match(res.toString(), /Content-Type: application\/xhtml\+xml/);
+				assert.match(res.toString(), /Content-Location: http:\/\/example\.com\/document\.xhtml/);
 				assert.match(res.toString(), /Vary: Accept/);
 			});
 		});
