@@ -65,7 +65,7 @@ if(args[0]){
 		app: opts.app,
 		server: {
 			http: {
-				port: 8080,
+				port: process.env.HTTP_PORT || process.env.PORT || 8080,
 				fixedScheme: 'http',
 				fixedHost: '',
 			},
