@@ -9,6 +9,10 @@ var URIReflect = require('./util.js').URIReflect;
 
 var lib = require('../index.js');
 
+function createServer(callback){
+	return http.createServer({requireHostHeader: false}, callback);
+}
+
 describe('HTTPServer (HTTP/1.1)', function(){
 	describe('interface', function(){
 		it('app argument required', function(){
@@ -23,7 +27,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
-				var server = http.createServer(listener.callback());
+				var server = createServer(listener.callback());
 				return writeMessage(server, [
 					'GET / HTTP/1.1',
 					'Host: localhost',
@@ -36,7 +40,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
-				var server = http.createServer(listener.callback());
+				var server = createServer(listener.callback());
 				return writeMessage(server, [
 					'GET / HTTP/1.1',
 				]).then(function(res){
@@ -47,7 +51,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
-				var server = http.createServer(listener.callback());
+				var server = createServer(listener.callback());
 				return writeMessage(server, [
 					'GET / HTTP/1.1',
 					'Host: localhost',
@@ -60,7 +64,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
-				var server = http.createServer(listener.callback());
+				var server = createServer(listener.callback());
 				return writeMessage(server, [
 					'GET ftp://localhost/ HTTP/1.1',
 					'Host: localhost',
@@ -73,7 +77,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
-				var server = http.createServer(listener.callback());
+				var server = createServer(listener.callback());
 				return writeMessage(server, [
 					'GET ftp://localhost/ HTTP/1.1',
 				]).then(function(res){
@@ -85,7 +89,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				app.relaxedHost = true;
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
-				var server = http.createServer(listener.callback());
+				var server = createServer(listener.callback());
 				return writeMessage(server, [
 					'GET ftp://localhost/ HTTP/1.1',
 				]).then(function(res){
@@ -97,7 +101,7 @@ describe('HTTPServer (HTTP/1.1)', function(){
 				var app = new lib.Application({debug:true});
 				app.addRoute(new URIReflect('{+uri}'));
 				var listener = new lib.HTTPServer(app);
-				var server = http.createServer(listener.callback());
+				var server = createServer(listener.callback());
 				return writeMessage(server, [
 					'GET ftp://localhost/ HTTP/1.1',
 					'Host: localhost',
